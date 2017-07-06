@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CreditCardManager
 {
@@ -41,12 +38,7 @@ namespace CreditCardManager
         {
             int numberCount = creditCardNumber.Replace(" ", string.Empty).Count();
 
-            return lengths[ccv].Any(rangeArray =>
-            {
-                bool isInRange = false;
-                if (rangeArray.IsInRange(numberCount)) isInRange = true;
-                return isInRange;
-            });
+            return lengths[ccv].Any(rangeArray => rangeArray.IsInRange(numberCount));
         }
 
         public static CreditCardVendor GetCreditCardVendorFromBin(int bin)

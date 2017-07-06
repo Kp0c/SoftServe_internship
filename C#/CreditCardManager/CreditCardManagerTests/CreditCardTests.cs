@@ -25,9 +25,17 @@ namespace CreditCardManager.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void NullArgumentGenerateNextCreditCardNumberTests()
+        public void NullArgumentGenerateNextRandomCreditCardNumberTests()
         {
             CreditCard.GenerateNextRandomCreditCardNumber(null);
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullArgumentGenerateNextCreditCardNumberTests()
+        {
+            CreditCard.GenerateNextCreditCardNumber(null);
             Assert.Fail();
         }
 
