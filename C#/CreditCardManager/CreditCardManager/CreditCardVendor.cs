@@ -8,67 +8,58 @@ namespace CreditCardManager
 {
     public enum CreditCardVendor
     {
-        AmericanExpress,
+        AmericanExpress = 1,
         Maestro,
         MasterCard,
         VISA,
         JCB,
-        Unknow,
+        Unknow = 0, //set unknow as default
     }
 
     public class CreditCardVendorMethods
     {
-        public static bool IsMaestro(uint bin)
+        public static Dictionary<CreditCardVendor, Range[]> bins = new Dictionary<CreditCardVendor, Range[]>
         {
-            uint firstTwoNumbers = bin / 10000;
-            if (firstTwoNumbers / 10 == 6
-                || firstTwoNumbers == 50
-                || (firstTwoNumbers >= 56 && firstTwoNumbers <= 58))
+             [CreditCardVendor.AmericanExpress] = new Range[]{ new Range(340000,349999), new Range(370000,379999) },
+             [CreditCardVendor.Maestro] = new Range[] {new Range(500000,509999), new Range(560000,589999), new Range(600000,699999)},
+             [CreditCardVendor.MasterCard] = new Range[] {new Range(222100,272099), new Range(510000,559999)},
+             [CreditCardVendor.VISA] = new Range[] {new Range(400000,499999)},
+             [CreditCardVendor.JCB] = new Range[] {new Range(352800,358999)},
+        };
+
+        public static Dictionary<CreditCardVendor, Range[]> lengths = new Dictionary<CreditCardVendor, Range[]>
+        {
+            [CreditCardVendor.AmericanExpress] = new Range[] { new Range(15, 15) },
+            [CreditCardVendor.Maestro] = new Range[] { new Range(12, 19) },
+            [CreditCardVendor.MasterCard] = new Range[] { new Range(16, 16) },
+            [CreditCardVendor.VISA] = new Range[] { new Range(13, 13), new Range(16, 16), new Range(19, 19) },
+            [CreditCardVendor.JCB] = new Range[] { new Range(16, 16) },
+            [CreditCardVendor.Unknow] = new Range[] { new Range(12, 19) }, //maximum possible range
+        };
+
+        public static bool CheckFormat(CreditCardVendor ccv, string creditCardNumber)
+        {
+            int numberCount = creditCardNumber.Replace(" ", string.Empty).Count();
+
+            return lengths[ccv].Any(rangeArray =>
             {
-                return true;
-            }
-            return false;
+                bool isInRange = false;
+                if (rangeArray.IsInRange(numberCount)) isInRange = true;
+                return isInRange;
+            });
         }
 
-        public static bool IsMasterCard(uint bin)
+        public static CreditCardVendor GetCreditCardVendorFromBin(int bin)
         {
-            uint firstFourNumbers = bin / 100;
-            uint firstTwoNumbers = firstFourNumbers / 100;
-            if ((firstFourNumbers >= 2221 && firstFourNumbers <= 2720)
-                || (firstTwoNumbers >= 51 && firstTwoNumbers <= 55))
+             return bins.FirstOrDefault(pair =>
             {
-                return true;
-            }
-            return false;
-        }
-
-        public static bool IsAmericanExpress(uint bin)
-        {
-            uint firstTwoNumbers = bin / 10000;
-            if (firstTwoNumbers == 34 || firstTwoNumbers == 37)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public static bool IsVisa(uint bin)
-        {
-            if (bin / 100000 == 4)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public static bool IsJcb(uint bin)
-        {
-            uint firstFourNumbers = bin / 100;
-            if (firstFourNumbers >= 3528 && firstFourNumbers <= 3589)
-            {
-                return true;
-            }
-            return false;
+                bool isInRange = false;
+                foreach (Range range in pair.Value)
+                {
+                    if (range.IsInRange(bin)) isInRange = true;
+                }
+                return isInRange;
+            }).Key;
         }
     }
 }

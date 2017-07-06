@@ -14,8 +14,8 @@ namespace CreditCardManager.Tests
         [TestMethod]
         public void AmericanExpressTests()
         {
-            Assert.AreEqual(CreditCardVendor.AmericanExpress, CreditCard.GetCreditCardVendor("3733 1111 2222 3335"));
-            Assert.AreEqual(CreditCardVendor.AmericanExpress, CreditCard.GetCreditCardVendor("3433 1111 2222 3338"));
+            Assert.AreEqual(CreditCardVendor.AmericanExpress, CreditCard.GetCreditCardVendor("3733 1111 22 22336"));
+            Assert.AreEqual(CreditCardVendor.AmericanExpress, CreditCard.GetCreditCardVendor("3433 1111 22 22333"));
         }
 
         [TestMethod]

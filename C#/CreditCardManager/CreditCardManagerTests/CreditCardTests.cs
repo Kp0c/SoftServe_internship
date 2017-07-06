@@ -27,15 +27,17 @@ namespace CreditCardManager.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void NullArgumentGenerateNextCreditCardNumberTests()
         {
-            CreditCard.GenerateNextCreditCardNumber(null);
+            CreditCard.GenerateNextRandomCreditCardNumber(null);
             Assert.Fail();
         }
 
         [TestMethod]
         public void FormatTests()
         {
-            Assert.AreEqual(CreditCardVendor.AmericanExpress, CreditCard.GetCreditCardVendor("3433 1111 2222 3333"));
-            Assert.AreEqual(CreditCardVendor.AmericanExpress, CreditCard.GetCreditCardVendor("3433111122223333"));
+            Assert.AreEqual(CreditCardVendor.AmericanExpress, CreditCard.GetCreditCardVendor("3433 1111 2222 333"));
+            Assert.AreEqual(CreditCardVendor.VISA, CreditCard.GetCreditCardVendor("4567123478693"));
+
+            Assert.AreEqual(CreditCardVendor.Unknow, CreditCard.GetCreditCardVendor("35301113333000001"));
         }
 
         [TestMethod]
@@ -48,12 +50,39 @@ namespace CreditCardManager.Tests
         }
 
         [TestMethod]
-        public void GenerateNextCreditCardNumberTests()
+        public void GenerateNextRandomCreditCardNumberTests()
         {
-            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("5555555555554444")));
-            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("3530111333300000")));
-            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("4012 8888 8888 1881")));
-            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("4111 1111 1111 1111")));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextRandomCreditCardNumber("5555555555554444")));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextRandomCreditCardNumber("3530111333300000")));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextRandomCreditCardNumber("4012 8888 8888 1881")));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextRandomCreditCardNumber("4111 1111 1111 1111")));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GenerateNextCreditCardNumberCannotGenerateTest()
+        {
+            CreditCard.GenerateNextCreditCardNumber("4999999999999999993");
+            Assert.Fail();
+        }
+
+        [TestMethod]
+        public void GenerateNextCreditCardNumberTest()
+        {
+           Assert.AreEqual("4999999999999999993", CreditCard.GenerateNextCreditCardNumber("4999999999999999985"));
+        }
+
+        [TestMethod]
+        public void GenerateNextCreditCardNumberGotoAnotherRangeOfBinsTest()
+        {
+            Assert.AreEqual("5100000000000008", CreditCard.GenerateNextCreditCardNumber("2720999999999996"));
+        }
+
+        [TestMethod]
+        public void GenerateNextCreditCardNumberGotoAnotherRangeOfLengthsTest()
+        {
+            Assert.AreEqual("5000000000005", CreditCard.GenerateNextCreditCardNumber("6999 9999 9997"));
+            Assert.AreEqual("4000000000000000006", CreditCard.GenerateNextCreditCardNumber("4999 9999 9999 9996"));
         }
 
         [TestMethod]
@@ -61,8 +90,8 @@ namespace CreditCardManager.Tests
         {
             PrivateType pt = new PrivateType(typeof(CreditCard));
 
-            Assert.AreEqual(123456u, (uint)pt.InvokeStatic("GetBin", "1234 56"));
-            Assert.AreEqual(123456u, (uint)pt.InvokeStatic("GetBin", "123456"));
+            Assert.AreEqual(123456, pt.InvokeStatic("GetBin", "1234 56"));
+            Assert.AreEqual(123456, pt.InvokeStatic("GetBin", "123456"));
         }
 
         [TestMethod]
@@ -71,7 +100,7 @@ namespace CreditCardManager.Tests
             PrivateType pt = new PrivateType(typeof(CreditCard));
 
             CollectionAssert.AreEqual(new int[] { 2, 2, 6, 4 }, (int[])pt.InvokeStatic("LuhnAlgorithmConversion", new int[] { 1, 2, 3, 4}));
-            CollectionAssert.AreEqual(new int[] { 2, 2, 6, 4, 1 }, (int[])pt.InvokeStatic("LuhnAlgorithmConversion", new int[] { 1, 2, 3, 4, 5 }));
+            CollectionAssert.AreEqual(new int[] { 1, 4, 3, 8, 5 }, (int[])pt.InvokeStatic("LuhnAlgorithmConversion", new int[] { 1, 2, 3, 4, 5 }));
         }
 
         [TestMethod]
