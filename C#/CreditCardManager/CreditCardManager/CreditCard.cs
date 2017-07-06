@@ -9,12 +9,14 @@ namespace CreditCardManager
 {
     public class CreditCard
     {
+        private const int BIN_LENGTH = 6;
+
         /// <summary>
         /// Bin - bank identification number. It's the leading six digits of the card number
         /// </summary>
         private static uint GetBin(string number)
         {
-            return Convert.ToUInt32(number.Replace(" ", string.Empty).Substring(0, 6));
+            return Convert.ToUInt32(number.Replace(" ", string.Empty).Substring(0, BIN_LENGTH));
         }
         
         public static CreditCardVendor GetCreditCardVendor(string number)
@@ -73,10 +75,14 @@ namespace CreditCardManager
             if (creditCardNumber == null) throw new ArgumentNullException("card number cannot be null");
             
             creditCardNumber = creditCardNumber.Replace(" ", string.Empty);
-
+        
             //generate next credit card number
             Random random = new Random(creditCardNumber.GetHashCode());
-            string nextCreditCardNumber = creditCardNumber.Substring(0, 6) + random.Next(100000000, 999999999).ToString() + 0;
+
+            const int MIN_9_DIGITS_NUMBER = 100000000;
+            const int MAX_9_DIGITS_NUMBER = 999999999;
+
+            string nextCreditCardNumber = creditCardNumber.Substring(0, BIN_LENGTH) + random.Next(MIN_9_DIGITS_NUMBER, MAX_9_DIGITS_NUMBER).ToString() + 0;
 
             //set check digit
             int[] numbers = LuhnAlgorithmConversion(ConvertStringToIntArray(nextCreditCardNumber));

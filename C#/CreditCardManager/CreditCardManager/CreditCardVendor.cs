@@ -36,7 +36,7 @@ namespace CreditCardManager
         public static bool isMasterCard(uint bin)
         {
             uint firstFourNumbers = bin / 100;
-            uint firstTwoNumbers = bin / 10000;
+            uint firstTwoNumbers = firstFourNumbers / 100;
             if ((firstFourNumbers >= 2221 && firstFourNumbers <= 2720)
                 || (firstTwoNumbers >= 51 && firstTwoNumbers <= 55))
             {
