@@ -18,7 +18,7 @@ namespace CreditCardManager
 
     public class CreditCardVendorMethods
     {
-        public static bool isMaestro(uint bin)
+        public static bool IsMaestro(uint bin)
         {
             uint firstTwoNumbers = bin / 10000;
             if (firstTwoNumbers / 10 == 6
@@ -27,13 +27,10 @@ namespace CreditCardManager
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
-        public static bool isMasterCard(uint bin)
+        public static bool IsMasterCard(uint bin)
         {
             uint firstFourNumbers = bin / 100;
             uint firstTwoNumbers = firstFourNumbers / 100;
@@ -42,36 +39,36 @@ namespace CreditCardManager
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+            return false;
         }
 
-        public static bool isAmericanExpress(uint bin)
+        public static bool IsAmericanExpress(uint bin)
         {
             uint firstTwoNumbers = bin / 10000;
             if (firstTwoNumbers == 34 || firstTwoNumbers == 37)
+            {
                 return true;
-            else
-                return false;
+            }
+            return false;
         }
 
-        public static bool isVisa(uint bin)
+        public static bool IsVisa(uint bin)
         {
             if (bin / 100000 == 4)
+            {
                 return true;
-            else
-                return false;
+            }
+            return false;
         }
 
-        public static bool isJcb(uint bin)
+        public static bool IsJcb(uint bin)
         {
             uint firstFourNumbers = bin / 100;
             if (firstFourNumbers >= 3528 && firstFourNumbers <= 3589)
+            {
                 return true;
-            else
-                return false;
+            }
+            return false;
         }
     }
 }

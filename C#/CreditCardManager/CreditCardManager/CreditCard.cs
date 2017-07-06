@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
 
 namespace CreditCardManager
 {
@@ -25,11 +21,11 @@ namespace CreditCardManager
 
             uint bin = GetBin(number);
 
-            if (CreditCardVendorMethods.isAmericanExpress(bin)) return CreditCardVendor.AmericanExpress;
-            if (CreditCardVendorMethods.isMaestro(bin)) return CreditCardVendor.Maestro;
-            if (CreditCardVendorMethods.isMasterCard(bin)) return CreditCardVendor.MasterCard;
-            if (CreditCardVendorMethods.isVisa(bin)) return CreditCardVendor.VISA;
-            if (CreditCardVendorMethods.isJcb(bin)) return CreditCardVendor.JCB;
+            if (CreditCardVendorMethods.IsAmericanExpress(bin)) return CreditCardVendor.AmericanExpress;
+            if (CreditCardVendorMethods.IsMaestro(bin)) return CreditCardVendor.Maestro;
+            if (CreditCardVendorMethods.IsMasterCard(bin)) return CreditCardVendor.MasterCard;
+            if (CreditCardVendorMethods.IsVisa(bin)) return CreditCardVendor.VISA;
+            if (CreditCardVendorMethods.IsJcb(bin)) return CreditCardVendor.JCB;
 
             return CreditCardVendor.Unknow;
         }
@@ -82,12 +78,12 @@ namespace CreditCardManager
             const int MIN_9_DIGITS_NUMBER = 100000000;
             const int MAX_9_DIGITS_NUMBER = 999999999;
 
-            string nextCreditCardNumber = creditCardNumber.Substring(0, BIN_LENGTH) + random.Next(MIN_9_DIGITS_NUMBER, MAX_9_DIGITS_NUMBER).ToString() + 0;
+            string nextCreditCardNumber = creditCardNumber.Substring(0, BIN_LENGTH) + random.Next(MIN_9_DIGITS_NUMBER, MAX_9_DIGITS_NUMBER) + 0;
 
             //set check digit
             int[] numbers = LuhnAlgorithmConversion(ConvertStringToIntArray(nextCreditCardNumber));
-            int checkDigit = (10 - (numbers.Sum(s => s) % 10));
-            nextCreditCardNumber = nextCreditCardNumber.Substring(0, nextCreditCardNumber.Length - 1) + checkDigit.ToString();
+            int checkDigit = 10 - numbers.Sum(s => s) % 10;
+            nextCreditCardNumber = nextCreditCardNumber.Substring(0, nextCreditCardNumber.Length - 1) + checkDigit;
 
             return nextCreditCardNumber;
         }
