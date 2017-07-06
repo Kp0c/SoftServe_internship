@@ -74,6 +74,7 @@ namespace CreditCardManager
 
             int[] numbers = LuhnAlgorithmConversion(ConvertStringToIntArray(creditCardNumber));
             int checkDigit = 10 - numbers.Sum(s => s) % 10;
+            checkDigit %= 10;
             creditCardNumber = creditCardNumber.Substring(0, creditCardNumber.Length - 1) + checkDigit;
             return creditCardNumber;
         }

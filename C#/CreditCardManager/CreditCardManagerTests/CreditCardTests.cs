@@ -1,5 +1,4 @@
-﻿using CreditCardManager;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace CreditCardManager.Tests
@@ -77,7 +76,8 @@ namespace CreditCardManager.Tests
         [TestMethod]
         public void GenerateNextCreditCardNumberTest()
         {
-           Assert.AreEqual("4999999999999999993", CreditCard.GenerateNextCreditCardNumber("4999999999999999985"));
+            Assert.AreEqual("4999999999999999993", CreditCard.GenerateNextCreditCardNumber("4999999999999999985"));
+            Assert.AreEqual("4999999999999999910", CreditCard.GenerateNextCreditCardNumber("4999999999999999902"));
         }
 
         [TestMethod]
