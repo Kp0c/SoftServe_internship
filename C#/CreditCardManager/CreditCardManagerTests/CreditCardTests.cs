@@ -45,12 +45,38 @@ namespace CreditCardManager.Tests
         }
 
         [TestMethod]
-        public void GenerateNextCreditCardNumber()
+        public void GenerateNextCreditCardNumberTests()
         {
             Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("5555555555554444")));
             Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("3530111333300000")));
             Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("4012 8888 8888 1881")));
             Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("4111 1111 1111 1111")));
+        }
+
+        [TestMethod]
+        public void GetBinTests()
+        {
+            PrivateType pt = new PrivateType(typeof(CreditCard));
+
+            Assert.AreEqual(123456u, (uint)pt.InvokeStatic("GetBin", (Object)"1234 56"));
+            Assert.AreEqual(123456u, (uint)pt.InvokeStatic("GetBin", (Object)"123456"));
+        }
+
+        [TestMethod]
+        public void LuhnAlgorithmConversionTests()
+        {
+            PrivateType pt = new PrivateType(typeof(CreditCard));
+
+            CollectionAssert.AreEqual(new int[] { 2, 2, 6, 4 }, (int[])pt.InvokeStatic("LuhnAlgorithmConversion", new int[] { 1, 2, 3, 4}));
+        }
+
+        [TestMethod]
+        public void ConvertStringToIntArrayTests()
+        {
+            PrivateType pt = new PrivateType(typeof(CreditCard));
+
+            CollectionAssert.AreEqual(new int[] { 1, 2, 3, 4, 5, 6 }, (int[])pt.InvokeStatic("ConvertStringToIntArray", "1234 56"));
+            CollectionAssert.AreEqual(new int[] { 1, 2, 3, 4, 5, 6 }, (int[])pt.InvokeStatic("ConvertStringToIntArray", "123456"));
         }
     }
 }
