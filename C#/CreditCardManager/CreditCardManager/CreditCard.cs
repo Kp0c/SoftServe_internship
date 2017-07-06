@@ -6,121 +6,83 @@ using System.Threading.Tasks;
 
 namespace CreditCardManager
 {
-    public enum CreditCardVendor
-    {
-        AmericanExpress,
-        Maestro,
-        MasterCard,
-        VISA,
-        JCB,
-        Unknow,
-    }
-
     public class CreditCard
     {
+        /// <summary>
+        /// Bin - bank identification number. It's the leading six digits of the card number
+        /// </summary>
         private static uint GetBin(string number)
         {
             return Convert.ToUInt32(number.Replace(" ", string.Empty).Substring(0, 6));
         }
-
-        #region different vendors checks
-        private static bool isAmericanExpress(uint bin)
-        {
-            uint firstTwoNumbers = bin / 10000;
-            if (firstTwoNumbers == 34 || firstTwoNumbers == 37)
-                return true;
-            else
-                return false;
-        }
-
-        private static bool isMaestro(uint bin)
-        {
-            uint firstTwoNumbers = bin / 10000;
-            if (firstTwoNumbers / 10 == 6
-                || firstTwoNumbers == 50
-                || (firstTwoNumbers >= 56 && firstTwoNumbers <= 58))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private static bool isMasterCard(uint bin)
-        {
-            uint firstFourNumbers = bin / 100;
-            uint firstTwoNumbers = bin / 10000;
-            if((firstFourNumbers >= 2221 && firstFourNumbers <= 2720)
-                || (firstTwoNumbers >= 51 && firstTwoNumbers <= 55))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        private static bool isVisa(uint bin)
-        {
-            if (bin / 100000 == 4)
-                return true;
-            else
-                return false;
-        }
-
-        private static bool isJcb(uint bin)
-        {
-            uint firstFourNumbers = bin / 100;
-            if (firstFourNumbers >= 3528 && firstFourNumbers <= 3589)
-                return true;
-            else
-                return false;
-        }
-        #endregion
-
-        private static bool IsCorrectFormat(string number)
-        {
-            //is have groups
-            if (number.Contains(" "))
-            {
-                //is valid count of groups
-                if (number.Count(c => c == ' ') != 3)
-                    return false;
-
-                //is valid groups 
-                if (number.Split(' ').Where(str => str.Length == 4).Count() != 4)
-                {
-                    return false;
-                }
-            }
-            //is valid count of numbers
-            if (number.Replace(" ", string.Empty).Count() != 16) return false;
-
-            return true;
-        }
-
+        
         public static CreditCardVendor GetCreditCardVendor(string number)
         {
             if (number == null) throw new ArgumentNullException("card number cannot be null");
-            if(!IsCorrectFormat(number)) throw new ArgumentException("Invalid format");
 
             uint bin = GetBin(number);
 
-            if (isAmericanExpress(bin)) return CreditCardVendor.AmericanExpress;
-            if (isMaestro(bin)) return CreditCardVendor.Maestro;
-            if (isMasterCard(bin)) return CreditCardVendor.MasterCard;
-            if (isVisa(bin)) return CreditCardVendor.VISA;
-            if (isJcb(bin)) return CreditCardVendor.JCB;
+            if (CreditCardVendorMethods.isAmericanExpress(bin)) return CreditCardVendor.AmericanExpress;
+            if (CreditCardVendorMethods.isMaestro(bin)) return CreditCardVendor.Maestro;
+            if (CreditCardVendorMethods.isMasterCard(bin)) return CreditCardVendor.MasterCard;
+            if (CreditCardVendorMethods.isVisa(bin)) return CreditCardVendor.VISA;
+            if (CreditCardVendorMethods.isJcb(bin)) return CreditCardVendor.JCB;
 
             return CreditCardVendor.Unknow;
         }
 
-        public static bool IsCreditCardNumberValid(string number)
+        private static int[] LuhnAlgorithmConversion(int[] numbers)
         {
-            return true;
+            int startPosition = (numbers.Length - 1) % 2 == 0 ? numbers.Length - 1 : numbers.Length - 2;
+            for (int i = startPosition; i >= 0; i -= 2)
+            {
+                numbers[i] *= 2;
+                //add digits of result from the previous operation
+                if (numbers[i] >= 10)   
+                    numbers[i] -= 9;
+            }
+
+            return numbers;
+        }
+
+        /// <summary>
+        /// Convert number string to digits array
+        /// </summary>
+        private static int[] ConvertStringToIntArray(string number)
+        {
+            return number.Replace(" ", string.Empty).Select(c => (int)char.GetNumericValue(c)).ToArray();
+        }
+
+        public static bool IsCreditCardNumberValid(string creditCardNumber)
+        {
+            if (creditCardNumber == null) throw new ArgumentNullException("card number cannot be null");
+            
+            int[] numbers = ConvertStringToIntArray(creditCardNumber);
+
+            numbers = LuhnAlgorithmConversion(numbers);
+
+            if (numbers.Sum(s => s) % 10 == 0)
+                return true;
+            else
+                return false;
+        }
+
+        public static string GenerateNextCreditCardNumber(string creditCardNumber)
+        {
+            if (creditCardNumber == null) throw new ArgumentNullException("card number cannot be null");
+            
+            creditCardNumber = creditCardNumber.Replace(" ", string.Empty);
+
+            //generate next credit card number
+            Random random = new Random(creditCardNumber.GetHashCode());
+            string nextCreditCardNumber = creditCardNumber.Substring(0, 6) + random.Next(100000000, 999999999).ToString() + 0;
+
+            //set check digit
+            int[] numbers = LuhnAlgorithmConversion(ConvertStringToIntArray(nextCreditCardNumber));
+            int checkDigit = (10 - (numbers.Sum(s => s) % 10));
+            nextCreditCardNumber = nextCreditCardNumber.Substring(0, nextCreditCardNumber.Length - 1) + checkDigit.ToString();
+
+            return nextCreditCardNumber;
         }
     }
 }

@@ -10,7 +10,7 @@ namespace CreditCardManager
     {
         static void Main(string[] args)
         {
-            CreditCard.GetCreditCardVendor("5533 1111 2222 3333");
+            Console.WriteLine(CreditCard.GenerateNextCreditCardNumber("4012888888881881"));
         }
     }
 }

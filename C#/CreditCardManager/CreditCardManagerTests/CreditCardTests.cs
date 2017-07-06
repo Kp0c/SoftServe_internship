@@ -2,37 +2,30 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace CreditCardManagerTests
+namespace CreditCardManager.Tests
 {
     [TestClass]
     public class CreditCardTests
     {
         [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void InvalidFormatManyNumbersTests()
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullArgumentGetCreditCardVendorTests()
         {
-            CreditCard.GetCreditCardVendor("1234 5678 9101 11213");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void InvalidFormatNotValidSpacesTests()
-        {
-            CreditCard.GetCreditCardVendor("1111 2222 33334444");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void InvalidFormatNotValidGroupsTests()
-        {
-            CreditCard.GetCreditCardVendor("1111 2222 33334 444");
+            CreditCard.GetCreditCardVendor(null);
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void NullArgumentTests()
+        public void NullArgumentIsCreditCardNumberValidTests()
         {
-            CreditCard.GetCreditCardVendor(null);
+            CreditCard.IsCreditCardNumberValid(null);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void NullArgumentGenerateNextCreditCardNumberTests()
+        {
+            CreditCard.GenerateNextCreditCardNumber(null);
         }
 
         [TestMethod]
@@ -43,55 +36,21 @@ namespace CreditCardManagerTests
         }
 
         [TestMethod]
-        public void AmericanExpressTests()
+        public void ValidCardsTests()
         {
-            Assert.AreEqual(CreditCardVendor.AmericanExpress, CreditCard.GetCreditCardVendor("3733 1111 2222 3333"));
-            Assert.AreEqual(CreditCardVendor.AmericanExpress, CreditCard.GetCreditCardVendor("3433 1111 2222 3333"));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid("5555555555554444"));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid("3530111333300000"));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid("4012 8888 8888 1881"));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid("4111 1111 1111 1111"));
         }
 
         [TestMethod]
-        public void MaestroTests()
+        public void GenerateNextCreditCardNumber()
         {
-            Assert.AreEqual(CreditCardVendor.Maestro, CreditCard.GetCreditCardVendor("5033 1111 2222 3333"));
-            Assert.AreEqual(CreditCardVendor.Maestro, CreditCard.GetCreditCardVendor("5633 1111 2222 3333"));
-            Assert.AreEqual(CreditCardVendor.Maestro, CreditCard.GetCreditCardVendor("5733 1111 2222 3333"));
-            Assert.AreEqual(CreditCardVendor.Maestro, CreditCard.GetCreditCardVendor("5833 1111 2222 3333"));
-            Assert.AreEqual(CreditCardVendor.Maestro, CreditCard.GetCreditCardVendor("6933 1111 2222 3333"));
-        }
-
-        [TestMethod]
-        public void MasterCardTests()
-        {
-            for (int i = 2221; i < 2720; i++)
-            {
-                Assert.AreEqual(CreditCardVendor.MasterCard, CreditCard.GetCreditCardVendor(i.ToString() + " 1111 2222 3333"));
-            }
-
-            for (int i = 51; i < 55; i++)
-            {
-                Assert.AreEqual(CreditCardVendor.MasterCard, CreditCard.GetCreditCardVendor(i.ToString() + "33 1111 2222 3333"));
-            }
-        }
-
-        [TestMethod]
-        public void VisaTests()
-        {
-            Assert.AreEqual(CreditCardVendor.VISA, CreditCard.GetCreditCardVendor("4433 1111 2222 3333"));
-        }
-
-        [TestMethod]
-        public void JcbTests()
-        {
-            for (int i = 3528; i < 3589; i++)
-            {
-                Assert.AreEqual(CreditCardVendor.JCB, CreditCard.GetCreditCardVendor(i.ToString() + " 1111 2222 3333"));
-            }
-        }
-
-        [TestMethod]
-        public void UnknowTests()
-        {
-            Assert.AreEqual(CreditCardVendor.Unknow, CreditCard.GetCreditCardVendor("1111 2222 3333 4444"));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("5555555555554444")));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("3530111333300000")));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("4012 8888 8888 1881")));
+            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextCreditCardNumber("4111 1111 1111 1111")));
         }
     }
 }
