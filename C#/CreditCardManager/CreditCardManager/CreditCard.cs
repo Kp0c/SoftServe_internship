@@ -40,9 +40,6 @@ namespace CreditCardManager
             return numbers;
         }
 
-        /// <summary>
-        /// Convert number string to digits array
-        /// </summary>
         private static int[] ConvertStringToIntArray(string number)
         {
             return number.Replace(" ", string.Empty).Select(c => (int)char.GetNumericValue(c)).ToArray();
