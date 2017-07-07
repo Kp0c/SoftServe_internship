@@ -22,6 +22,7 @@ namespace CreditCardManager
              [CreditCardVendor.MasterCard] = new Range[] {new Range(222100,272099), new Range(510000,559999)},
              [CreditCardVendor.VISA] = new Range[] {new Range(400000,499999)},
              [CreditCardVendor.JCB] = new Range[] {new Range(352800,358999)},
+             //don't add unknow, because it's can intersects with current or future bins ranges
         };
 
         public static Dictionary<CreditCardVendor, Range[]> lengths = new Dictionary<CreditCardVendor, Range[]>
