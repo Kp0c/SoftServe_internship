@@ -166,20 +166,44 @@
         [TestMethod]
         public void Register_ForCitizenRegisteredOnNextDay_StartCounterFromStart()
         {
-            var bd = TestTodayDate.AddYears(-1);
-            var citizen = CitizenBuilder.NewMan().WithDate(bd).Build();
+            DateTime bd = TestTodayDate.AddYears(-1);
+            ICitizen citizen = CitizenBuilder.NewMan().WithDate(bd).Build();
 
-            var yesterday = TestTodayDate.AddDays(-1);
+            DateTime yesterday = TestTodayDate.AddDays(-1);
             SystemDateTime.Now = () => yesterday;
             registry.Register(citizen);
             SystemDateTime.Now = () => TestTodayDate;
 
             bd = TestTodayDate.AddYears(-2);
-            var citizen2 = CitizenBuilder.NewMan().WithDate(bd).Build();
+            ICitizen citizen2 = CitizenBuilder.NewMan().WithDate(bd).Build();
             registry.Register(citizen2);
 
             Assert.AreEqual(citizen.vatId.Substring(5,4), citizen2.vatId.Substring(5,4));
         }
+
+        /* //CAREFULL! VERY LONG TEST
+        [TestMethod]
+        [ExpectedException(typeof(InvalidOperationException))]
+        public void Register_ForRegisterOver5kMan_Add1kYearsToBirthDate()
+        {
+            DateTime DECEMBER_31_1899 = new DateTime(1899, 12, 31);
+
+            DateTime bd = new DateTime(1991, 8, 24);
+            ICitizen citizen = CitizenBuilder.NewMan().WithDate(bd).Build();
+
+            var yesterday = TestTodayDate.AddDays(-1);
+            SystemDateTime.Now = () => yesterday;
+
+            for (int i = 0; i < 5010; i++)
+            {
+                citizen = CitizenBuilder.NewMan().WithDate(bd).WithFirstName(citizen.firstName + "a").Build();
+                registry.Register(citizen);
+            }
+
+            SystemDateTime.Now = () => TestTodayDate;
+
+            Assert.Fail();
+        }*/
 
         private ICitizenRegistry CreateCitizenRegistry()
         {

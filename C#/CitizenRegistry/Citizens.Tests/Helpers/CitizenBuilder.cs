@@ -40,6 +40,11 @@ namespace Citizens.Tests.Helpers
             this.vatId = vatId;
             return this;
         }
+        public CitizenBuilder WithFirstName(string firstName)
+        {
+            this.firstName = firstName;
+            return this;
+        }
 
         public ICitizen Build()
         {
