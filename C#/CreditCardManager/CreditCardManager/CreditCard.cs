@@ -119,6 +119,11 @@ namespace CreditCardManager
             return creditCardNumber;
         }
 
+        private static bool IsIncrementedProperly(string oldCardNumber, string newCardNumber, CreditCardVendor oldCcv)
+        {
+            return newCardNumber != oldCardNumber && oldCcv == GetCreditCardVendor(newCardNumber);
+        }
+
         public static string GenerateNextCreditCardNumber(string creditCardNumber)
         {
             string normalizedNumber = CreditCardHelper.TryToNormalizeNumber(creditCardNumber);
@@ -131,19 +136,19 @@ namespace CreditCardManager
             }
 
             string newCreditCardNumber = IncrementCardNumber(normalizedNumber);
-            if (ccv == GetCreditCardVendor(newCreditCardNumber))
+            if (IsIncrementedProperly(normalizedNumber, newCreditCardNumber, ccv))
             {
                 return SetCorrectCheckDigit(newCreditCardNumber);
             }
 
             newCreditCardNumber = TryIncrementBinsRange(ccv, normalizedNumber);
-            if (newCreditCardNumber != normalizedNumber && ccv == GetCreditCardVendor(newCreditCardNumber))
+            if (IsIncrementedProperly(normalizedNumber, newCreditCardNumber, ccv))
             {
                 return SetCorrectCheckDigit(newCreditCardNumber);
             }
 
             newCreditCardNumber = TryIncrementLength(ccv, normalizedNumber);
-            if (newCreditCardNumber != normalizedNumber && ccv == GetCreditCardVendor(newCreditCardNumber))
+            if (IsIncrementedProperly(normalizedNumber, newCreditCardNumber, ccv))
             {
                 return SetCorrectCheckDigit(newCreditCardNumber);
             }
