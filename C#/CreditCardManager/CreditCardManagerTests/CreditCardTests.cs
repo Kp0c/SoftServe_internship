@@ -108,6 +108,14 @@ namespace CreditCardManager.Tests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void GenerateNextCreditCardNumber_UnknowVendor_ThrowsArgumentException()
+        {
+            CreditCard.GenerateNextCreditCardNumber("0000999999999999985");
+            Assert.Fail();
+        }
+
+        [TestMethod]
         public void GenerateNextCreditCardNumber_19DigitsWithoutSpaces_IncrementCardNumber()
         {
             Assert.AreEqual("4999999999999999993", CreditCard.GenerateNextCreditCardNumber("4999999999999999985"));
