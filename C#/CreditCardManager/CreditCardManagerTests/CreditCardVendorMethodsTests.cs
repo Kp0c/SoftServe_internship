@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace CreditCardManager.Tests
 {
@@ -55,6 +56,12 @@ namespace CreditCardManager.Tests
         public void UnknowTests()
         {
             Assert.AreEqual(CreditCardVendor.Unknow, CreditCard.GetCreditCardVendor("1111 2222 3333 4444"));
+        }
+
+        [TestMethod]
+        public void InvalidLengthTest()
+        {
+            Assert.IsFalse(CreditCardVendorMethods.CheckFormat(CreditCardVendor.Unknow, "6556 3145"));
         }
     }
 }
