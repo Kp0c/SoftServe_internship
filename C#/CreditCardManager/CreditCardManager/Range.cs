@@ -6,17 +6,20 @@ namespace CreditCardManager
     {
         public Range(int from, int to)
         {
-            if (from > to) throw new ArgumentException(String.Format("Invalid range: {0} - {1}", from, to));
-            this.from = from;
-            this.to = to;
+            if (from > to)
+            {
+                throw new ArgumentException(string.Format("Invalid range: {0} - {1}", from, to));
+            }
+            this.From = from;
+            this.To = to;
         }
 
         public bool IsInRange(int number)
         {
-            return number >= from && number <= to;
+            return number >= From && number <= To;
         }
 
-        public int from { get; }
-        public int to { get; }
+        public int From { get; }
+        public int To { get; }
     }
 }

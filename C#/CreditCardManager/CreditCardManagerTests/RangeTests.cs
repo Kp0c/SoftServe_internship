@@ -6,28 +6,38 @@ namespace CreditCardManager.Tests
     [TestClass]
     public class RangeTests
     {
+        static Range range;
+        [ClassInitialize]
+        public static void Initialize(TestContext context)
+        {
+            range = new Range(1, 5);
+        }
+
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void RangeExceptionTest()
+        public void NewRange_FromBiggerThanTo_ThrowsArgumentException()
         {
             new Range(5, 1);
             Assert.Fail();
         }
 
         [TestMethod]
-        public void RangeTest()
+        public void NewRange_ConstructProperly()
         {
-            Range range = new Range(1, 5);
-            Assert.AreEqual(1, range.from);
-            Assert.AreEqual(5, range.to);
+            Assert.AreEqual(1, range.From);
+            Assert.AreEqual(5, range.To);
         }
 
         [TestMethod()]
-        public void IsInRangeTest()
+        public void IsInRange_InRange_ReturnsTrue()
         {
-            Range range = new Range(1, 10);
-            Assert.IsTrue(range.IsInRange(10));
-            Assert.IsFalse(range.IsInRange(11));
+            Assert.IsTrue(range.IsInRange(5));
+        }
+
+        [TestMethod()]
+        public void IsInRange_NotInRange_ReturnsFalse()
+        {
+            Assert.IsFalse(range.IsInRange(0));
         }
     }
 }

@@ -32,26 +32,33 @@ namespace CreditCardManager
             [CreditCardVendor.MasterCard] = new Range[] { new Range(16, 16) },
             [CreditCardVendor.VISA] = new Range[] { new Range(13, 13), new Range(16, 16), new Range(19, 19) },
             [CreditCardVendor.JCB] = new Range[] { new Range(16, 16) },
-            [CreditCardVendor.Unknow] = new Range[] { new Range(12, 19) }, //maximum possible range
         };
 
         public static bool CheckFormat(CreditCardVendor ccv, string creditCardNumber)
         {
-            int numberCount = creditCardNumber.Replace(" ", string.Empty).Count();
-
-            return lengths[ccv].Any(rangeArray => rangeArray.IsInRange(numberCount));
+            if (ccv == CreditCardVendor.Unknow)
+            {
+                return true;
+            }
+            else
+            {
+                int numberCount = creditCardNumber.Count();
+                return lengths[ccv].Any(rangeArray => rangeArray.IsInRange(numberCount));
+            }
         }
 
         public static CreditCardVendor GetCreditCardVendorFromBin(int bin)
         {
              return bins.FirstOrDefault(pair =>
             {
-                bool isInRange = false;
                 foreach (Range range in pair.Value)
                 {
-                    if (range.IsInRange(bin)) isInRange = true;
+                    if (range.IsInRange(bin))
+                    {
+                        return true;
+                    }
                 }
-                return isInRange;
+                return false;
             }).Key;
         }
     }

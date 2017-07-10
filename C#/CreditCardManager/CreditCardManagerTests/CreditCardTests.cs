@@ -8,7 +8,7 @@ namespace CreditCardManager.Tests
     {
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void NullArgumentGetCreditCardVendorTests()
+        public void GetCreditCardVendor_NullArgument_ThrowsArgumentNullException()
         {
             CreditCard.GetCreditCardVendor(null);
             Assert.Fail();
@@ -16,7 +16,7 @@ namespace CreditCardManager.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void NullArgumentIsCreditCardNumberValidTests()
+        public void IsCreditCardNumberValid_NullArgument_ThrowsArgumentNullException()
         {
             CreditCard.IsCreditCardNumberValid(null);
             Assert.Fail();
@@ -24,7 +24,7 @@ namespace CreditCardManager.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void NullArgumentGenerateNextRandomCreditCardNumberTests()
+        public void GenerateNextRandomCreditCardNumber_NullArgument_ThrowsArgumentNullException()
         {
             CreditCard.GenerateNextRandomCreditCardNumber(null);
             Assert.Fail();
@@ -32,92 +32,103 @@ namespace CreditCardManager.Tests
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void NullArgumentGenerateNextCreditCardNumberTests()
+        public void GenerateNextCreditCardNumber_NullArgument_ThrowsArgumentNullException()
         {
             CreditCard.GenerateNextCreditCardNumber(null);
             Assert.Fail();
         }
 
         [TestMethod]
-        public void FormatTests()
+        [ExpectedException(typeof(ArgumentException))]
+        public void GetCreditCardVendor_InvalidCardNumberWithWorngSymbold_ThrowsArgumentException()
+        {
+            CreditCard.GetCreditCardVendor("3433 1111 2222asd 333?");
+        }
+
+        [TestMethod]
+        public void GetCreditCardVendor_Valid15DigitsWithSpacesAmericanExpress_ReturnsAmericanExpressVendor()
         {
             Assert.AreEqual(CreditCardVendor.AmericanExpress, CreditCard.GetCreditCardVendor("3433 1111 2222 333"));
-            Assert.AreEqual(CreditCardVendor.VISA, CreditCard.GetCreditCardVendor("4567123478693"));
+        }
 
+        [TestMethod]
+        public void GetCreditCardVendor_Valid13DigitsWithoutSpacesVisa_ReturnsVisa()
+        {
+            Assert.AreEqual(CreditCardVendor.VISA, CreditCard.GetCreditCardVendor("4567123478693"));
+        }
+
+        [TestMethod]
+        public void GetCreditCardVendor_Invalid17DigitsWithoutSpacesJcb_ReturnsUnknow()
+        {
             Assert.AreEqual(CreditCardVendor.Unknow, CreditCard.GetCreditCardVendor("35301113333000001"));
         }
 
         [TestMethod]
-        public void ValidCardsTests()
+        public void IsCreditCardNumberValid_Valid16DigitsWithoutSpaces_ReturnsTrue()
         {
             Assert.IsTrue(CreditCard.IsCreditCardNumberValid("5555555555554444"));
+        }
+
+        [TestMethod]
+        public void IsCreditCardNumberValid_Invalid16DigitsWithoutSpaces_ReturnsFalse()
+        {
             Assert.IsFalse(CreditCard.IsCreditCardNumberValid("3530111333300001"));
+        }
+
+        [TestMethod]
+        public void IsCreditCardNumberValid_Valid16DigitsWithSpaces_ReturnsTrue()
+        {
             Assert.IsTrue(CreditCard.IsCreditCardNumberValid("4012 8888 8888 1881"));
+        }
+
+        [TestMethod]
+        public void IsCreditCardNumberValid_Invalid16DigitsWithSpaces_ReturnsTrue()
+        {
             Assert.IsFalse(CreditCard.IsCreditCardNumberValid("4111 1111 1111 1110"));
         }
 
         [TestMethod]
-        public void GenerateNextRandomCreditCardNumberTests()
+        public void GenerateNextRandomCreditCardNumber_WithoutSpaces_ReturnsValidCreditCard()
         {
             Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextRandomCreditCardNumber("5555555555554444")));
-            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextRandomCreditCardNumber("3530111333300000")));
+        }
+
+        [TestMethod]
+        public void GenerateNextRandomCreditCardNumber_WithSpaces_ReturnsValidCreditCard()
+        {
             Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextRandomCreditCardNumber("4012 8888 8888 1881")));
-            Assert.IsTrue(CreditCard.IsCreditCardNumberValid(CreditCard.GenerateNextRandomCreditCardNumber("4111 1111 1111 1111")));
         }
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
-        public void GenerateNextCreditCardNumberCannotGenerateTest()
+        public void GenerateNextCreditCardNumber_MaximumCardNumber_ThrowsArgumentException()
         {
             CreditCard.GenerateNextCreditCardNumber("4999999999999999993");
             Assert.Fail();
         }
 
         [TestMethod]
-        public void GenerateNextCreditCardNumberTest()
+        public void GenerateNextCreditCardNumber_19DigitsWithoutSpaces_IncrementCardNumber()
         {
             Assert.AreEqual("4999999999999999993", CreditCard.GenerateNextCreditCardNumber("4999999999999999985"));
-            Assert.AreEqual("4999999999999999910", CreditCard.GenerateNextCreditCardNumber("4999999999999999902"));
         }
 
         [TestMethod]
-        public void GenerateNextCreditCardNumberGotoAnotherRangeOfBinsTest()
+        public void GenerateNextCreditCardNumber_16DigitsWithoutSpaces_IncrementBinNumber()
         {
             Assert.AreEqual("5100000000000008", CreditCard.GenerateNextCreditCardNumber("2720999999999996"));
         }
 
         [TestMethod]
-        public void GenerateNextCreditCardNumberGotoAnotherRangeOfLengthsTest()
+        public void GenerateNextCreditCardNumber_12DigitsWithSpaces_IncrementLengthTo13()
         {
             Assert.AreEqual("5000000000005", CreditCard.GenerateNextCreditCardNumber("6999 9999 9997"));
+        }
+
+        [TestMethod]
+        public void GenerateNextCreditCardNumber_16DigitsWithSpaces_IncrementLengthTo19()
+        {
             Assert.AreEqual("4000000000000000006", CreditCard.GenerateNextCreditCardNumber("4999 9999 9999 9996"));
-        }
-
-        [TestMethod]
-        public void GetBinTests()
-        {
-            PrivateType pt = new PrivateType(typeof(CreditCard));
-
-            Assert.AreEqual(123456, pt.InvokeStatic("GetBin", "1234 56"));
-            Assert.AreEqual(123456, pt.InvokeStatic("GetBin", "123456"));
-        }
-
-        [TestMethod]
-        public void LuhnAlgorithmConversionTests()
-        {
-            PrivateType pt = new PrivateType(typeof(CreditCard));
-
-            CollectionAssert.AreEqual(new int[] { 2, 2, 6, 4 }, (int[])pt.InvokeStatic("LuhnAlgorithmConversion", new int[] { 1, 2, 3, 4}));
-            CollectionAssert.AreEqual(new int[] { 1, 4, 3, 8, 5 }, (int[])pt.InvokeStatic("LuhnAlgorithmConversion", new int[] { 1, 2, 3, 4, 5 }));
-        }
-
-        [TestMethod]
-        public void ConvertStringToIntArrayTests()
-        {
-            PrivateType pt = new PrivateType(typeof(CreditCard));
-
-            CollectionAssert.AreEqual(new int[] { 1, 2, 3, 4, 5, 6 }, (int[])pt.InvokeStatic("ConvertStringToIntArray", "1234 56"));
-            CollectionAssert.AreEqual(new int[] { 1, 2, 3, 4, 5, 6 }, (int[])pt.InvokeStatic("ConvertStringToIntArray", "123456"));
         }
     }
 }

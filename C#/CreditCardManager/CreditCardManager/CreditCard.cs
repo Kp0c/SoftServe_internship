@@ -12,56 +12,28 @@ namespace CreditCardManager
         /// </summary>
         private static int GetBin(string number)
         {
-            return Convert.ToInt32(number.Replace(" ", string.Empty).Substring(0, BIN_LENGTH));
+            return Convert.ToInt32(number.Substring(0, BIN_LENGTH));
         }
 
         public static CreditCardVendor GetCreditCardVendor(string number)
         {
-            if (number == null) throw new ArgumentNullException("card number cannot be null");
+            string normalizedNumber = CreditCardHelper.TryToNormalizeNumber(number);
 
-            int bin = GetBin(number);
+            int bin = GetBin(normalizedNumber);
 
             CreditCardVendor ccv = CreditCardVendorMethods.GetCreditCardVendorFromBin(bin);
 
-            return CreditCardVendorMethods.CheckFormat(ccv, number) ? ccv : CreditCardVendor.Unknow;
-        }
-
-        private static int[] LuhnAlgorithmConversion(int[] numbers)
-        {
-            int startPosition = numbers.Length - 2;
-            for (int i = startPosition; i >= 0; i -= 2)
-            {
-                numbers[i] *= 2;
-                //add digits of result from the previous operation
-                if (numbers[i] >= 10)
-                    numbers[i] -= 9;
-            }
-
-            return numbers;
-        }
-
-        private static int[] ConvertStringToIntArray(string number)
-        {
-            return number.Replace(" ", string.Empty).Select(c => (int)char.GetNumericValue(c)).ToArray();
-        }
-
-        private static string ConvertIntArrayToString(int[] number)
-        {
-            return new string(number.Select(c => Convert.ToChar(c + '0')).ToArray());
+            return CreditCardVendorMethods.CheckFormat(ccv, normalizedNumber) ? ccv : CreditCardVendor.Unknow;
         }
 
         public static bool IsCreditCardNumberValid(string creditCardNumber)
         {
-            if (creditCardNumber == null) throw new ArgumentNullException("card number cannot be null");
+            string normalizedNumber = CreditCardHelper.TryToNormalizeNumber(creditCardNumber);
 
-            int[] numbers = ConvertStringToIntArray(creditCardNumber);
+            int[] numbers = CreditCardHelper.ConvertStringToIntArray(normalizedNumber);
+            numbers = CreditCardHelper.LuhnAlgorithmConversion(numbers);
 
-            numbers = LuhnAlgorithmConversion(numbers);
-
-            if (numbers.Sum(s => s) % 10 == 0)
-                return true;
-            else
-                return false;
+            return numbers.Sum(s => s) % 10 == 0;
         }
 
         private static string SetCorrectCheckDigit(string creditCardNumber)
@@ -69,44 +41,43 @@ namespace CreditCardManager
             //set last char to "0"
             creditCardNumber = creditCardNumber.Substring(0, creditCardNumber.Length - 1) + "0";
 
-            int[] numbers = LuhnAlgorithmConversion(ConvertStringToIntArray(creditCardNumber));
+            int[] numbers = CreditCardHelper.LuhnAlgorithmConversion(CreditCardHelper.ConvertStringToIntArray(creditCardNumber));
 
-            int checkDigit = 10 - numbers.Sum(s => s) % 10;
-            checkDigit %= 10;
-
-            creditCardNumber = creditCardNumber.Substring(0, creditCardNumber.Length - 1) + checkDigit;
-            return creditCardNumber;
+            int checkDigit = (10 - numbers.Sum(s => s) % 10) % 10;
+            
+            return creditCardNumber.Substring(0, creditCardNumber.Length - 1) + checkDigit;
         }
 
         public static string GenerateNextRandomCreditCardNumber(string creditCardNumber)
         {
-            if (creditCardNumber == null) throw new ArgumentNullException("card number cannot be null");
-
-            creditCardNumber = creditCardNumber.Replace(" ", string.Empty);
+            string normalizedNumber = CreditCardHelper.TryToNormalizeNumber(creditCardNumber);
 
             //generate next credit card number
-            Random random = new Random(creditCardNumber.GetHashCode());
+            Random random = new Random(normalizedNumber.GetHashCode());
 
             const int MIN_9_DIGITS_NUMBER = 100000000;
             const int MAX_9_DIGITS_NUMBER = 999999999;
 
-            string nextCreditCardNumber = creditCardNumber.Substring(0, BIN_LENGTH) + random.Next(MIN_9_DIGITS_NUMBER, MAX_9_DIGITS_NUMBER) + 0;
+            string nextCreditCardNumber = normalizedNumber.Substring(0, BIN_LENGTH) + random.Next(MIN_9_DIGITS_NUMBER, MAX_9_DIGITS_NUMBER) + 0;
 
             return SetCorrectCheckDigit(nextCreditCardNumber);
         }
 
         private static string IncrementCardNumber(string creditCardNumber)
         {
-            int[] numbers = ConvertStringToIntArray(creditCardNumber);
+            int[] numbers = CreditCardHelper.ConvertStringToIntArray(creditCardNumber);
 
             for (int i = numbers.Length - 2; i >= 0; i--)
             {
                 numbers[i]++;
-                if (numbers[i] >= 10) numbers[i] -= 10;
+                if (numbers[i] >= 10)
+                {
+                    numbers[i] -= 10;
+                }
                 else break;
             }
 
-            return ConvertIntArrayToString(numbers);
+            return CreditCardHelper.ConvertIntArrayToString(numbers);
         }
 
         private static string TryIncrementBinsRange(CreditCardVendor ccv, string creditCardNumber)
@@ -120,7 +91,7 @@ namespace CreditCardManager
             if (currentIndex < ranges.Length - 1)
             {
                 //set new bin range with 00...00 card nubmer
-                return ranges[currentIndex + 1].from + new string('0', creditCardNumber.Length - BIN_LENGTH);
+                return ranges[currentIndex + 1].From + new string('0', creditCardNumber.Length - BIN_LENGTH);
             }
 
             return creditCardNumber;
@@ -135,14 +106,14 @@ namespace CreditCardManager
             int currentIndex = Array.IndexOf(ranges, currentRange);
 
             //set new length with 00...00 card nubmer and minimal bin number
-            string newCreditCardNumber = CreditCardVendorMethods.bins[ccv][0].from.ToString();
-            if (creditCardNumber.Length != ranges[currentIndex].to)
+            string newCreditCardNumber = CreditCardVendorMethods.bins[ccv][0].From.ToString();
+            if (creditCardNumber.Length != ranges[currentIndex].To)
             {
                 return newCreditCardNumber + new string('0', creditCardNumber.Length + 1 - BIN_LENGTH);
             }
             else if (currentIndex < ranges.Length - 1)
             {
-                return newCreditCardNumber + new string('0', ranges[currentIndex + 1].from - BIN_LENGTH);
+                return newCreditCardNumber + new string('0', ranges[currentIndex + 1].From - BIN_LENGTH);
             }
 
             return creditCardNumber;
@@ -150,33 +121,34 @@ namespace CreditCardManager
 
         public static string GenerateNextCreditCardNumber(string creditCardNumber)
         {
-            if (creditCardNumber == null) throw new ArgumentNullException("card number cannot be null");
+            string normalizedNumber = CreditCardHelper.TryToNormalizeNumber(creditCardNumber);
 
-            creditCardNumber = creditCardNumber.Replace(" ", string.Empty);
+            CreditCardVendor ccv = GetCreditCardVendor(normalizedNumber);
 
-            CreditCardVendor ccv = CreditCardVendorMethods.GetCreditCardVendorFromBin(GetBin(creditCardNumber));
+            if(ccv == CreditCardVendor.Unknow)
+            {
+                throw new ArgumentException("Cannot generate next credit card number for unknow vendor.");
+            }
 
-            string newCreditCardNumber;
-
-            newCreditCardNumber = IncrementCardNumber(creditCardNumber);
-            if (ccv == CreditCardVendorMethods.GetCreditCardVendorFromBin(GetBin(newCreditCardNumber)))
+            string newCreditCardNumber = IncrementCardNumber(normalizedNumber);
+            if (ccv == GetCreditCardVendor(newCreditCardNumber))
             {
                 return SetCorrectCheckDigit(newCreditCardNumber);
             }
 
-            newCreditCardNumber = TryIncrementBinsRange(ccv, creditCardNumber);
-            if (newCreditCardNumber != creditCardNumber && ccv == CreditCardVendorMethods.GetCreditCardVendorFromBin(GetBin(newCreditCardNumber)))
+            newCreditCardNumber = TryIncrementBinsRange(ccv, normalizedNumber);
+            if (newCreditCardNumber != normalizedNumber && ccv == GetCreditCardVendor(newCreditCardNumber))
             {
                 return SetCorrectCheckDigit(newCreditCardNumber);
             }
 
-            newCreditCardNumber = TryIncrementLength(ccv, creditCardNumber);
-            if (newCreditCardNumber != creditCardNumber && ccv == CreditCardVendorMethods.GetCreditCardVendorFromBin(GetBin(newCreditCardNumber)))
+            newCreditCardNumber = TryIncrementLength(ccv, normalizedNumber);
+            if (newCreditCardNumber != normalizedNumber && ccv == GetCreditCardVendor(newCreditCardNumber))
             {
                 return SetCorrectCheckDigit(newCreditCardNumber);
             }
 
-            throw new ArgumentException("Cannot generate more credit card numbers for this vendor");
+            throw new ArgumentException("Cannot generate more credit card numbers for this vendor.");
         }
     }
 }
