@@ -38,7 +38,7 @@ namespace CreditCardManager
         {
             if (ccv == CreditCardVendor.Unknow)
             {
-                return true;
+                return false;
             }
             else
             {
