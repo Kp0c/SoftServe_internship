@@ -8,10 +8,15 @@ namespace Citizens
 {
     public class Citizen : ICitizen
     {
+        private string CorrectName(string name)
+        {
+            return name.First().ToString().ToUpper() + name.Substring(1).ToLower();
+        }
+
         public Citizen(string firstName, string lastName, DateTime birthDate, Gender gender)
         {
-            this.firstName = firstName.First().ToString().ToUpper() + firstName.Substring(1).ToLower();
-            this.lastName = lastName.First().ToString().ToUpper() + lastName.Substring(1).ToLower();
+            this.firstName = CorrectName(firstName);
+            this.lastName = CorrectName(lastName);
 
             if (birthDate.Date <= SystemDateTime.Now().Date)
                 this.birthDate = birthDate.Date;

@@ -8,7 +8,9 @@ namespace Citizens
 {
     public class CitizenRegistry : ICitizenRegistry
     {
-        DateTime DECEMBER_31_1899 = new DateTime(1899, 12, 31);
+        //cannot use const to DateTime
+        static readonly DateTime DECEMBER_31_1899 = new DateTime(1899, 12, 31);
+        const int MAX_PEOPLES = 5000; 
         DateTime? lastRegistrationDate = null;
 
         Dictionary<string, ICitizen> registry = new Dictionary<string, ICitizen>();
@@ -42,7 +44,7 @@ namespace Citizens
             int todayWomenCounter = registry.Where(citizen => citizen.Value.gender == Gender.Female && citizen.Value.birthDate == birthDate).Count();
             int todayMenCounter = registry.Where(citizen => citizen.Value.gender == Gender.Male && citizen.Value.birthDate == birthDate).Count();
 
-            while ((gender == Gender.Male && todayMenCounter >= 5000) || (gender == Gender.Female && todayWomenCounter >= 5000))
+            while ((gender == Gender.Male && todayMenCounter >= MAX_PEOPLES) || (gender == Gender.Female && todayWomenCounter >= MAX_PEOPLES))
             {
                 throw new InvalidOperationException(string.Format("maximum peoples for {0} birthdate", birthDate.ToShortDateString()));
             }
