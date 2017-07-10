@@ -181,8 +181,8 @@
             Assert.AreEqual(citizen.vatId.Substring(5,4), citizen2.vatId.Substring(5,4));
         }
 
-        /* //CAREFULL! VERY LONG TEST
-        [TestMethod]
+         //CAREFULL! VERY LONG TEST
+        /*[TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void Register_ForRegisterOver5kMan_Add1kYearsToBirthDate()
         {

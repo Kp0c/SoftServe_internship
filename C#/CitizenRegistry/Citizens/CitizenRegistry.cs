@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Citizens
 {
@@ -90,34 +89,11 @@ namespace Citizens
 
             if (registry.ContainsKey(citizen.vatId))
             {
-                throw new InvalidOperationException("Already contains this citizen");
+                throw new InvalidOperationException("Already contains this citizen.");
             }
 
             registry.Add(citizen.vatId, citizen.Clone());
             lastRegistrationDate = SystemDateTime.Now();
-        }
-
-        private string GetTextRepresentationOfDaysAgoField(int days)
-        {
-            if (days < 1)
-                return "today";
-            else if (days == 1)
-                return "yesterday";
-            else if (days <= 7)
-                return "this week";
-            else if (days <= 14)
-                return "week ago";
-            else if (days <= 21)
-                return "two weeks ago";
-            else if (days <= 28)
-                return "three weeks ago";
-
-            return "more than month ago";
-        }
-
-        private string GetGrammarRightValueMan(int men)
-        {
-            return men == 1 ? "man" : "men";
         }
 
         private int GetMaleCount() { return registry.Where(citizen => citizen.Value.gender == Gender.Male).Count(); }
@@ -129,7 +105,7 @@ namespace Citizens
 
             if (lastRegistrationDate.HasValue)
             {
-                stats += " Last registration was {0}".FormatWith(lastRegistrationDate.Humanize(true, SystemDateTime.Now()));
+                stats += " Last registration was {0}".FormatWith(lastRegistrationDate.Humanize(dateToCompareAgainst: SystemDateTime.Now()));
             }
 
             return stats;

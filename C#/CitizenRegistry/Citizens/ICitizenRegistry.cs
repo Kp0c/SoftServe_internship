@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Citizens
+﻿namespace Citizens
 {
     public interface ICitizenRegistry
     {
