@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Humanizer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,15 +9,10 @@ namespace Citizens
 {
     public class Citizen : ICitizen
     {
-        private string CorrectName(string name)
-        {
-            return name.First().ToString().ToUpper() + name.Substring(1).ToLower();
-        }
-
         public Citizen(string firstName, string lastName, DateTime birthDate, Gender gender)
         {
-            this.firstName = CorrectName(firstName);
-            this.lastName = CorrectName(lastName);
+            this.firstName = firstName.Transform(To.TitleCase);
+            this.lastName = lastName.Transform(To.TitleCase);
 
             if (birthDate.Date <= SystemDateTime.Now().Date)
                 this.birthDate = birthDate.Date;

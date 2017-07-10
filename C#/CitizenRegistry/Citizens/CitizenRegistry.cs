@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Humanizer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,7 +21,9 @@ namespace Citizens
             get
             {
                 if (id == null)
+                {
                     throw new ArgumentNullException("id cannot be null");
+                }
 
                 return registry.FirstOrDefault(citizen => citizen.Value.vatId == id).Value;
             }
@@ -54,9 +57,13 @@ namespace Citizens
 
             //set gender counter
             if (gender == Gender.Female)
+            {
                 orderNumber += todayWomenCounter * 2 % 10;
+            }
             else
+            {
                 orderNumber += (todayMenCounter * 2 + 1) % 10;
+            }
 
             //extend to 4 symbols
             return orderNumber.PadLeft(4, '0');
@@ -118,13 +125,11 @@ namespace Citizens
 
         public string Stats()
         {
-            string stats = string.Format("{0} " + GetGrammarRightValueMan(GetMaleCount()) +
-                " and {1} wo" + GetGrammarRightValueMan(GetFemaleCount()) + ".", GetMaleCount(), GetFemaleCount());
+            string stats = "{0} and {1}.".FormatWith("man".ToQuantity(GetMaleCount()), "woman".ToQuantity(GetFemaleCount()));
 
             if (lastRegistrationDate.HasValue)
             {
-                int daysFromLastRegistrationDate = (SystemDateTime.Now() - lastRegistrationDate.Value).Days;
-                stats += string.Format(" Last registration was {0}", GetTextRepresentationOfDaysAgoField(daysFromLastRegistrationDate));
+                stats += " Last registration was {0}".FormatWith(lastRegistrationDate.Humanize(true, SystemDateTime.Now()));
             }
 
             return stats;
