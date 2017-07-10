@@ -4,11 +4,11 @@ namespace Citizens
 {
     public interface ICitizen
     {
-        string firstName { get; }
-        string lastName { get; }
-        Gender gender { get; }
-        DateTime birthDate { get; }
-        string vatId { get; set; }
+        string FirstName { get; }
+        string LastName { get; }
+        Gender Gender { get; }
+        DateTime BirthDate { get; }
+        string VatId { get; set; }
 
         ICitizen Clone();
     }

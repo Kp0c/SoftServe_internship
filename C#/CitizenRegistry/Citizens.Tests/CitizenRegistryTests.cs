@@ -39,7 +39,7 @@
             var citizen = CitizenBuilder.NewWoman().WithDate(SystemDateTime.Now()).Build();
             registry.Register(citizen);
 
-            Assert.IsFalse(String.IsNullOrWhiteSpace(citizen.vatId));
+            Assert.IsFalse(String.IsNullOrWhiteSpace(citizen.VatId));
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@
             var citizen = CitizenBuilder.NewWoman().WithDate(new DateTime(1991, 8, 24)).Build();
             registry.Register(citizen);
 
-            StringAssert.StartsWith(citizen.vatId, "33473");
+            StringAssert.StartsWith(citizen.VatId, "33473");
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@
             var citizen = CitizenBuilder.NewMan().WithDate(TestBirthDate).Build();
             registry.Register(citizen);
 
-            int counter = Int32.Parse(citizen.vatId.Substring(5, 4));
+            int counter = Int32.Parse(citizen.VatId.Substring(5, 4));
             Assert.AreEqual(1, counter & 1);
         }
 
@@ -67,7 +67,7 @@
             var citizen = CitizenBuilder.NewWoman().WithDate(TestBirthDate).Build();
             registry.Register(citizen);
 
-            int counter = Int32.Parse(citizen.vatId.Substring(5, 4));
+            int counter = Int32.Parse(citizen.VatId.Substring(5, 4));
             Assert.AreEqual(0, counter & 1);
         }
 
@@ -79,7 +79,7 @@
             registry.Register(w1);
             registry.Register(w2);
 
-            Assert.AreNotEqual(w1.vatId, w2.vatId);
+            Assert.AreNotEqual(w1.VatId, w2.VatId);
         }
 
         [TestMethod]
@@ -88,7 +88,7 @@
             var citizen = CitizenBuilder.NewWoman().WithDate(SystemDateTime.Now()).Build();
             registry.Register(citizen);
 
-            StringAssert.Matches(citizen.vatId, new Regex("^[0-9]+$"));
+            StringAssert.Matches(citizen.VatId, new Regex("^[0-9]+$"));
         }
 
         [TestMethod]
@@ -97,7 +97,7 @@
             var citizen = CitizenBuilder.NewWoman().WithDate(new DateTime(1909, 7, 5)).Build();
             registry.Register(citizen);
 
-            Assert.AreEqual(10, citizen.vatId.Length);
+            Assert.AreEqual(10, citizen.VatId.Length);
         }
 
         [TestMethod]
@@ -106,12 +106,12 @@
             var citizen = CitizenBuilder.NewMan().WithDate(SystemDateTime.Now()).Build();
             registry.Register(citizen);
 
-            ICitizen foundCitizen = registry[citizen.vatId];
+            ICitizen foundCitizen = registry[citizen.VatId];
 
-            Assert.AreEqual(citizen.vatId, foundCitizen.vatId);
-            Assert.AreEqual(citizen.firstName, foundCitizen.firstName);
-            Assert.AreEqual(citizen.lastName, foundCitizen.lastName);
-            Assert.AreEqual(citizen.birthDate, foundCitizen.birthDate);
+            Assert.AreEqual(citizen.VatId, foundCitizen.VatId);
+            Assert.AreEqual(citizen.FirstName, foundCitizen.FirstName);
+            Assert.AreEqual(citizen.LastName, foundCitizen.LastName);
+            Assert.AreEqual(citizen.BirthDate, foundCitizen.BirthDate);
         }
 
         [TestMethod]
@@ -120,11 +120,11 @@
             var citizen = CitizenBuilder.NewMan().WithDate(SystemDateTime.Now()).Build();
             registry.Register(citizen);
 
-            string id = citizen.vatId;
-            citizen.vatId = "0123456789";
+            string id = citizen.VatId;
+            citizen.VatId = "0123456789";
             ICitizen foundCitizen = registry[id];
 
-            Assert.AreNotEqual(citizen.vatId, foundCitizen.vatId);
+            Assert.AreNotEqual(citizen.VatId, foundCitizen.VatId);
         }
 
         [TestMethod]
@@ -160,7 +160,7 @@
             SystemDateTime.Now = () => TestTodayDate;
 
             var msg = registry.Stats();
-            Assert.AreEqual("1 man and 0 women. Last registration was yesterday", msg);
+            Assert.AreEqual("1 man and 0 women. Last registration was yesterday.", msg);
         }
 
         [TestMethod]
@@ -178,7 +178,7 @@
             ICitizen citizen2 = CitizenBuilder.NewMan().WithDate(bd).Build();
             registry.Register(citizen2);
 
-            Assert.AreEqual(citizen.vatId.Substring(5,4), citizen2.vatId.Substring(5,4));
+            Assert.AreEqual(citizen.VatId.Substring(5,4), citizen2.VatId.Substring(5,4));
         }
 
          //CAREFULL! VERY LONG TEST

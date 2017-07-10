@@ -40,6 +40,7 @@ namespace Citizens.Tests.Helpers
             this.vatId = vatId;
             return this;
         }
+
         public CitizenBuilder WithFirstName(string firstName)
         {
             this.firstName = firstName;
@@ -49,7 +50,7 @@ namespace Citizens.Tests.Helpers
         public ICitizen Build()
         {
             var citizen = new Citizen(firstName, lastName, dateOfBirth, gender);
-            citizen.vatId = vatId;
+            citizen.VatId = vatId;
             return citizen;
         }
     }

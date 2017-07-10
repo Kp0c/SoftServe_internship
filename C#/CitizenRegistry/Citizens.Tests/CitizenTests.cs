@@ -17,8 +17,8 @@ namespace Citizens.Tests
         public void Constructor_WithInvalidNameCasing_CorrectsNameToLowerCaseWithCapital()
         {
             var citizen = new Citizen("RoGer", "pIERCE", SystemDateTime.Now(), Gender.Male);
-            Assert.AreEqual("Roger", citizen.firstName);
-            Assert.AreEqual("Pierce", citizen.lastName);
+            Assert.AreEqual("Roger", citizen.FirstName);
+            Assert.AreEqual("Pierce", citizen.LastName);
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace Citizens.Tests
             var dateOnly = dateAndTime.Date;
             var citizen = new Citizen("Roger", "Pierce", dateAndTime, Gender.Male);
 
-            Assert.AreEqual(dateOnly, citizen.birthDate);
+            Assert.AreEqual(dateOnly, citizen.BirthDate);
         }
     }
 }

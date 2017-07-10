@@ -24,18 +24,13 @@ namespace Citizens
                     throw new ArgumentNullException("id cannot be null");
                 }
 
-                return registry.FirstOrDefault(citizen => citizen.Value.vatId == id).Value;
+                return registry.FirstOrDefault(citizen => citizen.Value.VatId == id).Value;
             }
-        }
-
-        private static int[] ConvertStringToIntArray(string number)
-        {
-            return number.Replace(" ", string.Empty).Select(c => (int)char.GetNumericValue(c)).ToArray();
         }
 
         private int CalculateControlNumber(string vat)
         {
-            int[] numbers = ConvertStringToIntArray(vat);
+            int[] numbers = CitizenRegistryHelper.ConvertStringToIntArray(vat);
 
             return (-numbers[0] + 5 * numbers[1] + 7 * numbers[2] + 9 * numbers[3] + 4 * numbers[4]
                 + 6 * numbers[5] + 10 * numbers[6] + 5 * numbers[7] + 7 * numbers[8]) % 11 % 10;
@@ -43,10 +38,10 @@ namespace Citizens
 
         private string GetOrderNumber(Gender gender, DateTime birthDate)
         {
-            int todayWomenCounter = registry.Where(citizen => citizen.Value.gender == Gender.Female && citizen.Value.birthDate == birthDate).Count();
-            int todayMenCounter = registry.Where(citizen => citizen.Value.gender == Gender.Male && citizen.Value.birthDate == birthDate).Count();
+            int todayWomenCounter = registry.Where(citizen => citizen.Value.Gender == Gender.Female && citizen.Value.BirthDate == birthDate).Count();
+            int todayMenCounter = registry.Where(citizen => citizen.Value.Gender == Gender.Male && citizen.Value.BirthDate == birthDate).Count();
 
-            while ((gender == Gender.Male && todayMenCounter >= MAX_PEOPLES) || (gender == Gender.Female && todayWomenCounter >= MAX_PEOPLES))
+            if ((gender == Gender.Male && todayMenCounter >= MAX_PEOPLES) || (gender == Gender.Female && todayWomenCounter >= MAX_PEOPLES))
             {
                 throw new InvalidOperationException(string.Format("maximum peoples for {0} birthdate", birthDate.ToShortDateString()));
             }
@@ -71,9 +66,9 @@ namespace Citizens
         private string VatBuilder(ICitizen citizen)
         {
             //days from 31 december 1899, extended to 5 symbols
-            StringBuilder vat = new StringBuilder((citizen.birthDate - DECEMBER_31_1899).Days.ToString().PadRight(5, '0'), 10);
+            StringBuilder vat = new StringBuilder((citizen.BirthDate - DECEMBER_31_1899).Days.ToString().PadRight(5, '0'), 10);
             
-            vat.Append(GetOrderNumber(citizen.gender, citizen.birthDate));
+            vat.Append(GetOrderNumber(citizen.Gender, citizen.BirthDate));
 
             vat.Append(CalculateControlNumber(vat.ToString()).ToString());
 
@@ -82,22 +77,29 @@ namespace Citizens
 
         public void Register(ICitizen citizen)
         {
-            if (citizen.vatId == null || citizen.vatId == string.Empty)
+            if (citizen.VatId == null || citizen.VatId == string.Empty)
             {
-                citizen.vatId = VatBuilder(citizen);
+                citizen.VatId = VatBuilder(citizen);
             }
 
-            if (registry.ContainsKey(citizen.vatId))
+            if (registry.ContainsKey(citizen.VatId))
             {
                 throw new InvalidOperationException("Already contains this citizen.");
             }
 
-            registry.Add(citizen.vatId, citizen.Clone());
+            registry.Add(citizen.VatId, citizen.Clone());
             lastRegistrationDate = SystemDateTime.Now();
         }
 
-        private int GetMaleCount() { return registry.Where(citizen => citizen.Value.gender == Gender.Male).Count(); }
-        private int GetFemaleCount() { return registry.Where(citizen => citizen.Value.gender == Gender.Female).Count(); }
+        private int GetMaleCount()
+        {
+            return registry.Where(citizen => citizen.Value.Gender == Gender.Male).Count();
+        }
+
+        private int GetFemaleCount()
+        {
+            return registry.Where(citizen => citizen.Value.Gender == Gender.Female).Count();
+        }
 
         public string Stats()
         {
@@ -105,7 +107,7 @@ namespace Citizens
 
             if (lastRegistrationDate.HasValue)
             {
-                stats += " Last registration was {0}".FormatWith(lastRegistrationDate.Humanize(dateToCompareAgainst: SystemDateTime.Now()));
+                stats += " Last registration was {0}.".FormatWith(lastRegistrationDate.Humanize(dateToCompareAgainst: SystemDateTime.Now()));
             }
 
             return stats;

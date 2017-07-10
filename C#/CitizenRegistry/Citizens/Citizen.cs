@@ -7,34 +7,42 @@ namespace Citizens
     {
         public Citizen(string firstName, string lastName, DateTime birthDate, Gender gender)
         {
-            this.firstName = firstName.Transform(To.TitleCase);
-            this.lastName = lastName.Transform(To.TitleCase);
+            FirstName = firstName.Transform(To.TitleCase);
+            LastName = lastName.Transform(To.TitleCase);
 
             if (birthDate.Date <= SystemDateTime.Now().Date)
-                this.birthDate = birthDate.Date;
+            {
+                BirthDate = birthDate.Date;
+            }
             else
+            {
                 throw new ArgumentException("Wrong date");
+            }
 
             if (Enum.IsDefined(typeof(Gender), gender))
-                this.gender = gender;
+            {
+                Gender = gender;
+            }
             else
+            {
                 throw new ArgumentOutOfRangeException("invalid gender");
+            }
         }
 
-        public DateTime birthDate { get; }
+        public DateTime BirthDate { get; }
 
-        public string firstName { get; }
+        public string FirstName { get; }
 
-        public Gender gender { get; }
+        public Gender Gender { get; }
 
-        public string lastName { get; }
+        public string LastName { get; }
 
-        public string vatId { get; set; }
+        public string VatId { get; set; }
 
         public ICitizen Clone()
         {
-            Citizen newCitizen = new Citizen(firstName, lastName, birthDate, gender);
-            newCitizen.vatId = vatId;
+            Citizen newCitizen = new Citizen(FirstName, LastName, BirthDate, Gender);
+            newCitizen.VatId = VatId;
             return newCitizen;
         }
     }
