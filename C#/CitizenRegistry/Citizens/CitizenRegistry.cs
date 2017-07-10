@@ -66,7 +66,7 @@ namespace Citizens
         private string VatBuilder(ICitizen citizen)
         {
             //days from 31 december 1899, extended to 5 symbols
-            StringBuilder vat = new StringBuilder((citizen.BirthDate - DECEMBER_31_1899).Days.ToString().PadRight(5, '0'), 10);
+            StringBuilder vat = new StringBuilder((citizen.BirthDate - DECEMBER_31_1899).Days.ToString().PadLeft(5, '0'), 10);
             
             vat.Append(GetOrderNumber(citizen.Gender, citizen.BirthDate));
 
