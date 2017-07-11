@@ -8,9 +8,10 @@ namespace Citizens
 {
     public class CitizenRegistry : ICitizenRegistry
     {
-        //cannot use const to DateTime
+        //cannot use const to DateTime, so use static readonly
         static readonly DateTime DECEMBER_31_1899 = new DateTime(1899, 12, 31);
         const int MAX_PEOPLES = 5000; 
+
         DateTime? lastRegistrationDate = null;
 
         Dictionary<string, ICitizen> registry = new Dictionary<string, ICitizen>();
@@ -38,25 +39,24 @@ namespace Citizens
 
         private string GetOrderNumber(Gender gender, DateTime birthDate)
         {
-            int todayWomenCounter = registry.Where(citizen => citizen.Value.Gender == Gender.Female && citizen.Value.BirthDate == birthDate).Count();
-            int todayMenCounter = registry.Where(citizen => citizen.Value.Gender == Gender.Male && citizen.Value.BirthDate == birthDate).Count();
+            int peopleCount = registry.Where(citizen => citizen.Value.Gender == gender && citizen.Value.BirthDate == birthDate).Count();
 
-            if ((gender == Gender.Male && todayMenCounter >= MAX_PEOPLES) || (gender == Gender.Female && todayWomenCounter >= MAX_PEOPLES))
+            if (peopleCount >= MAX_PEOPLES)
             {
                 throw new InvalidOperationException(string.Format("maximum peoples for {0} birthdate", birthDate.ToShortDateString()));
             }
 
             //get next number considering gender counter
-            string orderNumber = ((gender == Gender.Female ? todayWomenCounter : todayMenCounter) / 5).ToString();
+            string orderNumber = (peopleCount / 5).ToString();
 
             //set gender counter
             if (gender == Gender.Female)
             {
-                orderNumber += todayWomenCounter * 2 % 10;
+                orderNumber += peopleCount * 2 % 10;
             }
             else
             {
-                orderNumber += (todayMenCounter * 2 + 1) % 10;
+                orderNumber += (peopleCount * 2 + 1) % 10;
             }
 
             //extend to 4 symbols

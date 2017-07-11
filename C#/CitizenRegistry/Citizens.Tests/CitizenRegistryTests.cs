@@ -182,7 +182,7 @@
         }
 
          //CAREFULL! VERY LONG TEST
-        /*[TestMethod]
+       /* [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void Register_ForRegisterOver5kMan_Add1kYearsToBirthDate()
         {
@@ -196,7 +196,7 @@
 
             for (int i = 0; i < 5010; i++)
             {
-                citizen = CitizenBuilder.NewMan().WithDate(bd).WithFirstName(citizen.firstName + "a").Build();
+                citizen = CitizenBuilder.NewMan().WithDate(bd).WithFirstName(citizen.FirstName + "a").Build();
                 registry.Register(citizen);
             }
 
