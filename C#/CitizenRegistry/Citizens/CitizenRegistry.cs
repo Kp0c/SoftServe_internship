@@ -22,7 +22,7 @@ namespace Citizens
             {
                 if (id == null)
                 {
-                    throw new ArgumentNullException("id cannot be null");
+                    throw new ArgumentNullException("Id cannot be null.");
                 }
 
                 return registry.FirstOrDefault(citizen => citizen.Value.VatId == id).Value;
@@ -43,7 +43,7 @@ namespace Citizens
 
             if (peopleCount >= MAX_PEOPLES)
             {
-                throw new InvalidOperationException(string.Format("maximum peoples for {0} birthdate", birthDate.ToShortDateString()));
+                throw new InvalidOperationException(string.Format("Maximum peoples for {0} birthdate.", birthDate.ToShortDateString()));
             }
 
             //get next number considering gender counter
@@ -77,7 +77,7 @@ namespace Citizens
 
         public void Register(ICitizen citizen)
         {
-            if (citizen.VatId == null || citizen.VatId == string.Empty)
+            if (String.IsNullOrWhiteSpace(citizen.VatId))
             {
                 citizen.VatId = VatBuilder(citizen);
             }

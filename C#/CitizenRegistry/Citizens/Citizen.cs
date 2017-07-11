@@ -16,7 +16,7 @@ namespace Citizens
             }
             else
             {
-                throw new ArgumentException("Wrong date");
+                throw new ArgumentException("Wrong date.");
             }
 
             if (Enum.IsDefined(typeof(Gender), gender))
@@ -25,7 +25,7 @@ namespace Citizens
             }
             else
             {
-                throw new ArgumentOutOfRangeException("invalid gender");
+                throw new ArgumentOutOfRangeException("Invalid gender.");
             }
         }
 
