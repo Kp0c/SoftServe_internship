@@ -44,7 +44,7 @@ namespace CreditCardManager
             int[] numbers = CreditCardHelper.LuhnAlgorithmConversion(CreditCardHelper.ConvertStringToIntArray(creditCardNumber));
 
             int checkDigit = (10 - numbers.Sum(s => s) % 10) % 10;
-            
+
             return creditCardNumber.Substring(0, creditCardNumber.Length - 1) + checkDigit;
         }
 
@@ -63,7 +63,7 @@ namespace CreditCardManager
             return SetCorrectCheckDigit(nextCreditCardNumber);
         }
 
-        private static string IncrementCardNumber(string creditCardNumber)
+        private static bool IncrementCardNumber(CreditCardVendor ccv, string creditCardNumber, out string resultCreditCardNumber)
         {
             int[] numbers = CreditCardHelper.ConvertStringToIntArray(creditCardNumber);
 
@@ -77,46 +77,58 @@ namespace CreditCardManager
                 else break;
             }
 
-            return CreditCardHelper.ConvertIntArrayToString(numbers);
+            resultCreditCardNumber = CreditCardHelper.ConvertIntArrayToString(numbers);
+
+            return ccv == GetCreditCardVendor(resultCreditCardNumber);
         }
 
-        private static string TryIncrementBinsRange(CreditCardVendor ccv, string creditCardNumber)
+        private static bool TryIncrementBinsRange(CreditCardVendor ccv, string creditCardNumber, out string resultCreditCardNumber)
         {
             Range[] ranges = new Range[CreditCardVendorMethods.bins[ccv].Length];
             CreditCardVendorMethods.bins[ccv].CopyTo(ranges, 0);
 
-            Range currentRange = ranges.First(range => range.IsInRange(GetBin(creditCardNumber)));
+            int bin = GetBin(creditCardNumber);
+            Range currentRange = ranges.First(range => range.IsInRange(bin));
             int currentIndex = Array.IndexOf(ranges, currentRange);
 
             if (currentIndex < ranges.Length - 1)
             {
                 //set new bin range with 00...00 card nubmer
-                return ranges[currentIndex + 1].From + new string('0', creditCardNumber.Length - BIN_LENGTH);
+                resultCreditCardNumber = ranges[currentIndex + 1].From + new string('0', creditCardNumber.Length - BIN_LENGTH);
+                return true;
             }
-
-            return creditCardNumber;
+            else
+            {
+                resultCreditCardNumber = String.Empty;
+                return false;
+            }
         }
 
-        private static string TryIncrementLength(CreditCardVendor ccv, string creditCardNumber)
+        private static bool TryIncrementLength(CreditCardVendor ccv, string creditCardNumber, out string resultCreditCardNumber)
         {
             Range[] ranges = new Range[CreditCardVendorMethods.lengths[ccv].Length];
             CreditCardVendorMethods.lengths[ccv].CopyTo(ranges, 0);
 
-            Range currentRange = ranges.First(range => range.IsInRange(creditCardNumber.Length));
+            int currentLength = creditCardNumber.Length;
+            Range currentRange = ranges.First(range => range.IsInRange(currentLength));
             int currentIndex = Array.IndexOf(ranges, currentRange);
 
             //set new length with 00...00 card nubmer and minimal bin number
-            string newCreditCardNumber = CreditCardVendorMethods.bins[ccv][0].From.ToString();
-            if (creditCardNumber.Length != ranges[currentIndex].To)
+            resultCreditCardNumber = CreditCardVendorMethods.bins[ccv][0].From.ToString();
+            if (currentLength != ranges[currentIndex].To)
             {
-                return newCreditCardNumber + new string('0', creditCardNumber.Length + 1 - BIN_LENGTH);
+                resultCreditCardNumber += new string('0', currentLength + 1 - BIN_LENGTH);
+                return true;
             }
             else if (currentIndex < ranges.Length - 1)
             {
-                return newCreditCardNumber + new string('0', ranges[currentIndex + 1].From - BIN_LENGTH);
+                resultCreditCardNumber += new string('0', ranges[currentIndex + 1].From - BIN_LENGTH);
+                return true;
             }
-
-            return creditCardNumber;
+            else
+            {
+                return false;
+            }
         }
 
         private static bool IsIncrementedProperly(string oldCardNumber, string newCardNumber, CreditCardVendor oldCcv)
@@ -130,30 +142,25 @@ namespace CreditCardManager
 
             CreditCardVendor ccv = GetCreditCardVendor(normalizedNumber);
 
-            if(ccv == CreditCardVendor.Unknow)
+            if (ccv == CreditCardVendor.Unknow)
             {
                 throw new ArgumentException("Cannot generate next credit card number for unknow vendor.");
             }
 
-            string newCreditCardNumber = IncrementCardNumber(normalizedNumber);
-            if (IsIncrementedProperly(normalizedNumber, newCreditCardNumber, ccv))
+            string newCreditCardNumber;
+
+            if (!IncrementCardNumber(ccv, normalizedNumber, out newCreditCardNumber))
             {
-                return SetCorrectCheckDigit(newCreditCardNumber);
+                if (!TryIncrementBinsRange(ccv, normalizedNumber, out newCreditCardNumber))
+                {
+                    if (!TryIncrementLength(ccv, normalizedNumber, out newCreditCardNumber))
+                    {
+                        throw new ArgumentException("Cannot generate more credit card numbers for this vendor.");
+                    }
+                }
             }
 
-            newCreditCardNumber = TryIncrementBinsRange(ccv, normalizedNumber);
-            if (IsIncrementedProperly(normalizedNumber, newCreditCardNumber, ccv))
-            {
-                return SetCorrectCheckDigit(newCreditCardNumber);
-            }
-
-            newCreditCardNumber = TryIncrementLength(ccv, normalizedNumber);
-            if (IsIncrementedProperly(normalizedNumber, newCreditCardNumber, ccv))
-            {
-                return SetCorrectCheckDigit(newCreditCardNumber);
-            }
-
-            throw new ArgumentException("Cannot generate more credit card numbers for this vendor.");
+            return SetCorrectCheckDigit(newCreditCardNumber);
         }
     }
 }
