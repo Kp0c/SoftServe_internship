@@ -63,7 +63,7 @@ namespace CreditCardManager
             return SetCorrectCheckDigit(nextCreditCardNumber);
         }
 
-        private static bool IncrementCardNumber(CreditCardVendor ccv, string creditCardNumber, out string resultCreditCardNumber)
+        private static bool TryIncrementCardNumber(CreditCardVendor ccv, string creditCardNumber, out string resultCreditCardNumber)
         {
             int[] numbers = CreditCardHelper.ConvertStringToIntArray(creditCardNumber);
 
@@ -149,7 +149,7 @@ namespace CreditCardManager
 
             string newCreditCardNumber;
 
-            if (!IncrementCardNumber(ccv, normalizedNumber, out newCreditCardNumber))
+            if (!TryIncrementCardNumber(ccv, normalizedNumber, out newCreditCardNumber))
             {
                 if (!TryIncrementBinsRange(ccv, normalizedNumber, out newCreditCardNumber))
                 {
