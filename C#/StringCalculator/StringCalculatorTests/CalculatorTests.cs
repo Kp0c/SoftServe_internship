@@ -64,7 +64,7 @@ namespace StringCalculator.Tests
         [Test]
         public void Add_NumbersBiggerThan1000_IgnoreNumbersBiggerThan1000()
         {
-            Assert.AreEqual(2, Calculator.Add("2,1001"));
+            Assert.AreEqual(5, Calculator.Add("2,1001,3"));
         }
     }
 }
