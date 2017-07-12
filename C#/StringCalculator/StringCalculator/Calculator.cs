@@ -46,7 +46,7 @@ namespace StringCalculator
             {
                 List<string> userDelimiters = GetDelimiters(args);
                 delimiters.AddRange(userDelimiters);
-                args = args.Substring(args.IndexOf('\n'));
+                args = args.Substring(args.IndexOf('\n') + 1);
             }
             else
             {
@@ -58,8 +58,6 @@ namespace StringCalculator
                 .Where(n => n < MAX_NUMBER)
                 .ToArray();
 
-            int sum = 0;
-
             if(numbers.Any(n => n < 0))
             {
                 throw new ArgumentException("Negatives not allowed: " + numbers
@@ -68,11 +66,11 @@ namespace StringCalculator
                     .Aggregate((current, next) => current + ", " + next));
             }
 
+            int sum = 0;
             foreach (int number in numbers)
             {
                 sum += number;
             }
-
             return sum;
         }
     }
