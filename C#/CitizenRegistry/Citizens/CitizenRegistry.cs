@@ -43,7 +43,7 @@ namespace Citizens
 
             if (peopleCount >= MAX_PEOPLES)
             {
-                throw new InvalidOperationException(string.Format("Maximum peoples for {0} birthdate.", birthDate.ToShortDateString()));
+                throw new InvalidOperationException(String.Format("Maximum peoples for {0} birthdate.", birthDate.ToShortDateString()));
             }
 
             //get next number considering gender counter
