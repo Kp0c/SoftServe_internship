@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace StringCalculator
 {
-    public class Calculator
+    public static class Calculator
     {
         private static List<string> GetDelimiters(string args)
         {
@@ -28,7 +28,7 @@ namespace StringCalculator
 
         public static int Add(string args)
         {
-            List<string> delimiters = new List<string>() { "\n" };
+            List<string> delimiters = new List<string> { "\n" };
             
             if (args.Contains(@"//"))
             {
@@ -48,8 +48,6 @@ namespace StringCalculator
 
             int sum = 0;
 
-            int[] negatives = numbers.Where(n => n < 0).ToArray();
-
             if(numbers.Any(n => n < 0))
             {
                 throw new ArgumentException("negatives not allowed: " + numbers
@@ -60,10 +58,6 @@ namespace StringCalculator
 
             foreach (int number in numbers)
             {
-                if(number < 0)
-                {
-                }
-
                 sum += number;
             }
 

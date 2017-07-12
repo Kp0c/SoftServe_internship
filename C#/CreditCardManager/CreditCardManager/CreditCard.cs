@@ -131,11 +131,6 @@ namespace CreditCardManager
             }
         }
 
-        private static bool IsIncrementedProperly(string oldCardNumber, string newCardNumber, CreditCardVendor oldCcv)
-        {
-            return newCardNumber != oldCardNumber && oldCcv == GetCreditCardVendor(newCardNumber);
-        }
-
         public static string GenerateNextCreditCardNumber(string creditCardNumber)
         {
             string normalizedNumber = CreditCardHelper.TryToNormalizeNumber(creditCardNumber);
