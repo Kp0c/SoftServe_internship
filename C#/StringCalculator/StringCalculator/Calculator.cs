@@ -50,7 +50,7 @@ namespace StringCalculator
 
             if(numbers.Any(n => n < 0))
             {
-                throw new ArgumentException("negatives not allowed: " + numbers
+                throw new ArgumentException("Negatives not allowed: " + numbers
                     .Where(n => n < 0)
                     .Select(n => n.ToString())
                     .Aggregate((current, next) => current + ", " + next));

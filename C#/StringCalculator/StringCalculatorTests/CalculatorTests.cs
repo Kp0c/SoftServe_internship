@@ -58,7 +58,7 @@ namespace StringCalculator.Tests
         [Test]
         public void Add_NegativeNumber_ThrowArgumentException()
         {
-            Assert.That(() => { Calculator.Add("3, -5, -8"); }, Throws.TypeOf<ArgumentException>().And.Message.EqualTo("negatives not allowed: -5, -8"));
+            Assert.That(() => { Calculator.Add("3, -5, -8"); }, Throws.TypeOf<ArgumentException>().And.Message.EqualTo("Negatives not allowed: -5, -8"));
         }
 
         [Test]
