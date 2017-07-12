@@ -7,16 +7,21 @@ namespace StringCalculator
 {
     public static class Calculator
     {
+        private const int MAX_NUMBER = 1000;
+
         private static List<string> GetDelimiters(string args)
         {
             List<string> delimiters = new List<string>();
-            GroupCollection delimiterGroups = Regex.Match(args, @"//(.+)\n").Groups;
+
+            const string delimiterStringPattern = @"//(.+)\n";
+            GroupCollection delimiterGroups = Regex.Match(args, delimiterStringPattern).Groups;
 
             if (delimiterGroups.Count > 1)
             {
                 string delimiterString = delimiterGroups[1].Value;
 
-                MatchCollection delimiterMatches = Regex.Matches(delimiterString, @"\[([^[]*)\]");
+                const string delimitersPattern = @"\[([^[]*)\]";
+                MatchCollection delimiterMatches = Regex.Matches(delimiterString, delimitersPattern);
 
                 if (delimiterMatches.Count == 0)
                 {
@@ -50,7 +55,7 @@ namespace StringCalculator
 
             int[] numbers = args.Split(delimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries)
                 .Select(num => Convert.ToInt32(num))
-                .Where(n => n < 1000)
+                .Where(n => n < MAX_NUMBER)
                 .ToArray();
 
             int sum = 0;
