@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace CreditCardManager
 {
-    class CreditCardHelper
+    static class CreditCardHelper
     {
         private static void ValidateNumber(string number)
         {

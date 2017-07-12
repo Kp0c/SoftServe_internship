@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace CreditCardManager
 {
-    public class CreditCard
+    public static class CreditCard
     {
         private const int BIN_LENGTH = 6;
 
@@ -39,13 +39,13 @@ namespace CreditCardManager
         private static string SetCorrectCheckDigit(string creditCardNumber)
         {
             //set last char to "0"
-            creditCardNumber = creditCardNumber.Substring(0, creditCardNumber.Length - 1) + "0";
+            string newCreditCardNumber = creditCardNumber.Substring(0, creditCardNumber.Length - 1) + "0";
 
-            int[] numbers = CreditCardHelper.LuhnAlgorithmConversion(CreditCardHelper.ConvertStringToIntArray(creditCardNumber));
+            int[] numbers = CreditCardHelper.LuhnAlgorithmConversion(CreditCardHelper.ConvertStringToIntArray(newCreditCardNumber));
 
             int checkDigit = (10 - numbers.Sum(s => s) % 10) % 10;
 
-            return creditCardNumber.Substring(0, creditCardNumber.Length - 1) + checkDigit;
+            return newCreditCardNumber.Substring(0, newCreditCardNumber.Length - 1) + checkDigit;
         }
 
         public static string GenerateNextRandomCreditCardNumber(string creditCardNumber)

@@ -2,7 +2,7 @@
 
 namespace CreditCardManager.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class CreditCardVendorMethodsTests
     {
         [TestMethod]
