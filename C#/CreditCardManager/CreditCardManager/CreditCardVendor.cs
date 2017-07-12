@@ -13,7 +13,7 @@ namespace CreditCardManager
         Unknow = 0, //set unknow as default
     }
 
-    public class CreditCardVendorMethods
+    public static class CreditCardVendorMethods
     {
         public static readonly Dictionary<CreditCardVendor, Range[]> bins = new Dictionary<CreditCardVendor, Range[]>
         {

@@ -34,7 +34,7 @@ namespace StringCalculator
             {
                 List<string> userDelimiters = GetDelimiters(args);
                 delimiters.AddRange(userDelimiters);
-                args = args.Substring(args.IndexOf("\n"));
+                args = args.Substring(args.IndexOf('\n'));
             }
             else
             {

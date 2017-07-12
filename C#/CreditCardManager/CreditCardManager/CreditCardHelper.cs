@@ -23,11 +23,11 @@ namespace CreditCardManager
                 throw new ArgumentNullException("Card cannot be null or empty.");
             }
 
-            number = number.Replace(" ", String.Empty);
+            string numberWithoutSpaces = number.Replace(" ", String.Empty);
 
-            ValidateNumber(number);
+            ValidateNumber(numberWithoutSpaces);
 
-            return number;
+            return numberWithoutSpaces;
         }
 
         public static int[] LuhnAlgorithmConversion(int[] numbers)

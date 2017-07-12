@@ -74,7 +74,10 @@ namespace CreditCardManager
                 {
                     numbers[i] -= 10;
                 }
-                else break;
+                else
+                {
+                    break;
+                }
             }
 
             resultCreditCardNumber = CreditCardHelper.ConvertIntArrayToString(numbers);
