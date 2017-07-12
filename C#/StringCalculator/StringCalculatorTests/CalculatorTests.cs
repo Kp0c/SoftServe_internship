@@ -40,7 +40,7 @@ namespace StringCalculator.Tests
         [Test]
         public void Add_SupportDifferentDelimiters_ReturnsSum()
         {
-            Assert.AreEqual(500, Calculator.Add("//[;]\n50;450"));
+            Assert.AreEqual(500, Calculator.Add("//;\n50;450"));
         }
 
         [Test]

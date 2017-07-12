@@ -14,13 +14,20 @@ namespace StringCalculator
 
             if (delimiterGroups.Count > 1)
             {
-                string delimiterString = delimiterGroups[0].Value;
+                string delimiterString = delimiterGroups[1].Value;
 
                 MatchCollection delimiterMatches = Regex.Matches(delimiterString, @"\[([^[]*)\]");
 
-                foreach (Match match in delimiterMatches)
+                if (delimiterMatches.Count == 0)
                 {
-                    delimiters.Add(match.Groups[1].Value);
+                    delimiters.Add(delimiterString);
+                }
+                else
+                {
+                    foreach (Match match in delimiterMatches)
+                    {
+                        delimiters.Add(match.Groups[1].Value);
+                    }
                 }
             }
             return delimiters;
