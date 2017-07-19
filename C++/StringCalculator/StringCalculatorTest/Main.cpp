@@ -39,7 +39,7 @@ TEST(CalculatorAddTest, NegativeShouldThrowException)
         Add("2,-5,-7");
         FAIL();
     }
-    catch (std::invalid_argument ex)
+    catch (std::invalid_argument& ex)
     {
         ASSERT_STREQ("negatives not allowed: -5, -7", ex.what());
     }

@@ -1,5 +1,6 @@
 #include "StringCalculator.h"
 #include "StringCalculatorHelper.h"
+
 #include <vector>
 #include <exception>
 
@@ -20,7 +21,7 @@ DelimiterAppearance NextDelimiter(std::string string, std::vector<std::string> d
     return minPosDelimiter;
 }
 
-std::vector<int> Split(std::string numbers, std::vector<std::string> delimiters)
+std::vector<int> Split(std::string numbers, std::vector<std::string>& delimiters)
 {
     std::vector<std::string> splittedNumbers;
 
@@ -56,8 +57,10 @@ std::vector<std::string> GetDelimiters(std::string string)
     if (delimiterString.length() != 1)
     {
         std::vector<std::string> delimiters;
+
         int startOfGroupPosition = std::string::npos;
-        int endOfGroupPosition;
+        int endOfGroupPosition = std::string::npos;
+
         while ((startOfGroupPosition = delimiterString.find("[")) != std::string::npos)
         {
             startOfGroupPosition++;
@@ -72,7 +75,7 @@ std::vector<std::string> GetDelimiters(std::string string)
     }
     else
     {
-        return{ delimiterString };
+        return {delimiterString};
     }
 }
 
@@ -85,7 +88,7 @@ int Add(std::string numbers)
 
     std::vector<std::string> delimiters;
 
-    if (numbers.find("//") == 0)
+    if (numbers.compare(0, 2, "//") == 0)
     {
         delimiters = GetDelimiters(numbers);
         numbers = numbers.substr(numbers.find("\n") + 1);
@@ -97,11 +100,11 @@ int Add(std::string numbers)
 
     delimiters.push_back("\n");
 
-    std::vector<int> numbersV = Split(numbers, delimiters);
+    std::vector<int> splittedNumbers = Split(numbers, delimiters);
 
     std::string negatives;
     int sum = 0;
-    for (int i : numbersV)
+    for (int i : splittedNumbers)
     {
         if (i < 0)
         {
@@ -117,8 +120,6 @@ int Add(std::string numbers)
     {
         throw std::invalid_argument("negatives not allowed: " + negatives.substr(0, negatives.length() - 2));
     }
-    else
-    {
-        return sum;
-    }
+
+    return sum;
 }
