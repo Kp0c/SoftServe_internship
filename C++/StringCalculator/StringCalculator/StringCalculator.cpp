@@ -79,7 +79,7 @@ std::vector<std::string> GetDelimiters(std::string string)
     }
 }
 
-int Add(std::string numbers)
+int StringCalculator::Add(std::string numbers)
 {
     if (numbers.empty())
     {
@@ -118,8 +118,46 @@ int Add(std::string numbers)
 
     if (!negatives.empty())
     {
-        throw std::invalid_argument("negatives not allowed: " + negatives.substr(0, negatives.length() - 2));
+        std::string exception_message = "negatives not allowed: " + negatives.substr(0, negatives.length() - 2);
+        TryLog(exception_message);
+        throw std::invalid_argument(exception_message);
     }
 
+    TryLog(std::to_string(sum));
     return sum;
+}
+
+void StringCalculator::Notify(std::string& text)
+{
+    for (IObserver* obs : observers)
+    {
+        obs->HandleEvent(text);
+    }
+}
+
+void StringCalculator::AddObserver(IObserver& observer)
+{
+    observers.push_back(&observer);
+}
+
+void StringCalculator::RemoveObserver(IObserver& observer)
+{
+    observers.remove(&observer);
+}
+
+void StringCalculator::SetLogger(std::shared_ptr<ILogger>& logger)
+{
+    logger_ = logger;
+}
+
+void StringCalculator::TryLog(std::string& text)
+{
+    try
+    {
+        logger_->Write(text);
+    }
+    catch (std::exception& ex)
+    {
+        Notify(std::string(ex.what()));
+    }
 }

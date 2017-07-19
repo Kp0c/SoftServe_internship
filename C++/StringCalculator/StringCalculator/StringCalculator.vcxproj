@@ -19,11 +19,19 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FailLoggerStub.h" />
+    <ClInclude Include="IObservable.h" />
+    <ClInclude Include="ILogger.h" />
+    <ClInclude Include="IObserver.h" />
+    <ClInclude Include="Logger.h" />
     <ClInclude Include="StringCalculator.h" />
     <ClInclude Include="StringCalculatorHelper.h" />
+    <ClInclude Include="WebServiceMock.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Logger.cpp" />
     <ClCompile Include="StringCalculator.cpp" />
+    <ClCompile Include="WebServiceMock.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A0A673D7-48FF-4E6D-9AFA-220EC9347D53}</ProjectGuid>

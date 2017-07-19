@@ -1,63 +1,122 @@
 #include <StringCalculator.h>
+#include <Logger.h>
+#include <FailLoggerStub.h>
+#include <WebServiceMock.h>
 #include <exception>
 #include <gtest\gtest.h>
 
-TEST(CalculatorAddTest, EmptyString)
+class StringCalculatorTest : public ::testing::Test
 {
-    EXPECT_EQ(0, Add(""));
+protected:
+    virtual void SetUp() {
+        logger_ = std::shared_ptr<ILogger>(new Logger);
+        logger_->SetOutput(ss_);
+        calculator_.SetLogger(logger_);
+        calculator_.AddObserver(webService_);
+    }
+
+    virtual void TearDown()
+    {
+        calculator_.RemoveObserver(webService_);
+    }
+
+    std::shared_ptr<ILogger> logger_;
+    StringCalculator calculator_;
+    WebServiceMock webService_;
+    std::stringstream ss_;
+};
+
+TEST_F(StringCalculatorTest, EmptyString)
+{
+    EXPECT_EQ(0, calculator_.Add(""));
 }
 
-TEST(CalculatorAddTest, OneNumber)
+TEST_F(StringCalculatorTest, OneNumber)
 {
-    EXPECT_EQ(1, Add("1"));
+    EXPECT_EQ(1, calculator_.Add("1"));
 }
 
-TEST(CalculatorAddTest, TwoNumbers)
+TEST_F(StringCalculatorTest, TwoNumbers)
 {
-    EXPECT_EQ(3, Add("1,2"));
+    EXPECT_EQ(3, calculator_.Add("1,2"));
 }
 
-TEST(CalculatorAddTest, FiveNumbers)
+TEST_F(StringCalculatorTest, FiveNumbers)
 {
-    EXPECT_EQ(25, Add("5,5,5,5,5"));
+    EXPECT_EQ(25, calculator_.Add("5,5,5,5,5"));
 }
 
-TEST(CalculatorAddTest, NewLIneInsteadOfComma)
+TEST_F(StringCalculatorTest, NewLIneInsteadOfComma)
 {
-    EXPECT_EQ(6, Add("1\n2,3"));
+    EXPECT_EQ(6, calculator_.Add("1\n2,3"));
 }
 
-TEST(CalculatorAddTest, SupportDifferentDelimiters)
+TEST_F(StringCalculatorTest, SupportDifferentDelimiters)
 {
-    EXPECT_EQ(6, Add("//;\n1;2;3"));
+    EXPECT_EQ(6, calculator_.Add("//;\n1;2;3"));
 }
 
-TEST(CalculatorAddTest, NegativeShouldThrowException)
+TEST_F(StringCalculatorTest, NegativeShouldThrowException)
 {
     try 
     {
-        Add("2,-5,-7");
+        calculator_.Add("2,-5,-7");
         FAIL();
     }
     catch (std::invalid_argument& ex)
     {
-        ASSERT_STREQ("negatives not allowed: -5, -7", ex.what());
+        EXPECT_STREQ("negatives not allowed: -5, -7", ex.what());
     }
 }
 
-TEST(CalculatorAddTest, IgnoreMoreThan1000)
+TEST_F(StringCalculatorTest, IgnoreMoreThan1000)
 {
-    EXPECT_EQ(4, Add("//;\n1;1001;3"));
+    EXPECT_EQ(4, calculator_.Add("//;\n1;1001;3"));
 }
 
-TEST(CalculatorAddTest, VariableLengthDelimiter)
+TEST_F(StringCalculatorTest, VariableLengthDelimiter)
 {
-    EXPECT_EQ(4, Add("//[***]\n1***3"));
+    EXPECT_EQ(4, calculator_.Add("//[***]\n1***3"));
 }
 
-TEST(CalculatorAddTest, AllowSeveralDelimiters)
+TEST_F(StringCalculatorTest, AllowSeveralDelimiters)
 {
-    EXPECT_EQ(20, Add("//[***][$%][!]\n1***3$%6!10"));
+    EXPECT_EQ(20, calculator_.Add("//[***][$%][!]\n1***3$%6!10"));
+}
+
+TEST_F(StringCalculatorTest, LoggerTest)
+{
+    calculator_.Add("//[***][$%][!]\n1***3$%6!10");
+    EXPECT_STREQ("20", ss_.str().c_str());
+}
+
+TEST_F(StringCalculatorTest, NegativeShouldThrowExceptionToLogger)
+{
+    try
+    {
+        calculator_.Add("2,-5,-7");
+        FAIL();
+    }
+    catch (std::invalid_argument&)
+    {
+        EXPECT_STREQ("negatives not allowed: -5, -7", ss_.str().c_str());
+    }
+}
+
+TEST_F(StringCalculatorTest, NegativeShouldThrowExceptionToWebService)
+{
+    std::shared_ptr<ILogger> stubLogger(new FailLoggerStub());
+    calculator_.SetLogger(stubLogger);
+
+    try
+    {
+        calculator_.Add("2,-5,-7");
+        FAIL();
+    }
+    catch (std::invalid_argument&)
+    {
+        EXPECT_STREQ("Stub exception.", webService_.GetTextOnService().c_str());
+    }
 }
 
 int main(int argc, char **argv) {
