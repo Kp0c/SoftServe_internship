@@ -2,26 +2,42 @@
 #include <iostream>
 #include <set>
 
+bool TryInsert(std::set<Vertex, VertexComparator>& vertexes, Connection connection)
+{
+    bool isInserted = false;
+
+    if (vertexes.find(connection.to) != vertexes.end() && vertexes.find(connection.from) == vertexes.end())
+    {
+        isInserted = true;
+        vertexes.insert(connection.from);
+    }
+    if (vertexes.find(connection.from) != vertexes.end() && vertexes.find(connection.to) == vertexes.end())
+    {
+        isInserted = true;
+        vertexes.insert(connection.to);
+    }
+
+    return isInserted;
+}
+
 std::set<Vertex, VertexComparator> TraverseConnectedData(std::vector<Connection> connections, Vertex vertex)
 {
     std::set<Vertex, VertexComparator> connectedVertexes{ vertex };
 
-    bool checked = true;
-    while (checked)
+    bool isConnected = true;
+    while (isConnected)
     {
-        checked = false;
+        isConnected = false;
 
         for (size_t i = 0; i < connections.size(); ++i)
         {
-            if (connectedVertexes.find(connections[i].to) != connectedVertexes.end() && connectedVertexes.find(connections[i].from) == connectedVertexes.end())
+            if (TryInsert(connectedVertexes, connections[i]))
             {
-                checked = true;
-                connectedVertexes.insert(connections[i].from);
+                isConnected = true;
             }
-            if (connectedVertexes.find(connections[i].from) != connectedVertexes.end() && connectedVertexes.find(connections[i].to) == connectedVertexes.end())
+            else
             {
-                checked = true;
-                connectedVertexes.insert(connections[i].to);
+                isConnected = false;
             }
         }
     }
