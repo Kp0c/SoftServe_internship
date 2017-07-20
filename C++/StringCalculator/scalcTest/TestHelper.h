@@ -8,9 +8,9 @@
 constexpr short BUFSIZE = 1024;
 
 std::string ReadFromPipe(HANDLE pipe);
-void WriteToPipe(HANDLE pipe, std::string msg);
+void WriteToPipe(HANDLE pipe, std::string& msg);
 
-std::string StartCalcAndWaitOutput(std::string arguments, std::vector<std::string> inputs = { "\n" })
+std::string StartCalcAndWaitOutput(std::string arguments, std::vector<std::string>& inputs = std::vector<std::string>{ "\n" })
 {
     SECURITY_ATTRIBUTES securityAttributes;
     securityAttributes.nLength = sizeof(SECURITY_ATTRIBUTES);
@@ -58,7 +58,7 @@ std::string StartCalcAndWaitOutput(std::string arguments, std::vector<std::strin
     return ReadFromPipe(childPipeOutRead);
 }
 
-void WriteToPipe(HANDLE pipe, std::string msg)
+void WriteToPipe(HANDLE pipe, std::string& msg)
 {
     WriteFile(pipe, msg.c_str(), msg.size(), NULL, NULL);
 }

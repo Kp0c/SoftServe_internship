@@ -5,9 +5,9 @@
 
 int main(int argc, char** argv)
 {
-    int result = 0;
     std::string input(argv[1]);
 
+    int result;
     while (!input.empty())
     {
         {
