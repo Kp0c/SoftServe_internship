@@ -6,12 +6,14 @@
 
 TEST(scalcTest, RegularAdd)
 {
-    ASSERT_STREQ("The result is 20\r\nAnother input please: ", StartCalcAndWaitOutput("//[***][$%][!]\\n1***3$%6!10").c_str());
+    ASSERT_STREQ("The result is 20\r\nAnother input please: ",
+        StartCalcAndWaitOutput(std::string("//[***][$%][!]\\n1***3$%6!10")).c_str());
 }
 
 TEST(scalcTest, AddSeveralArguments)
 {
-    ASSERT_STREQ("The result is 10\r\nAnother input please: The result is 3\r\nAnother input please: ", StartCalcAndWaitOutput("5,5", std::vector<std::string>{ "//;\\n1;2", "\n" }).c_str());
+    ASSERT_STREQ("The result is 10\r\nAnother input please: The result is 3\r\nAnother input please: ",
+        StartCalcAndWaitOutput(std::string("5,5"), std::vector<std::string>{ "//;\\n1;2", "\n" }).c_str());
 }
 
 int main(int argc, char **argv) {
