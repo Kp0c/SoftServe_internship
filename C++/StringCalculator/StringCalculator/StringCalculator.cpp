@@ -52,7 +52,7 @@ std::vector<int> Split(std::string numbers, std::vector<std::string>& delimiters
 
 std::vector<std::string> GetDelimiters(std::string string)
 {
-    std::string delimiterString = string.substr(2, string.find("\n") - 2);
+    std::string delimiterString = string.substr(2, string.find("\\n") - 2);
 
     if (delimiterString.length() != 1)
     {
@@ -91,14 +91,14 @@ int StringCalculator::Add(std::string numbers)
     if (numbers.compare(0, 2, "//") == 0)
     {
         delimiters = GetDelimiters(numbers);
-        numbers = numbers.substr(numbers.find("\n") + 1);
+        numbers = numbers.substr(numbers.find("\\n") + 2);
     }
     else
     {
         delimiters.push_back(",");
     }
 
-    delimiters.push_back("\n");
+    delimiters.push_back("\\n");
 
     std::vector<int> splittedNumbers = Split(numbers, delimiters);
 
@@ -152,12 +152,16 @@ void StringCalculator::SetLogger(std::shared_ptr<ILogger>& logger)
 
 void StringCalculator::TryLog(std::string& text)
 {
-    try
+    if (logger_)
     {
-        logger_->Write(text);
-    }
-    catch (std::exception& ex)
-    {
-        Notify(std::string(ex.what()));
+        try
+        {
+            std::cout << std::endl << text << std::endl;
+            logger_->Write(text);
+        }
+        catch (std::exception& ex)
+        {
+            Notify(std::string(ex.what()));
+        }
     }
 }

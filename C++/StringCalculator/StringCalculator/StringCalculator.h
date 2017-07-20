@@ -8,7 +8,7 @@ class StringCalculator final : public IObservable
 public:
     int Add(std::string numbers);
 
-    void Notify(std::string & text) override;
+    void Notify(std::string& text) override;
     void AddObserver(IObserver& observer) override;
     void RemoveObserver(IObserver& observer) override;
 

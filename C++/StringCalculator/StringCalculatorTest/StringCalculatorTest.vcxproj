@@ -71,7 +71,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SolutionDir)StringCalculator\;$(SolutionDir)3rdparty\GoogleTest\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Utils;$(SolutionDir)StringCalculator\;$(SolutionDir)3rdparty\GoogleTest\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Debug;$(SolutionDir)3rdparty\GoogleTest\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

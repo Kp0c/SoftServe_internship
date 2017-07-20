@@ -2,6 +2,7 @@
 #include <Logger.h>
 #include <FailLoggerStub.h>
 #include <WebServiceMock.h>
+#include <ScopedRedirectCout.h>
 #include <exception>
 #include <gtest\gtest.h>
 
@@ -48,12 +49,12 @@ TEST_F(StringCalculatorTest, FiveNumbers)
 
 TEST_F(StringCalculatorTest, NewLIneInsteadOfComma)
 {
-    EXPECT_EQ(6, calculator_.Add("1\n2,3"));
+    EXPECT_EQ(6, calculator_.Add("1\\n2,3"));
 }
 
 TEST_F(StringCalculatorTest, SupportDifferentDelimiters)
 {
-    EXPECT_EQ(6, calculator_.Add("//;\n1;2;3"));
+    EXPECT_EQ(6, calculator_.Add("//;\\n1;2;3"));
 }
 
 TEST_F(StringCalculatorTest, NegativeShouldThrowException)
@@ -65,28 +66,28 @@ TEST_F(StringCalculatorTest, NegativeShouldThrowException)
     }
     catch (std::invalid_argument& ex)
     {
-        EXPECT_STREQ("negatives not allowed: -5, -7", ex.what());
+        ASSERT_STREQ("negatives not allowed: -5, -7", ex.what());
     }
 }
 
 TEST_F(StringCalculatorTest, IgnoreMoreThan1000)
 {
-    EXPECT_EQ(4, calculator_.Add("//;\n1;1001;3"));
+    EXPECT_EQ(4, calculator_.Add("//;\\n1;1001;3"));
 }
 
 TEST_F(StringCalculatorTest, VariableLengthDelimiter)
 {
-    EXPECT_EQ(4, calculator_.Add("//[***]\n1***3"));
+    EXPECT_EQ(4, calculator_.Add("//[***]\\n1***3"));
 }
 
 TEST_F(StringCalculatorTest, AllowSeveralDelimiters)
 {
-    EXPECT_EQ(20, calculator_.Add("//[***][$%][!]\n1***3$%6!10"));
+    EXPECT_EQ(20, calculator_.Add("//[***][$%][!]\\n1***3$%6!10"));
 }
 
 TEST_F(StringCalculatorTest, LoggerTest)
 {
-    calculator_.Add("//[***][$%][!]\n1***3$%6!10");
+    calculator_.Add("//[***][$%][!]\\n1***3$%6!10");
     EXPECT_STREQ("20", ss_.str().c_str());
 }
 
@@ -117,6 +118,16 @@ TEST_F(StringCalculatorTest, NegativeShouldThrowExceptionToWebService)
     {
         EXPECT_STREQ("Stub exception.", webService_.GetTextOnService().c_str());
     }
+}
+
+TEST_F(StringCalculatorTest, OutToConsoleToo)
+{
+    std::stringstream consoleStringStream;
+    ScopedRedirectCout redirect(consoleStringStream);
+
+    calculator_.Add("//[***][$%][!]\\n1***3$%6!10");
+
+    EXPECT_STREQ("\n20\n", consoleStringStream.str().c_str());
 }
 
 int main(int argc, char **argv) {
