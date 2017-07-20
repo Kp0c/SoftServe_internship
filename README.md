@@ -1,0 +1,2 @@
+# SoftServe_internship
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/a3865da64dea41b69b5c749015743db8)](https://www.codacy.com/app/Kp0c/SoftServe_internship?utm_source=github.com&utm_medium=referral&utm_content=Kp0c/SoftServe_internship&utm_campaign=badger)
