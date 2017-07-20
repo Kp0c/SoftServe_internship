@@ -31,7 +31,10 @@ void BenchAll(int* sampleArr)
     std::function<void(int* arr)> quickSort(std::bind(QuickSort, std::placeholders::_1, 0, COUNT - 1));
     std::function<void(int* arr)> quickSortWithThreads(std::bind(QuickSortWithThreads, std::placeholders::_1, 0, COUNT - 1, COUNT));
 
-    if (COUNT <= 10000) benchMark(bubbleSort, "bubble sort", sampleArr);
+    if (COUNT <= 10000)
+    {
+        benchMark(bubbleSort, "bubble sort", sampleArr);
+    }
     benchMark(mergeSort, "merge sort", sampleArr);
     benchMark(stdQuickSort, "std quick sort", sampleArr);
     benchMark(quickSort, "quick sort", sampleArr);

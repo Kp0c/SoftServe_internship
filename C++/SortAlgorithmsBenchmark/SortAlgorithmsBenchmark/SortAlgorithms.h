@@ -77,10 +77,9 @@ void Merge(int *a, int low, int high, int mid)
 
 void MergeSort(int *a, int low, int high)
 {
-    int mid;
     if (low < high)
     {
-        mid = (low + high) / 2;
+        int mid = (low + high) / 2;
 
         MergeSort(a, low, mid);
         MergeSort(a, mid + 1, high);
