@@ -6,12 +6,18 @@ bool TryInsert(std::set<Vertex, VertexComparator>& vertexes, Connection connecti
 {
     bool isInserted = false;
 
-    if (vertexes.find(connection.to) != vertexes.end() && vertexes.find(connection.from) == vertexes.end())
+    auto findFrom = vertexes.find(connection.from);
+    auto findTo = vertexes.find(connection.to);
+
+    auto end = vertexes.end();
+    if (findTo != end && findFrom == end)
     {
         isInserted = true;
         vertexes.insert(connection.from);
     }
-    if (vertexes.find(connection.from) != vertexes.end() && vertexes.find(connection.to) == vertexes.end())
+
+    end = vertexes.end();
+    if (findFrom != end && findTo == end)
     {
         isInserted = true;
         vertexes.insert(connection.to);
@@ -24,21 +30,14 @@ std::set<Vertex, VertexComparator> TraverseConnectedData(std::vector<Connection>
 {
     std::set<Vertex, VertexComparator> connectedVertexes{ vertex };
 
-    bool isConnected = true;
-    while (isConnected)
+    bool isConnectedNew = true;
+    while (isConnectedNew)
     {
-        isConnected = false;
+        isConnectedNew = false;
 
         for (size_t i = 0; i < connections.size(); ++i)
         {
-            if (TryInsert(connectedVertexes, connections[i]))
-            {
-                isConnected = true;
-            }
-            else
-            {
-                isConnected = false;
-            }
+            isConnectedNew = TryInsert(connectedVertexes, connections[i]);
         }
     }
     

@@ -9,7 +9,7 @@ void Swap(int& a, int& b)
     b = c;
 }
 
-void BubbleSort(int count, int* arr)
+void BubbleSort(int count, int arr[])
 {
     bool swappped = false;
     for (int i = 0; i < count; ++i)
@@ -29,7 +29,7 @@ void BubbleSort(int count, int* arr)
     }
 }
 
-void Merge(int* a, int low, int high, int mid)
+void Merge(int arr[], int low, int high, int mid)
 {
     int i, j, k;
     int* temp = new int[high - low + 1];
@@ -39,15 +39,15 @@ void Merge(int* a, int low, int high, int mid)
 
     while (i <= mid && j <= high)
     {
-        if (a[i] < a[j])
+        if (arr[i] < arr[j])
         {
-            temp[k] = a[i];
+            temp[k] = arr[i];
             k++;
             i++;
         }
         else
         {
-            temp[k] = a[j];
+            temp[k] = arr[j];
             k++;
             j++;
         }
@@ -55,40 +55,40 @@ void Merge(int* a, int low, int high, int mid)
 
     while (i <= mid)
     {
-        temp[k] = a[i];
+        temp[k] = arr[i];
         k++;
         i++;
     }
 
     while (j <= high)
     {
-        temp[k] = a[j];
+        temp[k] = arr[j];
         k++;
         j++;
     }
 
     for (i = low; i <= high; i++)
     {
-        a[i] = temp[i - low];
+        arr[i] = temp[i - low];
     }
 
     delete[] temp;
 }
 
-void MergeSort(int* a, int low, int high)
+void MergeSort(int arr[], int low, int high)
 {
     if (low < high)
     {
         int mid = (low + high) / 2;
 
-        MergeSort(a, low, mid);
-        MergeSort(a, mid + 1, high);
+        MergeSort(arr, low, mid);
+        MergeSort(arr, mid + 1, high);
 
-        Merge(a, low, high, mid);
+        Merge(arr, low, high, mid);
     }
 }
 
-int Partition(int* arr, const int left, const int right)
+int Partition(int arr[], const int left, const int right)
 {
     const int mid = left + (right - left) / 2;
     const int pivot = arr[mid];
@@ -113,7 +113,7 @@ int Partition(int* arr, const int left, const int right)
     return i - 1;
 }
 
-void QuickSort(int* arr, const int left, const int right)
+void QuickSort(int arr[], const int left, const int right)
 {
     if (left >= right) {
         return;
@@ -125,7 +125,7 @@ void QuickSort(int* arr, const int left, const int right)
     QuickSort(arr, part + 1, right);
 }
 
-void QuickSortWithThreads(int* arr, const int left, const int right, const int size)
+void QuickSortWithThreads(int arr[], const int left, const int right, const int size)
 {
     if (left >= right) {
         return;

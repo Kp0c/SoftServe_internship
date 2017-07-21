@@ -7,9 +7,11 @@
 
 constexpr int COUNT = 50000;
 
-void benchMark(std::function<void(int* arr)>& func, char* name, int* sampleArr)
+void benchMark(std::function<void(int arr[])>& func, char* name, const int sampleArr[])
 {
     auto start = std::chrono::steady_clock::now();
+
+    //sampleArr = new int[COUNT];
 
     int* arr = new int[COUNT];
     memcpy(arr, sampleArr, COUNT * sizeof(int));
@@ -25,13 +27,13 @@ void benchMark(std::function<void(int* arr)>& func, char* name, int* sampleArr)
     delete[] arr;
 }
 
-void BenchAll(int* sampleArr)
+void BenchAll(int sampleArr[])
 {
-    std::function<void(int* arr)> bubbleSort(std::bind(BubbleSort, COUNT, std::placeholders::_1));
-    std::function<void(int* arr)> mergeSort(std::bind(MergeSort, std::placeholders::_1, 0, COUNT - 1));
-    std::function<void(int* arr)> stdQuickSort(std::bind(qsort, std::placeholders::_1, COUNT, sizeof(int), Compare));
-    std::function<void(int* arr)> quickSort(std::bind(QuickSort, std::placeholders::_1, 0, COUNT - 1));
-    std::function<void(int* arr)> quickSortWithThreads(std::bind(QuickSortWithThreads, std::placeholders::_1, 0, COUNT - 1, COUNT));
+    std::function<void(int arr[])> bubbleSort(std::bind(BubbleSort, COUNT, std::placeholders::_1));
+    std::function<void(int arr[])> mergeSort(std::bind(MergeSort, std::placeholders::_1, 0, COUNT - 1));
+    std::function<void(int arr[])> stdQuickSort(std::bind(qsort, std::placeholders::_1, COUNT, sizeof(int), Compare));
+    std::function<void(int arr[])> quickSort(std::bind(QuickSort, std::placeholders::_1, 0, COUNT - 1));
+    std::function<void(int arr[])> quickSortWithThreads(std::bind(QuickSortWithThreads, std::placeholders::_1, 0, COUNT - 1, COUNT));
 
     if (COUNT <= 10000)
     {
