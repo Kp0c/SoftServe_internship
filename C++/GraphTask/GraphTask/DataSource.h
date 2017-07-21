@@ -8,8 +8,9 @@ struct Vertex
     int weight;
 };
 
-struct VertexComparator
+class VertexComparator
 {
+public:
     bool operator()(Vertex v1, Vertex v2) const
     {
         return v1.number < v2.number;
@@ -34,7 +35,8 @@ static const std::vector<Vertex> vertexes
     { 8, 11 },
     { 9, 11 },
     { 10, 7 },
-    { 11, 5 }
+    { 11, 5 },
+    { 1,  1  }
 };
 
 static const std::vector<Connection> connections

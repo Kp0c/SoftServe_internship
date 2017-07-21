@@ -152,11 +152,12 @@ void StringCalculator::SetLogger(std::shared_ptr<ILogger>& logger)
 
 void StringCalculator::TryLog(std::string& text)
 {
+    std::cout << std::endl << text << std::endl;
+
     if (logger_)
     {
         try
         {
-            std::cout << std::endl << text << std::endl;
             logger_->Write(text);
         }
         catch (std::exception& ex)

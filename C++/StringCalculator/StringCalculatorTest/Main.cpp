@@ -9,7 +9,8 @@
 class StringCalculatorTest : public ::testing::Test
 {
 protected:
-    virtual void SetUp() {
+    virtual void SetUp()
+    {
         logger_ = std::shared_ptr<ILogger>(new Logger);
         logger_->SetOutput(ss_);
         calculator_.SetLogger(logger_);

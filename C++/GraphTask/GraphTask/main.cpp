@@ -37,7 +37,10 @@ std::set<Vertex, VertexComparator> TraverseConnectedData(std::vector<Connection>
 
         for (size_t i = 0; i < connections.size(); ++i)
         {
-            isConnectedNew = TryInsert(connectedVertexes, connections[i]);
+            if (TryInsert(connectedVertexes, connections[i]))
+            {
+                isConnectedNew = true;
+            }
         }
     }
     
@@ -64,20 +67,6 @@ int main()
             }
         }
         std::cout << "Max number: " << max.number << " with weight " << max.weight << std::endl;
-
-        //remove used connections
-        auto consIt = cons.begin();
-        while (consIt != cons.end())
-        {
-            if (group.find(consIt->from) != group.end() || group.find(consIt->to) != group.end())
-            {
-                consIt = cons.erase(consIt);
-            }
-            else
-            {
-                ++consIt;
-            }
-        }
 
         //remove used vertexes
         auto vertexesIt = vertexes.begin();
