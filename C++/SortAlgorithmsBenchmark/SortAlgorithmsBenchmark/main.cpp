@@ -21,6 +21,8 @@ void benchMark(std::function<void(int* arr)>& func, char* name, int* sampleArr)
 
     std::cout << name << std::endl;
     std::cout << std::chrono::duration<double, std::milli>(diff).count() << "ms" << std::endl;
+
+    delete[] arr;
 }
 
 void BenchAll(int* sampleArr)
