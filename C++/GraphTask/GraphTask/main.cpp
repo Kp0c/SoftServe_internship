@@ -54,7 +54,7 @@ int main()
         std::set<Vertex, VertexComparator> group = TraverseConnectedData(cons, vertexes[0]);
 
         std::cout << "Cycle: ";
-        Vertex max = { INT_MIN, INT_MIN };
+        Vertex max { INT_MIN, INT_MIN };
         for (Vertex vert : group)
         {
             std::cout << vert.number << " ";
@@ -66,28 +66,30 @@ int main()
         std::cout << "Max number: " << max.number << " with weight " << max.weight << std::endl;
 
         //remove used connections
-        for (auto i = cons.begin(); i != cons.end();)
+        auto consIt = cons.begin();
+        while (consIt != cons.end())
         {
-            if (group.find(i->from) != group.end() || group.find(i->to) != group.end())
+            if (group.find(consIt->from) != group.end() || group.find(consIt->to) != group.end())
             {
-                i = cons.erase(i);
+                consIt = cons.erase(consIt);
             }
             else
             {
-                ++i;
+                ++consIt;
             }
         }
 
         //remove used vertexes
-        for (auto i = vertexes.begin(); i != vertexes.end();)
+        auto vertexesIt = vertexes.begin();
+        while (vertexesIt != vertexes.end())
         {
-            if (group.find(*i) != group.end())
+            if (group.find(*vertexesIt) != group.end())
             {
-                i = vertexes.erase(i);
+                vertexesIt = vertexes.erase(vertexesIt);
             }
             else
             {
-                ++i;
+                ++vertexesIt;
             }
         }
 

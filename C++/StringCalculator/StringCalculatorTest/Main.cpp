@@ -66,7 +66,7 @@ TEST_F(StringCalculatorTest, NegativeShouldThrowException)
     }
     catch (std::invalid_argument& ex)
     {
-        ASSERT_STREQ("negatives not allowed: -5, -7", ex.what());
+        EXPECT_STREQ("negatives not allowed: -5, -7", ex.what());
     }
 }
 
