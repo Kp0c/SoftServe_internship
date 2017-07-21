@@ -7,14 +7,13 @@
 
 constexpr int COUNT = 50000;
 
-void benchMark(std::function<void(int arr[])>& func, char* name, const int sampleArr[])
+void benchMark(std::function<void(int arr[])>& func, const char* const name, const int* const sampleArr)
 {
-    auto start = std::chrono::steady_clock::now();
-
-    //sampleArr = new int[COUNT];
-
     int* arr = new int[COUNT];
+
     memcpy(arr, sampleArr, COUNT * sizeof(int));
+
+    auto start = std::chrono::steady_clock::now();
 
     func(arr);
 
