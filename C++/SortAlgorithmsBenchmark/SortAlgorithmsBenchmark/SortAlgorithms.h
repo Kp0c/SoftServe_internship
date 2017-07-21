@@ -2,7 +2,7 @@
 #include <algorithm>
 #include <thread>
 
-void swap(int& a, int& b)
+void Swap(int& a, int& b)
 {
     int c = a;
     a = b;
@@ -20,7 +20,7 @@ void BubbleSort(int count, int* arr)
         {
             if (arr[j] < arr[j - 1])
             {
-                swap(arr[j], arr[j - 1]);
+                Swap(arr[j], arr[j - 1]);
                 swappped = true;
             }
         }
@@ -29,7 +29,7 @@ void BubbleSort(int count, int* arr)
     }
 }
 
-void Merge(int *a, int low, int high, int mid)
+void Merge(int* a, int low, int high, int mid)
 {
     int i, j, k;
     int* temp = new int[high - low + 1];
@@ -75,7 +75,7 @@ void Merge(int *a, int low, int high, int mid)
     delete[] temp;
 }
 
-void MergeSort(int *a, int low, int high)
+void MergeSort(int* a, int low, int high)
 {
     if (low < high)
     {
@@ -88,7 +88,7 @@ void MergeSort(int *a, int low, int high)
     }
 }
 
-int Partition(int *arr, const int left, const int right)
+int Partition(int* arr, const int left, const int right)
 {
     const int mid = left + (right - left) / 2;
     const int pivot = arr[mid];
@@ -113,7 +113,7 @@ int Partition(int *arr, const int left, const int right)
     return i - 1;
 }
 
-void QuickSort(int *arr, const int left, const int right)
+void QuickSort(int* arr, const int left, const int right)
 {
     if (left >= right) {
         return;
@@ -146,7 +146,7 @@ void QuickSortWithThreads(int* arr, const int left, const int right, const int s
     }
 }
 
-int compare(const void * a, const void * b)
+int Compare(const void* a, const void* b)
 {
     return (*(int*)a - *(int*)b);
 }

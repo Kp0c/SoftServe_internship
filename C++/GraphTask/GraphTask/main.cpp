@@ -82,7 +82,7 @@ int main()
         //remove used vertexes
         for (auto i = vertexes.begin(); i != vertexes.end();)
         {
-            if (group.find(*i) != group.end() || group.find(*i) != group.end())
+            if (group.find(*i) != group.end())
             {
                 i = vertexes.erase(i);
             }

@@ -33,9 +33,6 @@
     <ClCompile Include="StringCalculator.cpp" />
     <ClCompile Include="WebServiceMock.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A0A673D7-48FF-4E6D-9AFA-220EC9347D53}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
