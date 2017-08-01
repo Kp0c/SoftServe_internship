@@ -6,6 +6,7 @@
 # Build results
 
 [Dd]ebug/
+[Gg]enerated [Ff]iles/
 DebugPs
 [Rr]elease/
 x64/
