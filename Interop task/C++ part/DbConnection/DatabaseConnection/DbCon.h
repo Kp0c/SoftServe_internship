@@ -1,8 +1,5 @@
-// DbCon.h : Declaration of the CDbCon
-
 #pragma once
 #include "resource.h"       // main symbols
-
 #include "DatabaseConnection_i.h"
 
 #import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") no_implementation
@@ -12,9 +9,6 @@
 #endif
 
 using namespace ATL;
-
-
-// CDbCon
 
 class ATL_NO_VTABLE CDbCon :
 	public CComObjectRootEx<CComSingleThreadModel>,
@@ -30,13 +24,10 @@ public:
 
 DECLARE_REGISTRY_RESOURCEID(IDR_DBCON)
 
-
 BEGIN_COM_MAP(CDbCon)
 	COM_INTERFACE_ENTRY(IDbCon)
 	COM_INTERFACE_ENTRY(IDispatch)
 END_COM_MAP()
-
-
 
 	DECLARE_PROTECT_FINAL_CONSTRUCT()
 
