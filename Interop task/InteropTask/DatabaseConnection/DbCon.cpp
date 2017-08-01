@@ -2,6 +2,7 @@
 
 #include "stdafx.h"
 #include "DbCon.h"
+#include <string>
 
 #import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") implementation_only
 
@@ -29,7 +30,6 @@ STDMETHODIMP CDbCon::AddUser(BSTR username, BSTR password)
     return S_OK;
 }
 
-
 STDMETHODIMP CDbCon::TryLogIn(BSTR username, BSTR password, VARIANT_BOOL* isSuccess)
 {
     *isSuccess = VARIANT_FALSE;
@@ -44,5 +44,22 @@ STDMETHODIMP CDbCon::TryLogIn(BSTR username, BSTR password, VARIANT_BOOL* isSucc
         *isSuccess = VARIANT_TRUE;
 
     record.Release();
+    return S_OK;
+}
+
+STDMETHODIMP CDbCon::SendMoney(BSTR from, BSTR to, LONG count)
+{
+    std::wstring moneyCountString = std::to_wstring(count);
+
+    connection->Execute(L"EXECUTE make_transaction '" + (bstr_t)from + "', '" + (bstr_t)to + "', " + SysAllocString(moneyCountString.c_str()) + "", nullptr, 1);
+
+    return S_OK;
+}
+
+
+STDMETHODIMP CDbCon::DeleteUser(BSTR username)
+{
+    connection->Execute(L"DELETE FROM Users WHERE username='" + (bstr_t)username + "'", nullptr, 1);
+
     return S_OK;
 }

@@ -43,6 +43,8 @@ END_COM_MAP()
 public:
     STDMETHOD(AddUser)(BSTR username, BSTR password);
     STDMETHOD(TryLogIn)(BSTR username, BSTR password, VARIANT_BOOL* isSuccess);
+    STDMETHOD(SendMoney)(BSTR from, BSTR to, LONG count);
+    STDMETHOD(DeleteUser)(BSTR username);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(DbCon), CDbCon)
