@@ -51,6 +51,7 @@ END_COM_MAP()
 
 public:
     STDMETHOD(AddUser)(BSTR username, BSTR password);
+    STDMETHOD(TryLogIn)(BSTR username, BSTR password, VARIANT_BOOL* isSuccess);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(DbCon), CDbCon)

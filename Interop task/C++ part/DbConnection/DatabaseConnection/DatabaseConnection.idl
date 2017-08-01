@@ -16,6 +16,7 @@ import "ocidl.idl";
 ]
 interface IDbCon : IDispatch{
     [id(5)] HRESULT AddUser([in] BSTR username, [in] BSTR password);
+    [id(6)] HRESULT TryLogIn([in] BSTR username, [in] BSTR password, [out, retval] VARIANT_BOOL* isSuccess);
 };
 [
 	uuid(13A7769C-089A-4871-9650-AA22859308B5),

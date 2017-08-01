@@ -126,10 +126,14 @@ End Function
 Private Sub CmdOK_Click()
    Dim a As New DbCon
    
-   a.AddUser txtUserName.text, txtPassword.text
+   'a.AddUser txtUserName.text, txtPassword.text
    
     If ValidateLogin() And ValidatePassword() Then
-        MsgBox "validated"
+        If a.TryLogIn(txtUserName.text, txtPassword.text) Then
+            MsgBox "validated"
+        Else
+            MsgBox "Wrong username or password"
+        End If
     End If
 End Sub
 

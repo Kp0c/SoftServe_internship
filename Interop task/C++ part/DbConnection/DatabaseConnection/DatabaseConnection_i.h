@@ -4,7 +4,7 @@
 
 
  /* File created by MIDL compiler version 8.00.0603 */
-/* at Tue Aug 01 11:08:21 2017
+/* at Tue Aug 01 11:29:39 2017
  */
 /* Compiler settings for DatabaseConnection.idl:
     Oicf, W1, Zp8, env=Win32 (32b run), target_arch=X86 8.00.0603 
@@ -92,6 +92,11 @@ EXTERN_C const IID IID_IDbCon;
             /* [in] */ BSTR username,
             /* [in] */ BSTR password) = 0;
         
+        virtual /* [id] */ HRESULT STDMETHODCALLTYPE TryLogIn( 
+            /* [in] */ BSTR username,
+            /* [in] */ BSTR password,
+            /* [retval][out] */ VARIANT_BOOL *isSuccess) = 0;
+        
     };
     
     
@@ -155,6 +160,12 @@ EXTERN_C const IID IID_IDbCon;
             /* [in] */ BSTR username,
             /* [in] */ BSTR password);
         
+        /* [id] */ HRESULT ( STDMETHODCALLTYPE *TryLogIn )( 
+            IDbCon * This,
+            /* [in] */ BSTR username,
+            /* [in] */ BSTR password,
+            /* [retval][out] */ VARIANT_BOOL *isSuccess);
+        
         END_INTERFACE
     } IDbConVtbl;
 
@@ -193,6 +204,9 @@ EXTERN_C const IID IID_IDbCon;
 
 #define IDbCon_AddUser(This,username,password)	\
     ( (This)->lpVtbl -> AddUser(This,username,password) ) 
+
+#define IDbCon_TryLogIn(This,username,password,isSuccess)	\
+    ( (This)->lpVtbl -> TryLogIn(This,username,password,isSuccess) ) 
 
 #endif /* COBJMACROS */
 

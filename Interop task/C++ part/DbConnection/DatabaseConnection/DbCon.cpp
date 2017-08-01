@@ -24,7 +24,25 @@ CDbCon::~CDbCon()
 
 STDMETHODIMP CDbCon::AddUser(BSTR username, BSTR password)
 {
-    connection->Execute(L"INSERT INTO Users VALUES('" + (_bstr_t)username + "', '" + (_bstr_t)password + "');", nullptr, 1);
+    connection->Execute(L"INSERT INTO Users VALUES('" + (bstr_t)username + "', '" + (bstr_t)password + "')", nullptr, 1);
 
+    return S_OK;
+}
+
+
+STDMETHODIMP CDbCon::TryLogIn(BSTR username, BSTR password, VARIANT_BOOL* isSuccess)
+{
+    *isSuccess = VARIANT_FALSE;
+
+    ADO::Recordset15Ptr record;
+    record.CreateInstance(__uuidof(ADO::Recordset));
+
+    VARIANT* recordsAffected;
+    record = connection->Execute(L"SELECT username FROM Users WHERE username='" + (bstr_t)username + "' AND password='" + (bstr_t)password + "'", nullptr, 1);
+
+    if (!record->EndOfFile)
+        *isSuccess = VARIANT_TRUE;
+
+    record.Release();
     return S_OK;
 }
