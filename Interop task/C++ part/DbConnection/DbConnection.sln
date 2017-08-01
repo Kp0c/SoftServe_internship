@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseConnection", "DatabaseConnection\DatabaseConnection.vcxproj", "{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseConnectionPS", "DatabaseConnection\DatabaseConnectionPS.vcxproj", "{81EF57C2-011C-4E87-931B-EC64F70A7A91}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F} = {A40C3BCF-3FA2-495C-BCF2-90EDF598463F}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Debug|x64.ActiveCfg = Debug|x64
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Debug|x64.Build.0 = Debug|x64
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Debug|x86.ActiveCfg = Debug|Win32
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Debug|x86.Build.0 = Debug|Win32
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Release|x64.ActiveCfg = Release|x64
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Release|x64.Build.0 = Release|x64
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Release|x86.ActiveCfg = Release|Win32
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Release|x86.Build.0 = Release|Win32
+		{81EF57C2-011C-4E87-931B-EC64F70A7A91}.Debug|x64.ActiveCfg = Debug|x64
+		{81EF57C2-011C-4E87-931B-EC64F70A7A91}.Debug|x86.ActiveCfg = Debug|Win32
+		{81EF57C2-011C-4E87-931B-EC64F70A7A91}.Release|x64.ActiveCfg = Release|x64
+		{81EF57C2-011C-4E87-931B-EC64F70A7A91}.Release|x86.ActiveCfg = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

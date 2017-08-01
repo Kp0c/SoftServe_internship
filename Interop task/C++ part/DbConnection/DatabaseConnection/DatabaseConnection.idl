@@ -1,0 +1,35 @@
+// DatabaseConnection.idl : IDL source for DatabaseConnection
+//
+
+// This file will be processed by the MIDL tool to
+// produce the type library (DatabaseConnection.tlb) and marshalling code.
+
+import "oaidl.idl";
+import "ocidl.idl";
+
+[
+	object,
+	uuid(B95AA554-8DEF-4CC3-B2D9-CA5AC8ED5BCA),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface IDbCon : IDispatch{
+    [id(5)] HRESULT AddUser([in] BSTR username, [in] BSTR password);
+};
+[
+	uuid(13A7769C-089A-4871-9650-AA22859308B5),
+	version(1.0),
+]
+library DatabaseConnectionLib
+{
+	importlib("stdole2.tlb");
+	[
+		uuid(B6E08CA7-27B6-4961-B983-7841A664B88E)		
+	]
+	coclass DbCon
+	{
+		[default] interface IDbCon;
+	};
+};
+

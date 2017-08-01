@@ -6,11 +6,13 @@
 # Build results
 
 [Dd]ebug/
+DebugPs
 [Rr]elease/
 x64/
 build/
 [Bb]in/
 [Oo]bj/
+ipch/
 
 # NuGet Packages
 *.nupkg
@@ -42,6 +44,7 @@ build/
 *.tmp
 *.tmp_proj
 *.log
+*.tlog
 *.vspscc
 *.vssscc
 .builds
