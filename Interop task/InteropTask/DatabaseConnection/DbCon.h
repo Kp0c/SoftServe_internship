@@ -45,6 +45,7 @@ public:
     STDMETHOD(TryLogIn)(BSTR username, BSTR password, VARIANT_BOOL* isSuccess);
     STDMETHOD(SendMoney)(BSTR from, BSTR to, LONG count);
     STDMETHOD(DeleteUser)(BSTR username);
+    STDMETHOD(GetTransactions)(BSTR username, VARIANT* transactions);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(DbCon), CDbCon)

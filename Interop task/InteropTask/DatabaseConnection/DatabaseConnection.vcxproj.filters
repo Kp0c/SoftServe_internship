@@ -34,6 +34,9 @@
     <ClCompile Include="DbCon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CppGUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -54,6 +57,9 @@
     <ClInclude Include="DbCon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="CppGUI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="DatabaseConnection.rc">
@@ -68,6 +74,9 @@
       <Filter>Source Files</Filter>
     </None>
     <None Include="DbCon.rgs">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="CppGUI.rgs">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

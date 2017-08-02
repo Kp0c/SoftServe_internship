@@ -20,5 +20,6 @@
 
 --INSERT INTO Users VALUES('admin','admin', default)
 --INSERT INTO Users VALUES('1','1', default)
+--INSERT INTO Users VALUES('0','0', default)
 
---EXECUTE make_transaction 'admin', '1', 200
+--EXECUTE make_transaction '0', '1', 200

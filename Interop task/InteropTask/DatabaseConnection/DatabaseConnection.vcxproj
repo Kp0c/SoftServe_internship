@@ -78,6 +78,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
     <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(ProgramFiles)\Common Files\System\ado;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <IgnoreImportLibrary>true</IgnoreImportLibrary>
@@ -210,6 +211,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CppGUI.cpp" />
     <ClCompile Include="DatabaseConnection.cpp" />
     <ClCompile Include="DatabaseConnection_i.c">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
@@ -248,6 +250,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CppGUI.h" />
     <ClInclude Include="DatabaseConnection_i.h" />
     <ClInclude Include="DbCon.h" />
     <ClInclude Include="dllmain.h" />
@@ -259,6 +262,7 @@
     <ResourceCompile Include="DatabaseConnection.rc" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="CppGUI.rgs" />
     <None Include="DatabaseConnection.def" />
     <None Include="DatabaseConnection.rgs" />
     <None Include="DbCon.rgs" />

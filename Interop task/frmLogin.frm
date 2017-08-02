@@ -125,11 +125,13 @@ End Function
     
 Private Sub CmdOK_Click()
    Dim a As New DbCon
+   Dim b As New CppGUI
    
     If ValidateLogin() And ValidatePassword() Then
         If a.TryLogIn(txtUserName.text, txtPassword.text) Then
-            MsgBox "validated"
-             a.SendMoney "1", "admin", 300
+            Me.Hide
+            b.ShowGUI txtUserName.text
+            Unload Me
         Else
             MsgBox "Wrong username or password"
         End If

@@ -1,0 +1,16 @@
+HKCR
+{
+	NoRemove CLSID
+	{
+		ForceRemove {5F5F424B-0758-4821-B2EB-366C42CAAABE} = s 'CppGUI Class'
+		{
+			ForceRemove Programmable
+			InprocServer32 = s '%MODULE%'
+			{
+				val ThreadingModel = s 'Apartment'
+			}
+			TypeLib = s '{13A7769C-089A-4871-9650-AA22859308B5}'
+			Version = s '1.0'
+		}
+	}
+}

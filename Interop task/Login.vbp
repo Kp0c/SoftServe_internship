@@ -1,10 +1,12 @@
 Type=Exe
 Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\Windows\SysWOW64\stdole2.tlb#OLE Automation
-Reference=*\G{13A7769C-089A-4871-9650-AA22859308B5}#1.0#0#C++ part\DbConnection\Debug\DatabaseConnection.dll#DatabaseConnectionLib
+Reference=*\G{13A7769C-089A-4871-9650-AA22859308B5}#1.0#0#InteropTask\Debug\DatabaseConnection.dll#DatabaseConnectionLib
 Form=frmLogin.frm
 Module=SendKeysFix; SendKeysFix.bas
 Startup="frmLogin"
 HelpFile=""
+ExeName32="Login.exe"
+Path32="C:\Users\ayusc\Desktop"
 Command32=""
 Name="login"
 HelpContextID="0"

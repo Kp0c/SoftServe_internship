@@ -19,6 +19,17 @@ interface IDbCon : IDispatch{
     [id(6)] HRESULT TryLogIn([in] BSTR username, [in] BSTR password, [out, retval] VARIANT_BOOL* isSuccess);
     [id(7)] HRESULT SendMoney([in] BSTR from, [in] BSTR to, [in] LONG count);
     [id(8)] HRESULT DeleteUser([in] BSTR username);
+    [id(10)] HRESULT GetTransactions([in] BSTR username, [out, retval] VARIANT* transactions);
+};
+[
+	object,
+	uuid(B9337F32-EF52-4EC9-9BB5-C85324B06F93),
+	dual,
+	nonextensible,
+	pointer_default(unique)
+]
+interface ICppGUI : IDispatch{
+    [id(1)] HRESULT ShowGUI([in] BSTR username);
 };
 [
 	uuid(13A7769C-089A-4871-9650-AA22859308B5),
@@ -33,6 +44,13 @@ library DatabaseConnectionLib
 	coclass DbCon
 	{
 		[default] interface IDbCon;
+	};
+	[
+		uuid(5F5F424B-0758-4821-B2EB-366C42CAAABE)		
+	]
+	coclass CppGUI
+	{
+		[default] interface ICppGUI;
 	};
 };
 

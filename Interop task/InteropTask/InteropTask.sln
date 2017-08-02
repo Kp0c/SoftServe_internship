@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseConnection", "DatabaseConnection\DatabaseConnection.vcxproj", "{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F} = {A40C3BCF-3FA2-495C-BCF2-90EDF598463F}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
