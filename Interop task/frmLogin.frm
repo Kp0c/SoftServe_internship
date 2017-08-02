@@ -2,14 +2,14 @@ VERSION 5.00
 Begin VB.Form frmLogin 
    BorderStyle     =   3  'Fixed Dialog
    Caption         =   "Login"
-   ClientHeight    =   2175
+   ClientHeight    =   1620
    ClientLeft      =   12150
    ClientTop       =   7560
    ClientWidth     =   3975
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
-   ScaleHeight     =   1285.062
+   ScaleHeight     =   957.15
    ScaleMode       =   0  'User
    ScaleWidth      =   3732.31
    Begin VB.CommandButton cmdShowPassword 
@@ -20,18 +20,10 @@ Begin VB.Form frmLogin
       MaskColor       =   &H80000014&
       Picture         =   "frmLogin.frx":0000
       Style           =   1  'Graphical
-      TabIndex        =   7
+      TabIndex        =   6
       TabStop         =   0   'False
       Top             =   480
       Width           =   375
-   End
-   Begin VB.CheckBox chkRememberMe 
-      Caption         =   "Remember me"
-      Height          =   375
-      Left            =   1320
-      TabIndex        =   3
-      Top             =   960
-      Width           =   1695
    End
    Begin VB.TextBox txtUserName 
       Height          =   345
@@ -44,18 +36,18 @@ Begin VB.Form frmLogin
       Caption         =   "OK"
       Default         =   -1  'True
       Height          =   390
-      Left            =   480
-      TabIndex        =   4
-      Top             =   1560
+      Left            =   600
+      TabIndex        =   3
+      Top             =   1080
       Width           =   1140
    End
    Begin VB.CommandButton cmdCancel 
       Cancel          =   -1  'True
       Caption         =   "Cancel"
       Height          =   390
-      Left            =   2040
-      TabIndex        =   5
-      Top             =   1560
+      Left            =   2160
+      TabIndex        =   4
+      Top             =   1080
       Width           =   1140
    End
    Begin VB.TextBox txtPassword 
@@ -79,7 +71,7 @@ Begin VB.Form frmLogin
       Caption         =   "&Password:"
       Height          =   270
       Left            =   105
-      TabIndex        =   6
+      TabIndex        =   5
       Top             =   540
       Width           =   1080
    End
@@ -124,13 +116,19 @@ Private Function ValidatePassword() As Boolean
 End Function
     
 Private Sub CmdOK_Click()
-   Dim a As New DbCon
-   Dim b As New CppGUI
-   
     If ValidateLogin() And ValidatePassword() Then
-        If a.TryLogIn(txtUserName.text, txtPassword.text) Then
+        Dim databaseConnection As New DbCon
+        If databaseConnection.TryLogIn(txtUserName.text, txtPassword.text) Then
             Me.Hide
-            b.ShowGUI txtUserName.text
+            
+            If txtUserName.text = "admin" Then
+                Dim adminGUI As New AdminForm
+                adminGUI.Show
+            Else
+                Dim userGUI As New CppGUI
+                userGUI.ShowGUI txtUserName.text
+            End If
+            
             Unload Me
         Else
             MsgBox "Wrong username or password"

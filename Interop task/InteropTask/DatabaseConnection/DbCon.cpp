@@ -79,7 +79,10 @@ STDMETHODIMP CDbCon::GetTransactions(BSTR username, VARIANT* transactions)
         record->MoveNext();
     }
 
-    record->MoveFirst();
+    if (elementsCount != 0)
+    {
+        record->MoveFirst();
+    }
 
     CComSafeArrayBound bound[2];
     bound[0].SetCount(elementsCount);

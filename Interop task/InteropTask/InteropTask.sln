@@ -3,37 +3,57 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseConnection", "DatabaseConnection\DatabaseConnection.vcxproj", "{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseConnectionUser", "DatabaseConnection\DatabaseConnection.vcxproj", "{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}"
 	ProjectSection(ProjectDependencies) = postProject
 		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F} = {A40C3BCF-3FA2-495C-BCF2-90EDF598463F}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseConnectionAdmin", "DatabaseConnectionAdmin\DatabaseConnectionAdmin.csproj", "{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Debug|x64.ActiveCfg = Debug|x64
 		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Debug|x64.Build.0 = Debug|x64
 		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Debug|x86.ActiveCfg = Debug|Win32
 		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Debug|x86.Build.0 = Debug|Win32
+		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Release|Any CPU.ActiveCfg = Release|Win32
 		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Release|x64.ActiveCfg = Release|x64
 		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Release|x64.Build.0 = Release|x64
 		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Release|x86.ActiveCfg = Release|Win32
 		{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}.Release|x86.Build.0 = Release|Win32
+		{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}.Debug|Any CPU.ActiveCfg = Debug|Win32
 		{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}.Debug|x64.ActiveCfg = Debug|x64
 		{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}.Debug|x64.Build.0 = Debug|x64
 		{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}.Debug|x86.ActiveCfg = Debug|Win32
 		{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}.Debug|x86.Build.0 = Debug|Win32
+		{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}.Release|Any CPU.ActiveCfg = Release|Win32
 		{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}.Release|x64.ActiveCfg = Release|x64
 		{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}.Release|x64.Build.0 = Release|x64
 		{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}.Release|x86.ActiveCfg = Release|Win32
 		{F01B88D8-5A26-4CB2-8950-90A6CE84BDF0}.Release|x86.Build.0 = Release|Win32
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Debug|x64.Build.0 = Debug|Any CPU
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Debug|x86.Build.0 = Debug|Any CPU
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Release|x64.ActiveCfg = Release|Any CPU
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Release|x64.Build.0 = Release|Any CPU
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Release|x86.ActiveCfg = Release|Any CPU
+		{0BE407D1-AEE6-4C3E-8456-0412EEA55BEA}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

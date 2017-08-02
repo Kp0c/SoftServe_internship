@@ -139,7 +139,7 @@ int main()
     ICppGUI* gui = NULL;
     CoCreateInstance(CLSID_CppGUI, NULL, CLSCTX_INPROC_SERVER, IID_ICppGUI, (void**)&gui);
 
-    gui->ShowGUI(L"1");
+    gui->ShowGUI(L"2");
 
     CoUninitialize();
 

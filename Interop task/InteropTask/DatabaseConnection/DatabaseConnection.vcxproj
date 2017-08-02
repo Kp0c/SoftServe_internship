@@ -22,6 +22,7 @@
     <ProjectGuid>{A40C3BCF-3FA2-495C-BCF2-90EDF598463F}</ProjectGuid>
     <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
     <Keyword>AtlProj</Keyword>
+    <ProjectName>DatabaseConnectionUser</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
