@@ -67,6 +67,7 @@ public:
 private:
     int yOffset = 0;
     CComSafeArray<BSTR> dbData;
+    HWND parentHwnd;
 
     LRESULT MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
     void GetDbData(BSTR username);

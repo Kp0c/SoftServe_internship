@@ -46,8 +46,6 @@ void CCppGUI::DrawString(Graphics& graphics, std::wstring string, int x1, int y1
 
 void CCppGUI::OnPaint(HDC hdc)
 {
-    //Graphics graphics(hdc);
-
     Bitmap bitmap(WIDTH, HEIGHT);
     Graphics* graphics = Graphics::FromImage(&bitmap);
     graphics->Clear(Color::White);
@@ -119,6 +117,7 @@ LRESULT CCppGUI::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         EndPaint(hwnd, &ps);
         break;
     case WM_CLOSE:
+        EnableWindow(parentHwnd, TRUE);
         DestroyWindow(hwnd);
         break;
     case WM_DESTROY:
@@ -160,6 +159,8 @@ LRESULT CCppGUI::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 STDMETHODIMP CCppGUI::ShowGUI(LONG parentHwnd, BSTR username)
 {
+    this->parentHwnd = (HWND)parentHwnd;
+
     GdiplusStartupInput gdiplusStartupInput;
     ULONG_PTR gdiplusToken;
     GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
@@ -175,7 +176,6 @@ STDMETHODIMP CCppGUI::ShowGUI(LONG parentHwnd, BSTR username)
     GetDbData(username);
 
     ShowWindow(hwnd, SW_SHOWNORMAL);
-    UpdateWindow(hwnd);
 
     MSG message;
     while (GetMessage(&message, NULL, 0, 0) > 0)
@@ -248,6 +248,8 @@ HWND CCppGUI::SetupWindow(std::wstring username, HWND parentHwnd)
             MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }
+
+    EnableWindow(parentHwnd, FALSE);
 
     return hwnd;
 }

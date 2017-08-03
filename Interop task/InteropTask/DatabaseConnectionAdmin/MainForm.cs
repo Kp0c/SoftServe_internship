@@ -56,10 +56,8 @@ namespace DatabaseConnectionAdmin
 
         private void ShowAsSelected_Click(object sender, EventArgs e)
         {
-            this.Enabled = false;
             ShowGUI(this.Handle, UsersGrid.SelectedRows[0].Cells[0].Value.ToString());
             usersTableAdapter.Fill(lastTaskDataSet.Users);
-            this.Enabled = true;
         }
 
         private void Refresh_Click(object sender, EventArgs e)

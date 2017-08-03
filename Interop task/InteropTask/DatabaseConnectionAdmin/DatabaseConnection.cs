@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
+using Microsoft.Win32;
 
 namespace DatabaseConnectionAdmin
 {
@@ -19,7 +20,16 @@ namespace DatabaseConnectionAdmin
 
         public DatabaseConnection()
         {
-            string connectionString = @"Data Source=NETDAAN;Initial Catalog=LastTask;Trusted_Connection=yes;";
+            //string connectionString = @"Data Source=NETDAAN;Initial Catalog=LastTask;Trusted_Connection=yes;";
+            //Computer\HKEY_CURRENT_USER\Software\VB and VBA Program Settings\LastTask\Database
+            RegistryKey hkcu = Registry.CurrentUser;
+            RegistryKey mine = hkcu.OpenSubKey("Software").OpenSubKey("VB and VBA Program Settings").OpenSubKey("LastTask").OpenSubKey("Database");
+
+            string connectionString = "Data Source=" + mine.GetValue("DataSource") + ";";
+            connectionString += "Initial Catalog=" + mine.GetValue("InitialCatalog") + ";";
+            connectionString += "Trusted_Connection=" + (mine.GetValue("Trusted_Connection").ToString() == "True" ? "yes" : "no") + ";";
+            connectionString += "User Id=" + mine.GetValue("Username") + ";";
+            connectionString += "Password=" + mine.GetValue("Password") + ";";
 
             connection = new SqlConnection(connectionString);
         }
