@@ -29,7 +29,7 @@ interface IDbCon : IDispatch{
 	pointer_default(unique)
 ]
 interface ICppGUI : IDispatch{
-    [id(1)] HRESULT ShowGUI([in] BSTR username);
+    [id(1)] HRESULT ShowGUI([in] LONG parentHwnd, [in] BSTR username);
 };
 [
 	uuid(13A7769C-089A-4871-9650-AA22859308B5),

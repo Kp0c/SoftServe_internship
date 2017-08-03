@@ -126,7 +126,7 @@ Private Sub CmdOK_Click()
                 adminGUI.Show
             Else
                 Dim userGUI As New CppGUI
-                userGUI.ShowGUI txtUserName.text
+                userGUI.ShowGUI Me.hWnd, txtUserName.text
             End If
             
             Unload Me

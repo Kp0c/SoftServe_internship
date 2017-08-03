@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Forms;
 
 namespace DatabaseConnectionAdmin
@@ -47,6 +48,23 @@ namespace DatabaseConnectionAdmin
             NewTransaction transactionForm = new NewTransaction();
             transactionForm.ShowDialog();
 
+            transactionsTableAdapter.Fill(lastTaskDataSet.Transactions);
+        }
+
+        [DllImport("DatabaseConnectionUser", CallingConvention = CallingConvention.Cdecl)]
+        static extern void ShowGUI(IntPtr parentHwnd, [MarshalAs(UnmanagedType.BStr)] string username);
+
+        private void ShowAsSelected_Click(object sender, EventArgs e)
+        {
+            this.Enabled = false;
+            ShowGUI(this.Handle, UsersGrid.SelectedRows[0].Cells[0].Value.ToString());
+            usersTableAdapter.Fill(lastTaskDataSet.Users);
+            this.Enabled = true;
+        }
+
+        private void Refresh_Click(object sender, EventArgs e)
+        {
+            usersTableAdapter.Fill(lastTaskDataSet.Users);
             transactionsTableAdapter.Fill(lastTaskDataSet.Transactions);
         }
     }

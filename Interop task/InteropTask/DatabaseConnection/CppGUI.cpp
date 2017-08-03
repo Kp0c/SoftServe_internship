@@ -2,10 +2,13 @@
 
 #include "stdafx.h"
 #include "CppGUI.h"
+#include "InteropFunctions.h"
 
 #include <Windows.h>
 
 #include "DbCon.h"
+
+#define BUTTON_ID      1001
 
 CCppGUI* CCppGUI::cppGUI = nullptr;
 
@@ -155,16 +158,19 @@ LRESULT CCppGUI::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-STDMETHODIMP CCppGUI::ShowGUI(BSTR username)
+STDMETHODIMP CCppGUI::ShowGUI(LONG parentHwnd, BSTR username)
 {
     GdiplusStartupInput gdiplusStartupInput;
     ULONG_PTR gdiplusToken;
     GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 
-    HWND hwnd = SetupWindow(username);
+    HWND hwnd = SetupWindow(username, (HWND)parentHwnd);
 
     if (hwnd == 0)
+    {
+        ShutdownWindow(hwnd, username);
         return S_FALSE;
+    }
 
     GetDbData(username);
 
@@ -174,21 +180,36 @@ STDMETHODIMP CCppGUI::ShowGUI(BSTR username)
     MSG message;
     while (GetMessage(&message, NULL, 0, 0) > 0)
     {
+        if (message.message == WM_HOTKEY)
+        {
+            AddNewTransaction(username);
+            GetDbData(username);
+            InvalidateRgn(hwnd, NULL, FALSE);
+        }
+
         TranslateMessage(&message);
         DispatchMessage(&message);
     }
+
+    ShutdownWindow(hwnd, username);
     GdiplusShutdown(gdiplusToken);    
 
     return S_OK;
 }
+void CCppGUI::ShutdownWindow(HWND hwnd, std::wstring username)
+{
+    UnregisterClass(username.c_str(), NULL);
+    UnregisterHotKey(NULL , 1);
+}
 
-HWND CCppGUI::SetupWindow(std::wstring username)
+HWND CCppGUI::SetupWindow(std::wstring username, HWND parentHwnd)
 {
     WNDCLASSEX wc;
     HWND hwnd;
    
     wc.cbSize = sizeof(WNDCLASSEX);
     wc.lpfnWndProc = WndProc;
+    wc.style = CS_HREDRAW | CS_VREDRAW;
     wc.cbClsExtra = 0;
     wc.cbWndExtra = 0;
     wc.hIcon = LoadIcon(NULL, IDI_APPLICATION);
@@ -210,13 +231,20 @@ HWND CCppGUI::SetupWindow(std::wstring username)
         WS_EX_CLIENTEDGE,
         username.c_str(),
         title.c_str(),
-        WS_OVERLAPPED | WS_SYSMENU,
+        WS_OVERLAPPED | WS_OVERLAPPED | WS_SYSMENU,
         CW_USEDEFAULT, CW_USEDEFAULT, WIDTH, HEIGHT,
-        NULL, NULL, NULL, NULL);
+        parentHwnd, NULL, NULL, NULL);
 
     if (hwnd == NULL)
     {
-        MessageBox(NULL, L"Window Creation Failed!", L"Error!",
+        MessageBox(NULL, (L"Window creation failed! Error code: " + std::to_wstring(GetLastError())).c_str(), L"Error!",
+            MB_ICONEXCLAMATION | MB_OK);
+        return 0;
+    }
+
+    if (!RegisterHotKey(NULL, 1, MOD_CONTROL | MOD_NOREPEAT, 0x54))
+    {
+        MessageBox(NULL, L"Hotkey registering failed!", L"Error!",
             MB_ICONEXCLAMATION | MB_OK);
         return 0;
     }

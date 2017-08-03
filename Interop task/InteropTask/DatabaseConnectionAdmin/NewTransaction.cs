@@ -12,9 +12,17 @@ namespace DatabaseConnectionAdmin
 {
     public partial class NewTransaction : Form
     {
-        public NewTransaction()
+        public NewTransaction(string username = "admin")
         {
             InitializeComponent();
+
+            if (username != "admin")
+            {
+                From.Text = username;
+                From.ReadOnly = true;
+                From.HideSelection = true;
+                To.Select();
+            }
         }
 
         private bool ValidateField(string field, string name)

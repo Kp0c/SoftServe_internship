@@ -63,7 +63,7 @@ public:
     static CCppGUI* cppGUI;
     static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-    STDMETHOD(ShowGUI)(BSTR username);
+    STDMETHOD(ShowGUI)(LONG parentHwnd, BSTR username);
 private:
     int yOffset = 0;
     CComSafeArray<BSTR> dbData;
@@ -71,7 +71,8 @@ private:
     LRESULT MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
     void GetDbData(BSTR username);
     void DrawString(Graphics& graphics, std::wstring string, int x1, int y1, int x2, int y2);
-    HWND SetupWindow(std::wstring);
+    void ShutdownWindow(HWND hwnd, std::wstring username);
+    HWND SetupWindow(std::wstring, HWND parentHwnd);
     void OnPaint(HDC hdc);
 };
 

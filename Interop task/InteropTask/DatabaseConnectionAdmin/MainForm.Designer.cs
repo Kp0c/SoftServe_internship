@@ -39,16 +39,18 @@
             this.usersTableAdapter = new DatabaseConnectionAdmin.LastTaskDataSetTableAdapters.UsersTableAdapter();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.transactionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.transactionsTableAdapter = new DatabaseConnectionAdmin.LastTaskDataSetTableAdapters.TransactionsTableAdapter();
-            this.AddUserButton = new System.Windows.Forms.Button();
             this.RemoveUser = new System.Windows.Forms.Button();
+            this.AddUserButton = new System.Windows.Forms.Button();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
             this.AddTransaction = new System.Windows.Forms.Button();
+            this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.debitUserDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.creditUserDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.sumDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.transactionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.transactionsTableAdapter = new DatabaseConnectionAdmin.LastTaskDataSetTableAdapters.TransactionsTableAdapter();
+            this.ShowAsSelected = new System.Windows.Forms.Button();
+            this.Refresh = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.UsersGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.usersBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lastTaskDataSetBindingSource)).BeginInit();
@@ -132,6 +134,7 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.SystemColors.Control;
+            this.tabPage1.Controls.Add(this.ShowAsSelected);
             this.tabPage1.Controls.Add(this.RemoveUser);
             this.tabPage1.Controls.Add(this.AddUserButton);
             this.tabPage1.Controls.Add(this.UsersGrid);
@@ -141,6 +144,26 @@
             this.tabPage1.Size = new System.Drawing.Size(743, 510);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Users";
+            // 
+            // RemoveUser
+            // 
+            this.RemoveUser.Location = new System.Drawing.Point(571, 7);
+            this.RemoveUser.Name = "RemoveUser";
+            this.RemoveUser.Size = new System.Drawing.Size(144, 23);
+            this.RemoveUser.TabIndex = 1;
+            this.RemoveUser.Text = "Remove selected user";
+            this.RemoveUser.UseVisualStyleBackColor = true;
+            this.RemoveUser.Click += new System.EventHandler(this.RemoveUser_Click);
+            // 
+            // AddUserButton
+            // 
+            this.AddUserButton.Location = new System.Drawing.Point(462, 7);
+            this.AddUserButton.Name = "AddUserButton";
+            this.AddUserButton.Size = new System.Drawing.Size(103, 23);
+            this.AddUserButton.TabIndex = 1;
+            this.AddUserButton.Text = "Add user";
+            this.AddUserButton.UseVisualStyleBackColor = true;
+            this.AddUserButton.Click += new System.EventHandler(this.AddUserButton_Click);
             // 
             // tabPage2
             // 
@@ -153,6 +176,16 @@
             this.tabPage2.Size = new System.Drawing.Size(743, 510);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Transactions";
+            // 
+            // AddTransaction
+            // 
+            this.AddTransaction.Location = new System.Drawing.Point(540, 7);
+            this.AddTransaction.Name = "AddTransaction";
+            this.AddTransaction.Size = new System.Drawing.Size(111, 23);
+            this.AddTransaction.TabIndex = 1;
+            this.AddTransaction.Text = "Add transaction";
+            this.AddTransaction.UseVisualStyleBackColor = true;
+            this.AddTransaction.Click += new System.EventHandler(this.AddTransaction_Click);
             // 
             // dataGridView2
             // 
@@ -173,45 +206,6 @@
             this.dataGridView2.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dataGridView2.Size = new System.Drawing.Size(526, 500);
             this.dataGridView2.TabIndex = 0;
-            // 
-            // transactionsBindingSource
-            // 
-            this.transactionsBindingSource.DataMember = "Transactions";
-            this.transactionsBindingSource.DataSource = this.lastTaskDataSetBindingSource;
-            // 
-            // transactionsTableAdapter
-            // 
-            this.transactionsTableAdapter.ClearBeforeFill = true;
-            // 
-            // AddUserButton
-            // 
-            this.AddUserButton.Location = new System.Drawing.Point(462, 7);
-            this.AddUserButton.Name = "AddUserButton";
-            this.AddUserButton.Size = new System.Drawing.Size(103, 23);
-            this.AddUserButton.TabIndex = 1;
-            this.AddUserButton.Text = "Add user";
-            this.AddUserButton.UseVisualStyleBackColor = true;
-            this.AddUserButton.Click += new System.EventHandler(this.AddUserButton_Click);
-            // 
-            // RemoveUser
-            // 
-            this.RemoveUser.Location = new System.Drawing.Point(571, 7);
-            this.RemoveUser.Name = "RemoveUser";
-            this.RemoveUser.Size = new System.Drawing.Size(144, 23);
-            this.RemoveUser.TabIndex = 1;
-            this.RemoveUser.Text = "Remove selected user";
-            this.RemoveUser.UseVisualStyleBackColor = true;
-            this.RemoveUser.Click += new System.EventHandler(this.RemoveUser_Click);
-            // 
-            // AddTransaction
-            // 
-            this.AddTransaction.Location = new System.Drawing.Point(540, 7);
-            this.AddTransaction.Name = "AddTransaction";
-            this.AddTransaction.Size = new System.Drawing.Size(111, 23);
-            this.AddTransaction.TabIndex = 1;
-            this.AddTransaction.Text = "Add transaction";
-            this.AddTransaction.UseVisualStyleBackColor = true;
-            this.AddTransaction.Click += new System.EventHandler(this.AddTransaction_Click);
             // 
             // debitUserDataGridViewTextBoxColumn
             // 
@@ -234,11 +228,41 @@
             this.sumDataGridViewTextBoxColumn.Name = "sumDataGridViewTextBoxColumn";
             this.sumDataGridViewTextBoxColumn.ReadOnly = true;
             // 
+            // transactionsBindingSource
+            // 
+            this.transactionsBindingSource.DataMember = "Transactions";
+            this.transactionsBindingSource.DataSource = this.lastTaskDataSetBindingSource;
+            // 
+            // transactionsTableAdapter
+            // 
+            this.transactionsTableAdapter.ClearBeforeFill = true;
+            // 
+            // ShowAsSelected
+            // 
+            this.ShowAsSelected.Location = new System.Drawing.Point(571, 36);
+            this.ShowAsSelected.Name = "ShowAsSelected";
+            this.ShowAsSelected.Size = new System.Drawing.Size(144, 23);
+            this.ShowAsSelected.TabIndex = 1;
+            this.ShowAsSelected.Text = "Show as selected user";
+            this.ShowAsSelected.UseVisualStyleBackColor = true;
+            this.ShowAsSelected.Click += new System.EventHandler(this.ShowAsSelected_Click);
+            // 
+            // Refresh
+            // 
+            this.Refresh.Location = new System.Drawing.Point(13, 552);
+            this.Refresh.Name = "Refresh";
+            this.Refresh.Size = new System.Drawing.Size(75, 23);
+            this.Refresh.TabIndex = 2;
+            this.Refresh.Text = "Refersh";
+            this.Refresh.UseVisualStyleBackColor = true;
+            this.Refresh.Click += new System.EventHandler(this.Refresh_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(776, 561);
+            this.ClientSize = new System.Drawing.Size(776, 580);
+            this.Controls.Add(this.Refresh);
             this.Controls.Add(this.tabControl1);
             this.Name = "MainForm";
             this.Text = "Admin form";
@@ -278,6 +302,8 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn debitUserDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn creditUserDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn sumDataGridViewTextBoxColumn;
+        private System.Windows.Forms.Button ShowAsSelected;
+        private System.Windows.Forms.Button Refresh;
     }
 }
 

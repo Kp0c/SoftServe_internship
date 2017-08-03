@@ -16,7 +16,7 @@ namespace DatabaseConnectionAdmin
         public void Show()
         {
             MainForm adminFrom = new MainForm();
-            adminFrom.Show();
+            adminFrom.ShowDialog();
         }
     }
 }
