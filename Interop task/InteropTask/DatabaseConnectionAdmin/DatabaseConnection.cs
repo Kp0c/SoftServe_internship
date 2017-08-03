@@ -25,14 +25,13 @@ namespace DatabaseConnectionAdmin
 
         public DatabaseConnection()
         {
-            RegistryKey hkcu = Registry.CurrentUser;
-            RegistryKey mine = hkcu.OpenSubKey("Software").OpenSubKey("VB and VBA Program Settings").OpenSubKey("LastTask").OpenSubKey("Database");
+            RegistryKey databaseData = Registry.CurrentUser.OpenSubKey("Software").OpenSubKey("VB and VBA Program Settings").OpenSubKey("LastTask").OpenSubKey("Database");
 
-            string connectionString = "Data Source=" + mine.GetValue("Data Source") + ";";
-            connectionString += "Initial Catalog=" + mine.GetValue("Initial Catalog") + ";";
-            connectionString += "Trusted_Connection=" + mine.GetValue("Trusted_Connection").ToString() + ";";
-            connectionString += "User Id=" + mine.GetValue("Username") + ";";
-            connectionString += "Password=" + mine.GetValue("Password") + ";";
+            string connectionString = "Data Source=" + databaseData.GetValue("Data Source") + ";";
+            connectionString += "Initial Catalog=" + databaseData.GetValue("Initial Catalog") + ";";
+            connectionString += "Trusted_Connection=" + databaseData.GetValue("Trusted_Connection").ToString() + ";";
+            connectionString += "User Id=" + databaseData.GetValue("Username") + ";";
+            connectionString += "Password=" + databaseData.GetValue("Password") + ";";
 
             connection = new SqlConnection(connectionString);
         }
