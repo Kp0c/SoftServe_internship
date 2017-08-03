@@ -45,7 +45,6 @@ namespace DatabaseConnectionAdmin
                 MessageBox.Show("Wrong \"Money\" field value");
                 Money.Text = "";
                 Money.Select();
-               
             }
         }
     }

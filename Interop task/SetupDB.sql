@@ -18,8 +18,15 @@
 --	UPDATE Users SET [#money]=[#money]+@count WHERE username = @to
 --GO
 
+--CREATE PROCEDURE remove_user @username varchar(255)
+--As
+--	DELETE FROM Transactions WHERE debitUser=@username OR creditUser=@username
+--	DELETE FROM Users WHERE username=@username
+--GO
+
 --INSERT INTO Users VALUES('admin','admin', default)
 --INSERT INTO Users VALUES('1','1', default)
 --INSERT INTO Users VALUES('0','0', default)
 
 --EXECUTE make_transaction '0', '1', 200
+--EXECUTE remove_user '0'

@@ -37,12 +37,17 @@ Public Class DatabaseSetup
         End Try
 
         If connection.State = ConnectionState.Open Then
-            SaveSetting("LastTask", "Database", "DataSource", txtDataSource.Text)
-            SaveSetting("LastTask", "Database", "InitialCatalog", txtInitialCatalog.Text)
-            SaveSetting("LastTask", "Database", "Trusted_Connection", chkTrustedConnection.Checked)
+            SaveSetting("LastTask", "Database", "Data Source", txtDataSource.Text)
+            SaveSetting("LastTask", "Database", "Initial Catalog", txtInitialCatalog.Text)
             SaveSetting("LastTask", "Database", "username", txtUsername.Text)
             SaveSetting("LastTask", "Database", "password", txtPassword.Text)
             SaveSetting("LastTask", "Database", "ConnectionTimeout", nudConnectionTimeout.Value)
+
+            If chkTrustedConnection.Checked Then
+                SaveSetting("LastTask", "Database", "Trusted_Connection", "yes")
+            Else
+                SaveSetting("LastTask", "Database", "Trusted_Connection", "no")
+            End If
         Else
             MessageBox.Show("Bad connection string, try again")
         End If
@@ -50,11 +55,18 @@ Public Class DatabaseSetup
     End Sub
 
     Private Sub DatabaseSetup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        txtDataSource.Text = GetSetting("LastTask", "Database", "DataSource", "")
-        txtInitialCatalog.Text = GetSetting("LastTask", "Database", "InitialCatalog", "")
-        chkTrustedConnection.Checked = GetSetting("LastTask", "Database", "Trusted_Connection", "False")
+        txtDataSource.Text = GetSetting("LastTask", "Database", "Data Source", "")
+        txtInitialCatalog.Text = GetSetting("LastTask", "Database", "Initial Catalog", "")
         txtUsername.Text = GetSetting("LastTask", "Database", "username", "")
         txtPassword.Text = GetSetting("LastTask", "Database", "password", "")
         nudConnectionTimeout.Value = GetSetting("LastTask", "Database", "ConnectionTimeout", "1")
+
+        Dim trustedConnection As String = GetSetting("LastTask", "Database", "Trusted_Connection", "False")
+        If trustedConnection = "yes" Then
+            chkTrustedConnection.Checked = True
+        Else
+            chkTrustedConnection.Checked = False
+        End If
+
     End Sub
 End Class

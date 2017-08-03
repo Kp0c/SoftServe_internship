@@ -2,6 +2,10 @@
 #include "resource.h"       // main symbols
 #include "DatabaseConnection_i.h"
 
+#include <map>
+#include <vector>
+#include <string>
+
 #import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") no_implementation
 
 #if defined(_WIN32_WCE) && !defined(_CE_DCOM) && !defined(_CE_ALLOW_SINGLE_THREADED_OBJECTS_IN_MTA)
@@ -46,6 +50,9 @@ public:
     STDMETHOD(SendMoney)(BSTR from, BSTR to, LONG count);
     STDMETHOD(DeleteUser)(BSTR username);
     STDMETHOD(GetTransactions)(BSTR username, VARIANT* transactions);
+
+private:
+    std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingsName);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(DbCon), CDbCon)

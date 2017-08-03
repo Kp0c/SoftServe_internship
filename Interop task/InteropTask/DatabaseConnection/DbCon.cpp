@@ -9,13 +9,47 @@
 
 // CDbCon
 
+std::map<std::wstring, std::wstring> CDbCon::GetSettings(std::vector<std::wstring> settingsName)
+{
+    std::map<std::wstring, std::wstring> settings;
+    HKEY hkey;
+    if (RegCreateKeyEx(HKEY_CURRENT_USER, L"Software\\VB and VBA Program Settings\\LastTask\\Database", 0, nullptr, REG_OPTION_VOLATILE, KEY_READ | KEY_WOW64_32KEY,
+        nullptr, &hkey, nullptr) == ERROR_SUCCESS)
+    {
+        for (std::wstring setting : settingsName)
+        {
+            //std::wstring data;
+            TCHAR data[255];
+            DWORD  buff = sizeof(data);
+            if (RegGetValue(hkey, nullptr, setting.c_str(), RRF_RT_REG_SZ, nullptr, data, &buff) == ERROR_SUCCESS)
+            {
+                settings[setting] = data;
+            }
+        }
+
+        RegCloseKey(hkey);
+    }
+
+    return settings;
+}
+
 CDbCon::CDbCon()
 {
     CoInitialize(NULL);
 
     connection.CreateInstance(__uuidof(ADO::Connection));
 
-    connection->Open(L"Provider=sqloleDb;Data Source=NETDAAN;Initial Catalog=LastTask;Trusted_Connection=yes;", L"", L"", -1);
+    std::vector<std::wstring> settingsName{ L"Data Source", L"Initial Catalog", L"Trusted_Connection" };
+
+    std::map<std::wstring, std::wstring> settings = GetSettings(settingsName);
+
+    std::wstring connectionString(L"Provider=sqloleDb;");
+
+    for (auto setting : settings)
+    {
+        connectionString += setting.first + L"=" + setting.second + L";";
+    }
+    connection->Open(connectionString.c_str(), L"", L"", -1);
 }
 
 CDbCon::~CDbCon()

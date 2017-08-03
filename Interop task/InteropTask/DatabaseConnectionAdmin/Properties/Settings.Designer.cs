@@ -31,6 +31,10 @@ namespace DatabaseConnectionAdmin.Properties {
             get {
                 return ((string)(this["LastTaskConnectionString"]));
             }
+            set
+            {
+                this["LastTaskConnectionString"] = value;
+            }
         }
     }
 }

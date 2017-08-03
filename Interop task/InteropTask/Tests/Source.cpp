@@ -129,8 +129,64 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
+#include <map>
+#include <string>
+#include <vector>
+
+std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingsName)
+{
+    std::map<std::wstring, std::wstring> settings;
+    HKEY hkey;
+    if (RegCreateKeyEx(HKEY_CURRENT_USER, L"Software\\VB and VBA Program Settings\\LastTask\\Database", 0, nullptr, REG_OPTION_VOLATILE, KEY_READ | KEY_WOW64_32KEY,
+        nullptr, &hkey, nullptr) == ERROR_SUCCESS)
+    {
+        for (std::wstring setting : settingsName)
+        {
+            //std::wstring data;
+            TCHAR data[255];
+            DWORD  buff = sizeof(data);
+            if (RegGetValue(hkey, nullptr, setting.c_str(), RRF_RT_REG_SZ, nullptr, data, &buff) == ERROR_SUCCESS)
+            {
+                settings[setting] = data;
+            }
+        }
+
+        RegCloseKey(hkey);
+    }
+
+    return settings;
+}
+
+#include <iostream>
+
+const std::wstring initialCatalog(L"Initial Catalog");
+
 int main()
 {
+    std::vector<std::wstring> settingsName{ L"Data Source", initialCatalog, L"Trusted_Connection" };
+
+    std::map<std::wstring, std::wstring> settings = GetSettings(settingsName);
+
+    std::wstring connectionString(L"Provider=sqloleDb;");
+
+    for (auto setting : settings)
+    {
+        if (setting.first == initialCatalog)
+        {
+            if (setting.second == L"True")
+            {
+                setting.second = L"yes";
+            }
+            else
+            {
+                setting.second = L"no";
+            }
+        }
+        connectionString += setting.first + L"=" + setting.second + L";";
+    }
+
+    std::wcout << connectionString << std::endl;
+
     CoInitialize(NULL);
 
     IDbCon* dbCon = NULL;

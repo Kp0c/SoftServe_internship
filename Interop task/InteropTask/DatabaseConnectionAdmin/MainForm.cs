@@ -16,16 +16,18 @@ namespace DatabaseConnectionAdmin
     {
         public MainForm()
         {
+            connection = new DatabaseConnection();
+
+            Properties.Settings.Default.LastTaskConnectionString = connection.GetProperlyConnectionString(); 
+            Properties.Settings.Default.Save();
+
             InitializeComponent();
         }
 
         DatabaseConnection connection;
         private void MainForm_Load(object sender, EventArgs e)
         {
-            connection = new DatabaseConnection();
-            // TODO: This line of code loads data into the 'lastTaskDataSet.Transactions' table. You can move, or remove it, as needed.
             transactionsTableAdapter.Fill(lastTaskDataSet.Transactions);
-            // TODO: This line of code loads data into the 'lastTaskDataSet.Users' table. You can move, or remove it, as needed.
             usersTableAdapter.Fill(lastTaskDataSet.Users);
         }
 
@@ -56,7 +58,7 @@ namespace DatabaseConnectionAdmin
 
         private void ShowAsSelected_Click(object sender, EventArgs e)
         {
-            ShowGUI(this.Handle, UsersGrid.SelectedRows[0].Cells[0].Value.ToString());
+            ShowGUI(Handle, UsersGrid.SelectedRows[0].Cells[0].Value.ToString());
             usersTableAdapter.Fill(lastTaskDataSet.Users);
         }
 

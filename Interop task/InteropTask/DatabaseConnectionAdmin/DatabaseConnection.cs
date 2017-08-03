@@ -18,16 +18,19 @@ namespace DatabaseConnectionAdmin
     {
         SqlConnection connection;
 
+        public string GetProperlyConnectionString()
+        {
+            return connection.ConnectionString;
+        }
+
         public DatabaseConnection()
         {
-            //string connectionString = @"Data Source=NETDAAN;Initial Catalog=LastTask;Trusted_Connection=yes;";
-            //Computer\HKEY_CURRENT_USER\Software\VB and VBA Program Settings\LastTask\Database
             RegistryKey hkcu = Registry.CurrentUser;
             RegistryKey mine = hkcu.OpenSubKey("Software").OpenSubKey("VB and VBA Program Settings").OpenSubKey("LastTask").OpenSubKey("Database");
 
-            string connectionString = "Data Source=" + mine.GetValue("DataSource") + ";";
-            connectionString += "Initial Catalog=" + mine.GetValue("InitialCatalog") + ";";
-            connectionString += "Trusted_Connection=" + (mine.GetValue("Trusted_Connection").ToString() == "True" ? "yes" : "no") + ";";
+            string connectionString = "Data Source=" + mine.GetValue("Data Source") + ";";
+            connectionString += "Initial Catalog=" + mine.GetValue("Initial Catalog") + ";";
+            connectionString += "Trusted_Connection=" + mine.GetValue("Trusted_Connection").ToString() + ";";
             connectionString += "User Id=" + mine.GetValue("Username") + ";";
             connectionString += "Password=" + mine.GetValue("Password") + ";";
 
@@ -51,7 +54,7 @@ namespace DatabaseConnectionAdmin
 
         public void RemoveUser(string username)
         {
-            ExecuteCommand("DELETE FROM Users WHERE username='" + username + "';");
+            ExecuteCommand("EXECUTE remove_user '" + username + "';");
         }
 
         public void ChangeMoneyOfUser(string username, int money)
