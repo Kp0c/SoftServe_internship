@@ -13,7 +13,7 @@ namespace DatabaseConnectionAdmin
     {
         readonly SqlConnection _connection;
 
-        public string GetProperlyConnectionString()
+        public string GetConnectionString()
         {
             return _connection.ConnectionString;
         }
@@ -60,6 +60,5 @@ namespace DatabaseConnectionAdmin
         {
             ExecuteCommand("EXECUTE make_transaction '" + from + "', '" + to + "', " + money);
         }
-
     }
 }

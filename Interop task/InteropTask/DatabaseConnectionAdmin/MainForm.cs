@@ -6,17 +6,17 @@ namespace DatabaseConnectionAdmin
 {
     public partial class MainForm : Form
     {
+        readonly DatabaseConnection _connection;
         public MainForm()
         {
             _connection = new DatabaseConnection();
 
-            Properties.Settings.Default.LastTaskConnectionString = _connection.GetProperlyConnectionString(); 
+            Properties.Settings.Default.LastTaskConnectionString = _connection.GetConnectionString(); 
             Properties.Settings.Default.Save();
 
             InitializeComponent();
         }
 
-        readonly DatabaseConnection _connection;
         private void MainForm_Load(object sender, EventArgs e)
         {
             transactionsTableAdapter.Fill(lastTaskDataSet.Transactions);
