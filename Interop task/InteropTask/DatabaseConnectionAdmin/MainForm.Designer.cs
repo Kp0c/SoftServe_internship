@@ -39,6 +39,7 @@
             this.usersTableAdapter = new DatabaseConnectionAdmin.LastTaskDataSetTableAdapters.UsersTableAdapter();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.ShowAsSelected = new System.Windows.Forms.Button();
             this.RemoveUser = new System.Windows.Forms.Button();
             this.AddUserButton = new System.Windows.Forms.Button();
             this.tabPage2 = new System.Windows.Forms.TabPage();
@@ -49,8 +50,7 @@
             this.sumDataGridViewTextBoxColumn = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.transactionsBindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.transactionsTableAdapter = new DatabaseConnectionAdmin.LastTaskDataSetTableAdapters.TransactionsTableAdapter();
-            this.ShowAsSelected = new System.Windows.Forms.Button();
-            this.Refresh = new System.Windows.Forms.Button();
+            this.RefreshButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.UsersGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.usersBindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.lastTaskDataSetBindingSource)).BeginInit();
@@ -145,6 +145,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Users";
             // 
+            // ShowAsSelected
+            // 
+            this.ShowAsSelected.Location = new System.Drawing.Point(571, 36);
+            this.ShowAsSelected.Name = "ShowAsSelected";
+            this.ShowAsSelected.Size = new System.Drawing.Size(144, 23);
+            this.ShowAsSelected.TabIndex = 1;
+            this.ShowAsSelected.Text = "Show as selected user";
+            this.ShowAsSelected.UseVisualStyleBackColor = true;
+            this.ShowAsSelected.Click += new System.EventHandler(this.ShowAsSelected_Click);
+            // 
             // RemoveUser
             // 
             this.RemoveUser.Location = new System.Drawing.Point(571, 7);
@@ -237,32 +247,22 @@
             // 
             this.transactionsTableAdapter.ClearBeforeFill = true;
             // 
-            // ShowAsSelected
+            // RefreshButton
             // 
-            this.ShowAsSelected.Location = new System.Drawing.Point(571, 36);
-            this.ShowAsSelected.Name = "ShowAsSelected";
-            this.ShowAsSelected.Size = new System.Drawing.Size(144, 23);
-            this.ShowAsSelected.TabIndex = 1;
-            this.ShowAsSelected.Text = "Show as selected user";
-            this.ShowAsSelected.UseVisualStyleBackColor = true;
-            this.ShowAsSelected.Click += new System.EventHandler(this.ShowAsSelected_Click);
-            // 
-            // Refresh
-            // 
-            this.Refresh.Location = new System.Drawing.Point(13, 552);
-            this.Refresh.Name = "Refresh";
-            this.Refresh.Size = new System.Drawing.Size(75, 23);
-            this.Refresh.TabIndex = 2;
-            this.Refresh.Text = "Refersh";
-            this.Refresh.UseVisualStyleBackColor = true;
-            this.Refresh.Click += new System.EventHandler(this.Refresh_Click);
+            this.RefreshButton.Location = new System.Drawing.Point(13, 552);
+            this.RefreshButton.Name = "RefreshButton";
+            this.RefreshButton.Size = new System.Drawing.Size(75, 23);
+            this.RefreshButton.TabIndex = 2;
+            this.RefreshButton.Text = "Refersh";
+            this.RefreshButton.UseVisualStyleBackColor = true;
+            this.RefreshButton.Click += new System.EventHandler(this.RefreshButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(776, 580);
-            this.Controls.Add(this.Refresh);
+            this.Controls.Add(this.RefreshButton);
             this.Controls.Add(this.tabControl1);
             this.Name = "MainForm";
             this.Text = "Admin form";
@@ -303,7 +303,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn creditUserDataGridViewTextBoxColumn;
         private System.Windows.Forms.DataGridViewTextBoxColumn sumDataGridViewTextBoxColumn;
         private System.Windows.Forms.Button ShowAsSelected;
-        private System.Windows.Forms.Button Refresh;
+        private System.Windows.Forms.Button RefreshButton;
     }
 }
 

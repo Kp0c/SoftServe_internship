@@ -9,6 +9,7 @@ namespace DatabaseConnectionAdmin
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
+        // ReSharper disable once UnusedMember.Local
         static void Main()
         {
             Application.EnableVisualStyles();

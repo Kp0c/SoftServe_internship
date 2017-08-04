@@ -54,7 +54,7 @@ namespace DatabaseConnectionAdmin
             usersTableAdapter.Fill(lastTaskDataSet.Users);
         }
 
-        private void Refresh_Click(object sender, EventArgs e)
+        private void RefreshButton_Click(object sender, EventArgs e)
         {
             usersTableAdapter.Fill(lastTaskDataSet.Users);
             transactionsTableAdapter.Fill(lastTaskDataSet.Transactions);
