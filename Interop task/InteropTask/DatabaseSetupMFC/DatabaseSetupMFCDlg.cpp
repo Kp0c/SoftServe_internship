@@ -47,7 +47,14 @@ BOOL CDatabaseSetupMFCDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);		// Set big icon
 	SetIcon(m_hIcon, FALSE);	// Set small icon
 
-	// TODO: load data
+    std::vector<std::wstring> settingsName{ L"Data Source", L"Initial Catalog" };
+    auto settings = GetSettings(settingsName);
+
+    CWnd* dataSourceEdit = GetDlgItem(IDC_DATA_SOURCE_EDIT);
+    dataSourceEdit->SetWindowTextW(settings[settingsName[0]].c_str());
+
+    dataSourceEdit = GetDlgItem(IDC_INITIAL_CATALOG_EDIT);
+    dataSourceEdit->SetWindowTextW(settings[settingsName[1]].c_str());
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -55,7 +62,6 @@ BOOL CDatabaseSetupMFCDlg::OnInitDialog()
 // If you add a minimize button to your dialog, you will need the code below
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
-
 void CDatabaseSetupMFCDlg::OnPaint()
 {
 	if (IsIconic())
@@ -95,11 +101,10 @@ bool CDatabaseSetupMFCDlg::TryConnect(std::wstring connectionString)
     CoInitialize(NULL);
     connection.CreateInstance(__uuidof(ADO::Connection));
 
-
     bool isOk = true;
     try
     {
-        connection->Open(connectionString.c_str(), L"", L"", -1);
+        connection->Open(connectionString.c_str(), "", "", ADO::ConnectOptionEnum::adConnectUnspecified);
     }
     catch (...)
     {
@@ -109,6 +114,46 @@ bool CDatabaseSetupMFCDlg::TryConnect(std::wstring connectionString)
     connection.Release();
     CoUninitialize();
     return isOk;
+}
+
+std::map<std::wstring, std::wstring> CDatabaseSetupMFCDlg::GetSettings(std::vector<std::wstring> settingsName)
+{
+    std::map<std::wstring, std::wstring> settings;
+    HKEY hkey;
+    if (RegCreateKeyEx(HKEY_CURRENT_USER, L"Software\\VB and VBA Program Settings\\LastTask\\Database", 0, nullptr, REG_OPTION_VOLATILE, KEY_READ | KEY_WOW64_32KEY,
+        nullptr, &hkey, nullptr) == ERROR_SUCCESS)
+    {
+        for (std::wstring setting : settingsName)
+        {
+            TCHAR data[255];
+            DWORD  buff = sizeof(data);
+            if (RegGetValue(hkey, nullptr, setting.c_str(), RRF_RT_REG_SZ, nullptr, data, &buff) == ERROR_SUCCESS)
+            {
+                settings[setting] = data;
+            }
+        }
+
+        RegCloseKey(hkey);
+    }
+
+    return settings;
+}
+
+void CDatabaseSetupMFCDlg::SaveSettings(std::map<std::wstring, std::wstring> settings)
+{
+    HKEY hkey;
+    if (RegCreateKeyEx(HKEY_CURRENT_USER, L"Software\\VB and VBA Program Settings\\LastTask\\Database", 0, nullptr, REG_OPTION_VOLATILE, KEY_WRITE | KEY_WOW64_32KEY,
+        nullptr, &hkey, nullptr) == ERROR_SUCCESS)
+    {
+        for (auto setting : settings)
+        {
+            LPCWSTR data = setting.second.c_str();
+            int l = RegSetValueEx(hkey, setting.first.c_str(), 0, REG_SZ, (LPBYTE)data, setting.second.length() * sizeof(wchar_t));
+            l = GetLastError();
+            l++;
+        }
+        RegCloseKey(hkey);
+    }
 }
 
 std::wstring CDatabaseSetupMFCDlg::BuildConnectionString()
@@ -131,7 +176,26 @@ void CDatabaseSetupMFCDlg::OnBnClickedOk()
 {
     if (TryConnect(BuildConnectionString()))
     {
-        //TODO: Save data
+
+        LPTSTR tempString = new TCHAR[100];
+        CWnd* dataSourceEdit = GetDlgItem(IDC_DATA_SOURCE_EDIT);
+        dataSourceEdit->GetWindowTextW(tempString, 100);
+        std::wstring dataSource(tempString);
+
+        dataSourceEdit = GetDlgItem(IDC_INITIAL_CATALOG_EDIT);
+        dataSourceEdit->GetWindowTextW(tempString, 100);
+        std::wstring initialCatalog(tempString);
+
+        delete[] tempString;
+
+        std::map<std::wstring, std::wstring> settings{
+            {L"Data Source", dataSource.c_str()},
+            {L"Initial Catalog", initialCatalog.c_str()},
+            {L"Trusted_Connection", L"yes"}
+        };
+
+        SaveSettings(settings);
+
         CDialogEx::OnOK();
     }
     else

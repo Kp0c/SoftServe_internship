@@ -5,6 +5,8 @@
 #pragma once
 
 #include <string>
+#include <map>
+#include <vector>
 
 #import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") no_implementation
 
@@ -34,7 +36,10 @@ protected:
 	afx_msg HCURSOR OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
 public:
-    bool TryConnect(std::wstring connectionString);
     std::wstring BuildConnectionString();
     afx_msg void OnBnClickedOk();
+private:
+    bool TryConnect(std::wstring connectionString);
+    std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingsName);
+    void SaveSettings(std::map<std::wstring, std::wstring> settings);
 };
