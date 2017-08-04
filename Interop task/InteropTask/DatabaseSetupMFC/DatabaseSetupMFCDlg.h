@@ -31,8 +31,8 @@ protected:
 public:
     afx_msg void OnBnClickedOk();
 private:
-    std::wstring BuildConnectionString();
-    bool TryConnect(std::wstring connectionString);
-    std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingsName);
-    void SaveSettings(std::map<std::wstring, std::wstring> settings);
+    std::wstring BuildConnectionString() const;
+    static bool TryConnect(std::wstring connectionString);
+    static std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingsName);
+    static void SaveSettings(std::map<std::wstring, std::wstring> settings);
 };

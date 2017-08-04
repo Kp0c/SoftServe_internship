@@ -74,9 +74,9 @@ void CDatabaseSetupMFCDlg::OnPaint()
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CDatabaseSetupMFCDlg::OnQueryDragIcon() const
+HCURSOR CDatabaseSetupMFCDlg::OnQueryDragIcon()
 {
-	return static_cast<HCURSOR>(m_hIcon);
+    return static_cast<HCURSOR>(m_hIcon);
 }
 
 bool CDatabaseSetupMFCDlg::TryConnect(std::wstring connectionString)
