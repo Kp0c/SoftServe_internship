@@ -20,7 +20,7 @@ namespace DatabaseConnectionAdmin
 
         public DatabaseConnection()
         {
-            RegistryKey databaseData = Registry.CurrentUser.OpenSubKey("Software")?.CreateSubKey("VB and VBA Program Settings")?.CreateSubKey("LastTask")?.CreateSubKey("Database");
+            RegistryKey databaseData = Registry.CurrentUser.OpenSubKey("Software")?.OpenSubKey("VB and VBA Program Settings")?.OpenSubKey("LastTask")?.OpenSubKey("Database");
 
             Debug.Assert(databaseData != null, "databaseData cannot be null");
 

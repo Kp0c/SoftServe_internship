@@ -123,6 +123,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseSetup\DatabaseSetup.vbproj">
+      <Project>{07be266e-889b-49be-bf15-26ca1e10a1d7}</Project>
+      <Name>DatabaseSetup</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
