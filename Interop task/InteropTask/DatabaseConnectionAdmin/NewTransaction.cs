@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace DatabaseConnectionAdmin
@@ -29,13 +23,13 @@ namespace DatabaseConnectionAdmin
         {
             if (String.IsNullOrEmpty(field))
             {
-                MessageBox.Show(name + " cannot be empty.");
+                MessageBox.Show(name + @" cannot be empty.");
                 return false;
             }
 
             if (field.Contains('\'') || field.Contains(' '))
             {
-                MessageBox.Show(name + " cannot contain ' or space symbol");
+                MessageBox.Show(name + @" cannot contain ' or space symbol");
                 return false;
             }
 
@@ -44,19 +38,19 @@ namespace DatabaseConnectionAdmin
 
         private void Apply_Click(object sender, EventArgs e)
         {
-            int sum = 0;
+            int sum;
             if (Int32.TryParse(Sum.Text, out sum))
             {
                 if (ValidateField(From.Text, "Username") && ValidateField(To.Text, "Password"))
                 {
                     DatabaseConnection connection = new DatabaseConnection();
                     connection.SendMoney(From.Text, To.Text, sum);
-                    this.Close();
+                    Close();
                 }
             }
             else
             {
-                MessageBox.Show("Wrong \"Money\" field value");
+                MessageBox.Show(@"Wrong ""Money"" field value");
                 Sum.Text = "";
                 Sum.Select();
 

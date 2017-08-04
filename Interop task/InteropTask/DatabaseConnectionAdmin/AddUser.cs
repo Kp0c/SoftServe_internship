@@ -15,13 +15,13 @@ namespace DatabaseConnectionAdmin
         {
             if(String.IsNullOrEmpty(field))
             {
-                MessageBox.Show(name + " cannot be empty.");
+                MessageBox.Show(name + @" cannot be empty.");
                 return false;
             }
 
             if(field.Contains('\'') || field.Contains(' '))
             {
-                MessageBox.Show(name + " cannot contain ' or space symbol");
+                MessageBox.Show(name + @" cannot contain ' or space symbol");
                 return false;
             }
 
@@ -30,19 +30,19 @@ namespace DatabaseConnectionAdmin
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            int money = 0;
+            int money;
             if(Int32.TryParse(Money.Text, out money))
             {
                 if (ValidateField(Username.Text, "Username") && ValidateField(Password.Text, "Password"))
                 {
                     DatabaseConnection connection = new DatabaseConnection();
                     connection.CreateUser(Username.Text, Password.Text, money);
-                    this.Close();
+                    Close();
                 }
             }
             else
             {
-                MessageBox.Show("Wrong \"Money\" field value");
+                MessageBox.Show(@"Wrong ""Money"" field value");
                 Money.Text = "";
                 Money.Select();
             }

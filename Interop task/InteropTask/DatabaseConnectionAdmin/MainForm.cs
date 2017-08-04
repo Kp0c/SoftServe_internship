@@ -1,13 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Forms;
 
 namespace DatabaseConnectionAdmin
@@ -16,15 +8,15 @@ namespace DatabaseConnectionAdmin
     {
         public MainForm()
         {
-            connection = new DatabaseConnection();
+            _connection = new DatabaseConnection();
 
-            Properties.Settings.Default.LastTaskConnectionString = connection.GetProperlyConnectionString(); 
+            Properties.Settings.Default.LastTaskConnectionString = _connection.GetProperlyConnectionString(); 
             Properties.Settings.Default.Save();
 
             InitializeComponent();
         }
 
-        readonly DatabaseConnection connection;
+        readonly DatabaseConnection _connection;
         private void MainForm_Load(object sender, EventArgs e)
         {
             transactionsTableAdapter.Fill(lastTaskDataSet.Transactions);
@@ -41,7 +33,7 @@ namespace DatabaseConnectionAdmin
 
         private void RemoveUser_Click(object sender, EventArgs e)
         {
-            connection.RemoveUser(UsersGrid.SelectedRows[0].Cells[0].Value.ToString());
+            _connection.RemoveUser(UsersGrid.SelectedRows[0].Cells[0].Value.ToString());
             usersTableAdapter.Fill(lastTaskDataSet.Users);
         }
 
