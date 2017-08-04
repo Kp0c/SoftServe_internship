@@ -1,7 +1,6 @@
 #pragma once
-#include "resource.h"       // main symbols
+#include "resource.h"
 #include "DatabaseConnection_i.h"
-
 #include <map>
 #include <vector>
 #include <string>
@@ -15,34 +14,31 @@
 using namespace ATL;
 
 class ATL_NO_VTABLE CDbCon :
-	public CComObjectRootEx<CComSingleThreadModel>,
-	public CComCoClass<CDbCon, &CLSID_DbCon>,
-	public IDispatchImpl<IDbCon, &IID_IDbCon, &LIBID_DatabaseConnectionLib, /*wMajor =*/ 1, /*wMinor =*/ 0>
+    public CComObjectRootEx<CComSingleThreadModel>,
+    public CComCoClass<CDbCon, &CLSID_DbCon>,
+    public IDispatchImpl<IDbCon, &IID_IDbCon, &LIBID_DatabaseConnectionLib, /*wMajor =*/ 1, /*wMinor =*/ 0>
 {
-private:
-    ADO::Connection15Ptr connection = NULL;
-
 public:
     CDbCon();
     ~CDbCon();
 
-DECLARE_REGISTRY_RESOURCEID(IDR_DBCON)
+    DECLARE_REGISTRY_RESOURCEID(IDR_DBCON)
 
-BEGIN_COM_MAP(CDbCon)
-	COM_INTERFACE_ENTRY(IDbCon)
-	COM_INTERFACE_ENTRY(IDispatch)
-END_COM_MAP()
+    BEGIN_COM_MAP(CDbCon)
+        COM_INTERFACE_ENTRY(IDbCon)
+        COM_INTERFACE_ENTRY(IDispatch)
+    END_COM_MAP()
 
-	DECLARE_PROTECT_FINAL_CONSTRUCT()
+    DECLARE_PROTECT_FINAL_CONSTRUCT()
 
-	HRESULT FinalConstruct()
-	{
-		return S_OK;
-	}
+    HRESULT FinalConstruct()
+    {
+        return S_OK;
+    }
 
-	void FinalRelease()
-	{
-	}
+    void FinalRelease()
+    {
+    }
 
 public:
     STDMETHOD(AddUser)(BSTR username, BSTR password);
@@ -52,6 +48,7 @@ public:
     STDMETHOD(GetTransactions)(BSTR username, VARIANT* transactions);
 
 private:
+    ADO::Connection15Ptr connection = NULL;
     std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingsName);
 };
 

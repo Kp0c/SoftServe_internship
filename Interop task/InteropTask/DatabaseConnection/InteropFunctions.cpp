@@ -1,11 +1,9 @@
 #include "stdafx.h"
-
+#include "InteropFunctions.h"
 #using <mscorlib.dll>
 #using <NewTransactionDll.dll>
 
-#include "InteropFunctions.h"
 using namespace System;
-using namespace System::Collections::Generic;
 using namespace NewTransactionDll;
 
 void AddNewTransaction(std::wstring username)

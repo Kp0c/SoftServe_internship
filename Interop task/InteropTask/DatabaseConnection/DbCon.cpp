@@ -1,13 +1,9 @@
-// DbCon.cpp : Implementation of CDbCon
-
 #include "stdafx.h"
 #include "DbCon.h"
 #include <atlsafe.h>
 #include <string>
 
 #import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") implementation_only
-
-// CDbCon
 
 std::map<std::wstring, std::wstring> CDbCon::GetSettings(std::vector<std::wstring> settingsName)
 {

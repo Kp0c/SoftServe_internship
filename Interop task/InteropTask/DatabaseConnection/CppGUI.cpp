@@ -1,14 +1,10 @@
-// CppGUI.cpp : Implementation of CCppGUI
-
 #include "stdafx.h"
 #include "CppGUI.h"
 #include "InteropFunctions.h"
-
 #include <Windows.h>
-
 #include "DbCon.h"
 
-#define BUTTON_ID      1001
+#define BUTTON_ID 1001
 
 CCppGUI* CCppGUI::cppGUI = nullptr;
 
@@ -29,7 +25,7 @@ void CCppGUI::GetDbData(BSTR username)
 
 void CCppGUI::DrawString(Graphics& graphics, std::wstring string, int x1, int y1, int x2, int y2)
 {
-    Gdiplus::Font myFont(L"Arial", 12); 
+    Gdiplus::Font myFont(L"Arial", 12);
     SolidBrush blackBrush(Color(255, 0, 0, 0));
     StringFormat format;
     RectF layoutRect(x1, y1, x2 - x1, y2 - y1);
@@ -188,7 +184,7 @@ STDMETHODIMP CCppGUI::ShowGUI(LONG parentHwnd, BSTR username)
     }
 
     ShutdownWindow(hwnd, username);
-    GdiplusShutdown(gdiplusToken);    
+    GdiplusShutdown(gdiplusToken);
 
     return S_OK;
 }
