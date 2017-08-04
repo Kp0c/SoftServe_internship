@@ -41,7 +41,6 @@ CDbCon::CDbCon()
     std::vector<std::wstring> settingsName{ L"Data Source", L"Initial Catalog", L"Trusted_Connection" };
 
     std::map<std::wstring, std::wstring> settings = GetSettings(settingsName);
-
     std::wstring connectionString(L"Provider=sqloleDb;");
 
     for (auto setting : settings)
