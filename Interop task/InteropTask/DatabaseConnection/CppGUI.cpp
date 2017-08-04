@@ -61,7 +61,7 @@ void CCppGUI::OnPaint(HDC hdc)
         int max_rows = min(cells_passed + TOTAL_ROWS, rows + 1);
         for (int j = cells_passed; j <= rows; j++)
         {
-            indexes[0] = j - 1; //
+            indexes[0] = j - 1;
             BSTR str;
             dbData.MultiDimGetAt(indexes, str);
 

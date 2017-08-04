@@ -48,6 +48,8 @@ Public Class DatabaseSetup
             Else
                 SaveSetting("LastTask", "Database", "Trusted_Connection", "no")
             End If
+
+            Me.Close()
         Else
             MessageBox.Show("Bad connection string, try again")
         End If
