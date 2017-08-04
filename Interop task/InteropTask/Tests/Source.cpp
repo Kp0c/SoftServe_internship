@@ -52,7 +52,6 @@ void OnPaint(HDC hdc)
     CoCreateInstance(CLSID_DbCon, NULL, CLSCTX_INPROC_SERVER, IID_IDbCon, (void**)&dbCon);
 
     VARIANT transactions;
-    VARIANT_BOOL b;
 
     dbCon->GetTransactions(L"1", &transactions);
 
@@ -60,9 +59,9 @@ void OnPaint(HDC hdc)
 
     LONG indexes[2];
 
-    for (int i = 0; i < trans.GetCount(1); i++)
+    for (unsigned int i = 0; i < trans.GetCount(1); i++)
     {
-        for (int j = 1; j < trans.GetCount(0) + 1; j++)
+        for (unsigned int j = 1; j < trans.GetCount(0) + 1; j++)
         {
             indexes[0] = j - 1;
             indexes[1] = i;
