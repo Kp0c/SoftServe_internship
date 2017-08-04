@@ -1,11 +1,7 @@
-
-// DatabaseSetupMFCDlg.cpp : implementation file
-//
-
 #include "stdafx.h"
-#include "DatabaseSetupMFC.h"
 #include "DatabaseSetupMFCDlg.h"
 #include "afxdialogex.h"
+#include "resource.h"
 
 #import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") implementation_only
 
@@ -13,39 +9,31 @@
 #define new DEBUG_NEW
 #endif
 
-
-// CDatabaseSetupMFCDlg dialog
-
-
-
-CDatabaseSetupMFCDlg::CDatabaseSetupMFCDlg(CWnd* pParent /*=NULL*/)
-	: CDialogEx(IDD_DATABASESETUPMFC_DIALOG, pParent)
+CDatabaseSetupMFCDlg::CDatabaseSetupMFCDlg(CWnd* pParent)
+    : CDialogEx(IDD_DATABASESETUPMFC_DIALOG, pParent)
 {
-	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+    m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
 void CDatabaseSetupMFCDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+    CDialogEx::DoDataExchange(pDX);
 }
 
 BEGIN_MESSAGE_MAP(CDatabaseSetupMFCDlg, CDialogEx)
-	ON_WM_PAINT()
-	ON_WM_QUERYDRAGICON()
+    ON_WM_PAINT()
+    ON_WM_QUERYDRAGICON()
     ON_BN_CLICKED(IDOK, &CDatabaseSetupMFCDlg::OnBnClickedOk)
 END_MESSAGE_MAP()
 
-
-// CDatabaseSetupMFCDlg message handlers
-
 BOOL CDatabaseSetupMFCDlg::OnInitDialog()
 {
-	CDialogEx::OnInitDialog();
+    CDialogEx::OnInitDialog();
 
-	// Set the icon for this dialog.  The framework does this automatically
-	//  when the application's main window is not a dialog
-	SetIcon(m_hIcon, TRUE);		// Set big icon
-	SetIcon(m_hIcon, FALSE);	// Set small icon
+    // Set the icon for this dialog.  The framework does this automatically
+    //  when the application's main window is not a dialog
+    SetIcon(m_hIcon, TRUE);		// Set big icon
+    SetIcon(m_hIcon, FALSE);	// Set small icon
 
     std::vector<std::wstring> settingsName{ L"Data Source", L"Initial Catalog" };
     auto settings = GetSettings(settingsName);
@@ -56,40 +44,37 @@ BOOL CDatabaseSetupMFCDlg::OnInitDialog()
     dataSourceEdit = GetDlgItem(IDC_INITIAL_CATALOG_EDIT);
     dataSourceEdit->SetWindowTextW(settings[settingsName[1]].c_str());
 
-	return TRUE;  // return TRUE  unless you set the focus to a control
+    return TRUE;  // return TRUE  unless you set the focus to a control
 }
 
-// If you add a minimize button to your dialog, you will need the code below
-//  to draw the icon.  For MFC applications using the document/view model,
-//  this is automatically done for you by the framework.
 void CDatabaseSetupMFCDlg::OnPaint()
 {
-	if (IsIconic())
-	{
-		CPaintDC dc(this); // device context for painting
-
-		SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
-
-		// Center icon in client rectangle
-		int cxIcon = GetSystemMetrics(SM_CXICON);
-		int cyIcon = GetSystemMetrics(SM_CYICON);
-		CRect rect;
-		GetClientRect(&rect);
-		int x = (rect.Width() - cxIcon + 1) / 2;
-		int y = (rect.Height() - cyIcon + 1) / 2;
-
-		// Draw the icon
-		dc.DrawIcon(x, y, m_hIcon);
-	}
-	else
-	{
-		CDialogEx::OnPaint();
-	}
+    if (IsIconic())
+    {
+        CPaintDC dc(this); // device context for painting
+        
+        SendMessage(WM_ICONERASEBKGND, reinterpret_cast<WPARAM>(dc.GetSafeHdc()), 0);
+        
+        // Center icon in client rectangle
+        int cxIcon = GetSystemMetrics(SM_CXICON);
+        int cyIcon = GetSystemMetrics(SM_CYICON);
+        CRect rect;
+        GetClientRect(&rect);
+        int x = (rect.Width() - cxIcon + 1) / 2;
+        int y = (rect.Height() - cyIcon + 1) / 2;
+        
+        // Draw the icon
+        dc.DrawIcon(x, y, m_hIcon);
+    }
+    else
+    {
+        CDialogEx::OnPaint();
+    }
 }
 
 // The system calls this function to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CDatabaseSetupMFCDlg::OnQueryDragIcon()
+HCURSOR CDatabaseSetupMFCDlg::OnQueryDragIcon() const
 {
 	return static_cast<HCURSOR>(m_hIcon);
 }
@@ -98,7 +83,7 @@ bool CDatabaseSetupMFCDlg::TryConnect(std::wstring connectionString)
 {
     ADO::Connection15Ptr connection = NULL;
 
-    CoInitialize(NULL);
+    CoInitialize(nullptr);
     connection.CreateInstance(__uuidof(ADO::Connection));
 
     bool isOk = true;
@@ -148,13 +133,13 @@ void CDatabaseSetupMFCDlg::SaveSettings(std::map<std::wstring, std::wstring> set
         for (auto setting : settings)
         {
             LPCWSTR data = setting.second.c_str();
-            RegSetValueEx(hkey, setting.first.c_str(), 0, REG_SZ, (LPBYTE)data, setting.second.length() * sizeof(wchar_t));
+            RegSetValueEx(hkey, setting.first.c_str(), 0, REG_SZ, LPBYTE(data), setting.second.length() * sizeof(wchar_t));
         }
         RegCloseKey(hkey);
     }
 }
 
-std::wstring CDatabaseSetupMFCDlg::BuildConnectionString()
+std::wstring CDatabaseSetupMFCDlg::BuildConnectionString() const
 {
     LPTSTR tempString = new TCHAR[100];
     CWnd* dataSourceEdit = GetDlgItem(IDC_DATA_SOURCE_EDIT);
@@ -174,7 +159,6 @@ void CDatabaseSetupMFCDlg::OnBnClickedOk()
 {
     if (TryConnect(BuildConnectionString()))
     {
-
         LPTSTR tempString = new TCHAR[100];
         CWnd* dataSourceEdit = GetDlgItem(IDC_DATA_SOURCE_EDIT);
         dataSourceEdit->GetWindowTextW(tempString, 100);
