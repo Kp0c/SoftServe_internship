@@ -18,7 +18,6 @@ std::map<std::wstring, std::wstring> CDbCon::GetSettings(std::vector<std::wstrin
     {
         for (std::wstring setting : settingsName)
         {
-            //std::wstring data;
             TCHAR data[255];
             DWORD  buff = sizeof(data);
             if (RegGetValue(hkey, nullptr, setting.c_str(), RRF_RT_REG_SZ, nullptr, data, &buff) == ERROR_SUCCESS)
@@ -113,10 +112,6 @@ STDMETHODIMP CDbCon::GetTransactions(BSTR username, VARIANT* transactions)
         record->MoveNext();
     }
 
-    if (elementsCount != 0)
-    {
-        record->MoveFirst();
-    }
 
     CComSafeArrayBound bound[2];
     bound[0].SetCount(elementsCount);
@@ -124,20 +119,25 @@ STDMETHODIMP CDbCon::GetTransactions(BSTR username, VARIANT* transactions)
      
     CComSafeArray<BSTR> trans(bound, 2);
 
-    LONG indexes[2];
-
-    for(int i = 0; i < elementsCount; ++i)
+    if (elementsCount != 0)
     {
-        indexes[0] = i;
-        indexes[1] = 0;
+        record->MoveFirst();
 
-        trans.MultiDimSetAt(indexes, record->Fields->GetItem("debitUser")->Value.bstrVal);
-        indexes[1] = 1;
-        trans.MultiDimSetAt(indexes, record->Fields->GetItem("creditUser")->Value.bstrVal);
-        indexes[1] = 2;
-        std::wstring money = std::to_wstring(record->Fields->GetItem("#sum")->Value.lVal);
-        trans.MultiDimSetAt(indexes, SysAllocString(money.c_str()));
-        record->MoveNext();
+        LONG indexes[2];
+
+        for (int i = 0; i < elementsCount; ++i)
+        {
+            indexes[0] = i;
+            indexes[1] = 0;
+
+            trans.MultiDimSetAt(indexes, record->Fields->GetItem("debitUser")->Value.bstrVal);
+            indexes[1] = 1;
+            trans.MultiDimSetAt(indexes, record->Fields->GetItem("creditUser")->Value.bstrVal);
+            indexes[1] = 2;
+            std::wstring money = std::to_wstring(record->Fields->GetItem("#sum")->Value.lVal);
+            trans.MultiDimSetAt(indexes, SysAllocString(money.c_str()));
+            record->MoveNext();
+        }
     }
 
     transactions->parray = trans.Detach();

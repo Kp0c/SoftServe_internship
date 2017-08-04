@@ -50,24 +50,18 @@ void CCppGUI::OnPaint(HDC hdc)
     Graphics* graphics = Graphics::FromImage(&bitmap);
     graphics->Clear(Color::White);
 
-    graphics->SetCompositingQuality(CompositingQualityHighSpeed);
-    graphics->SetPixelOffsetMode(PixelOffsetModeNone);
-    graphics->SetSmoothingMode(SmoothingModeNone);
-    graphics->SetInterpolationMode(InterpolationModeDefault);
-
-    Pen pen(Color(255, 0, 0, 0));
-
-    LONG indexes[2];
-
     int columns = dbData.GetCount(1);
     int rows = dbData.GetCount(0);
 
     for (int i = 0; i < columns; i++)
     {
-        for (int j = 1; j < rows + 1; j++)
+        LONG indexes[2];
+        indexes[1] = i;
+        int cells_passed = abs(yOffset) / CELL_HEIGHT + 1;
+        int max_rows = min(cells_passed + TOTAL_ROWS, rows + 1);
+        for (int j = cells_passed; j <= rows; j++)
         {
-            indexes[0] = j - 1;
-            indexes[1] = i;
+            indexes[0] = j - 1; //
             BSTR str;
             dbData.MultiDimGetAt(indexes, str);
 
@@ -78,11 +72,13 @@ void CCppGUI::OnPaint(HDC hdc)
             {
                 continue;
             }
+
             DrawString(*graphics, std::wstring(str, SysStringLen(str)), x, y, x + CELL_WIDTH, y + CELL_HEIGHT);
         }
     }
 
     std::wstring titles[]{ L"From", L"To", L"Count" };
+    Pen pen(Color(255, 0, 0, 0));
     for (int i = 0; i < COLUMNS; ++i)
     {
         graphics->DrawLine(&pen, i*CELL_WIDTH, 0, i*CELL_WIDTH, HEIGHT);
