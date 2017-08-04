@@ -116,8 +116,9 @@ Private Function ValidatePassword() As Boolean
 End Function
     
 Private Sub CmdOK_Click()
-    If ValidateLogin() And ValidatePassword() Then
+    If ValidateLogin And ValidatePassword Then
         Dim databaseConnection As New DbCon
+        
         If databaseConnection.TryLogIn(txtUserName.text, txtPassword.text) Then
             Me.Hide
             

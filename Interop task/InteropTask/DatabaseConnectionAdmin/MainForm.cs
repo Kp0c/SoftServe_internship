@@ -24,7 +24,7 @@ namespace DatabaseConnectionAdmin
             InitializeComponent();
         }
 
-        DatabaseConnection connection;
+        readonly DatabaseConnection connection;
         private void MainForm_Load(object sender, EventArgs e)
         {
             transactionsTableAdapter.Fill(lastTaskDataSet.Transactions);

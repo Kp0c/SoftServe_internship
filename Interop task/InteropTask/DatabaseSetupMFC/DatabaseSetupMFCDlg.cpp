@@ -148,9 +148,7 @@ void CDatabaseSetupMFCDlg::SaveSettings(std::map<std::wstring, std::wstring> set
         for (auto setting : settings)
         {
             LPCWSTR data = setting.second.c_str();
-            int l = RegSetValueEx(hkey, setting.first.c_str(), 0, REG_SZ, (LPBYTE)data, setting.second.length() * sizeof(wchar_t));
-            l = GetLastError();
-            l++;
+            RegSetValueEx(hkey, setting.first.c_str(), 0, REG_SZ, (LPBYTE)data, setting.second.length() * sizeof(wchar_t));
         }
         RegCloseKey(hkey);
     }

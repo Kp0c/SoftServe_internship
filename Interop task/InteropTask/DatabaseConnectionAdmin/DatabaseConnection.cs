@@ -16,7 +16,7 @@ namespace DatabaseConnectionAdmin
     [ClassInterface(ClassInterfaceType.None)]
     public class DatabaseConnection : IDatabaseConnection
     {
-        SqlConnection connection;
+        readonly SqlConnection connection;
 
         public string GetProperlyConnectionString()
         {
@@ -29,7 +29,7 @@ namespace DatabaseConnectionAdmin
 
             string connectionString = "Data Source=" + databaseData.GetValue("Data Source") + ";";
             connectionString += "Initial Catalog=" + databaseData.GetValue("Initial Catalog") + ";";
-            connectionString += "Trusted_Connection=" + databaseData.GetValue("Trusted_Connection").ToString() + ";";
+            connectionString += "Trusted_Connection=" + databaseData.GetValue("Trusted_Connection") + ";";
             connectionString += "User Id=" + databaseData.GetValue("Username") + ";";
             connectionString += "Password=" + databaseData.GetValue("Password") + ";";
 

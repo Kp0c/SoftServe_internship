@@ -12,6 +12,6 @@ namespace DatabaseConnectionAdmin
     [InterfaceType(ComInterfaceType.InterfaceIsDual)]
     public interface IAdminForm
     {
-        void Show();
+       void Show();
     }
 }

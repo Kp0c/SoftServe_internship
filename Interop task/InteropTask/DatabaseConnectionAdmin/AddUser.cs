@@ -11,7 +11,7 @@ namespace DatabaseConnectionAdmin
             InitializeComponent();
         }
 
-        private bool ValidateField(string field, string name)
+        private static bool ValidateField(string field, string name)
         {
             if(String.IsNullOrEmpty(field))
             {
