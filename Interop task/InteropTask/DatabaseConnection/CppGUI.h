@@ -2,6 +2,7 @@
 #include "resource.h"
 #include <string>
 #include <gdiplus.h>
+#include <memory>
 #include "DatabaseConnection_i.h"
 #include <atlsafe.h>
 #pragma comment(lib, "Gdiplus.lib")
@@ -13,14 +14,6 @@
 using namespace Gdiplus;
 using namespace ATL;
 
-constexpr int WIDTH = 639;
-constexpr int HEIGHT = 480;
-constexpr int COLUMNS = 3;
-constexpr int ROWS = 15;
-constexpr int TITLE_ROWS = 3;
-constexpr int TOTAL_ROWS = ROWS + TITLE_ROWS;
-constexpr int CELL_WIDTH = WIDTH / COLUMNS;
-constexpr int CELL_HEIGHT = HEIGHT / (TOTAL_ROWS);
 
 class ATL_NO_VTABLE CCppGUI :
     public CComObjectRootEx<CComSingleThreadModel>,
@@ -28,15 +21,6 @@ class ATL_NO_VTABLE CCppGUI :
     public IDispatchImpl<ICppGUI, &IID_ICppGUI, &LIBID_DatabaseConnectionLib, /*wMajor =*/ 1, /*wMinor =*/ 0>
 {
 public:
-    CCppGUI()
-    {
-        cppGUI = this;
-    }
-
-    ~CCppGUI()
-    {
-        cppGUI = nullptr;
-    }
 
     DECLARE_REGISTRY_RESOURCEID(IDR_CPPGUI)
     BEGIN_COM_MAP(CCppGUI)
@@ -55,21 +39,46 @@ public:
     }
 
 public:
+
+    CCppGUI()
+    {
+        cppGUI = this;
+    }
+
+    ~CCppGUI()
+    {
+        cppGUI = nullptr;
+    }
+
     static CCppGUI* cppGUI;
     static LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
     STDMETHOD(ShowGUI)(LONG parentHwnd, BSTR username);
 private:
-    int yOffset = 0;
+    const int WIDTH = 640;
+    const int HEIGHT = 480;
+    const int COLUMNS = 3;
+    const int ROWS = 15;
+    const int TITLE_ROWS = 2;
+    const int TOTAL_ROWS = ROWS + TITLE_ROWS;
+    const int CELL_WIDTH = WIDTH / COLUMNS;
+    const int CELL_HEIGHT = HEIGHT / (TOTAL_ROWS);
+
     CComSafeArray<BSTR> dbData;
+
+    int yOffset = 0;
+    int wheelDelta = 0;
     HWND parentHwnd;
     
-    LRESULT MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
     void GetDbData(BSTR username);
-    void DrawString(Graphics& graphics, std::wstring string, int x1, int y1, int x2, int y2);
-    void ShutdownWindow(HWND hwnd, std::wstring username);
-    HWND SetupWindow(std::wstring, HWND parentHwnd);
+    void DrawString(Graphics& graphics, std::wstring string, int x1, int y1, int width, int height);
+    void DrawDbInfo(Graphics& graphics);
+    void DrawGridWithTitles(Graphics& graphics);
     void OnPaint(HDC hdc);
+
+    LRESULT MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
+    HWND SetupWindow(std::wstring, HWND parentHwnd);
+    void ShutdownWindow(HWND hwnd, std::wstring username);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(CppGUI), CCppGUI)

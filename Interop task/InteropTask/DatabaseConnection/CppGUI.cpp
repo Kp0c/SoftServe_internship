@@ -23,21 +23,71 @@ void CCppGUI::GetDbData(BSTR username)
     CoUninitialize();
 }
 
-void CCppGUI::DrawString(Graphics& graphics, std::wstring string, int x1, int y1, int x2, int y2)
+void CCppGUI::DrawString(Graphics& graphics, std::wstring string, int x1, int y1, int width, int height)
 {
-    Gdiplus::Font myFont(L"Arial", 12);
     SolidBrush blackBrush(Color(255, 0, 0, 0));
+    Gdiplus::Font font(L"Arial", 12);
     StringFormat format;
-    RectF layoutRect(x1, y1, x2 - x1, y2 - y1);
     format.SetAlignment(StringAlignmentCenter);
+    
+    RectF layoutRect(x1, y1, width, height);
 
     graphics.DrawString(
         string.c_str(),
         string.length(),
-        &myFont,
+        &font,
         layoutRect,
         &format,
         &blackBrush);
+}
+
+void CCppGUI::DrawDbInfo(Graphics& graphics)
+{
+    int columns = dbData.GetCount(1);
+    int rows = dbData.GetCount(0);
+
+    int cellsPassed = abs(yOffset) / CELL_HEIGHT + 1;
+    int maxRows = min(cellsPassed + TOTAL_ROWS, rows + 1);
+
+    LONG indexes[2];
+    for (int i = 0; i < columns; i++)
+    {
+        indexes[1] = i;
+        for (int j = cellsPassed; j <= rows; j++)
+        {
+            indexes[0] = j - 1;
+
+            BSTR str;
+            dbData.MultiDimGetAt(indexes, str);
+
+            int x = i*CELL_WIDTH;
+            int y = j*CELL_HEIGHT + yOffset;
+
+            bool isFirstRow = y < CELL_HEIGHT;
+            if (isFirstRow)
+            {
+                continue;
+            }
+
+            DrawString(graphics, std::wstring(str, SysStringLen(str)), x, y, CELL_WIDTH, CELL_HEIGHT);
+        }
+    }
+}
+
+void CCppGUI::DrawGridWithTitles(Graphics& graphics)
+{
+    Pen pen(Color(255, 0, 0, 0));
+    std::wstring titles[]{ L"From", L"To", L"Count" };
+    for (int i = 0; i < COLUMNS; ++i)
+    {
+        graphics.DrawLine(&pen, i*CELL_WIDTH, 0, i*CELL_WIDTH, HEIGHT);
+        DrawString(graphics, titles[i], i*CELL_WIDTH, 0, CELL_WIDTH, CELL_HEIGHT);
+    }
+
+    for (int j = 0; j < TOTAL_ROWS; ++j)
+    {
+        graphics.DrawLine(&pen, 0, j*CELL_HEIGHT, WIDTH, j*CELL_HEIGHT);
+    }
 }
 
 void CCppGUI::OnPaint(HDC hdc)
@@ -46,48 +96,11 @@ void CCppGUI::OnPaint(HDC hdc)
     Graphics* graphics = Graphics::FromImage(&bitmap);
     graphics->Clear(Color::White);
 
-    int columns = dbData.GetCount(1);
-    int rows = dbData.GetCount(0);
-
-    for (int i = 0; i < columns; i++)
-    {
-        LONG indexes[2];
-        indexes[1] = i;
-        int cells_passed = abs(yOffset) / CELL_HEIGHT + 1;
-        int max_rows = min(cells_passed + TOTAL_ROWS, rows + 1);
-        for (int j = cells_passed; j <= rows; j++)
-        {
-            indexes[0] = j - 1;
-            BSTR str;
-            dbData.MultiDimGetAt(indexes, str);
-
-            int x = i*CELL_WIDTH;
-            int y = j*CELL_HEIGHT + yOffset;
-
-            if (y < CELL_HEIGHT)
-            {
-                continue;
-            }
-
-            DrawString(*graphics, std::wstring(str, SysStringLen(str)), x, y, x + CELL_WIDTH, y + CELL_HEIGHT);
-        }
-    }
-
-    std::wstring titles[]{ L"From", L"To", L"Count" };
-    Pen pen(Color(255, 0, 0, 0));
-    for (int i = 0; i < COLUMNS; ++i)
-    {
-        graphics->DrawLine(&pen, i*CELL_WIDTH, 0, i*CELL_WIDTH, HEIGHT);
-        DrawString(*graphics, titles[i], i*CELL_WIDTH, 0, i*CELL_WIDTH + CELL_WIDTH, CELL_HEIGHT);
-    }
-
-    for (int j = 0; j < TOTAL_ROWS; ++j)
-    {
-        graphics->DrawLine(&pen, 0, j*CELL_HEIGHT, WIDTH, j*CELL_HEIGHT);
-    }
-
-    Graphics gra(hdc); 
-    gra.DrawImage(&bitmap, 0, 0);
+    DrawGridWithTitles(*graphics);
+    DrawDbInfo(*graphics);
+   
+    Graphics screen(hdc); 
+    screen.DrawImage(&bitmap, 0, 0);
 }
 
 LRESULT CALLBACK CCppGUI::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
@@ -97,7 +110,6 @@ LRESULT CALLBACK CCppGUI::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 
 LRESULT CCppGUI::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    static int wheelDelta = 0;
     HDC hdc;
     PAINTSTRUCT ps;
 
@@ -117,6 +129,7 @@ LRESULT CCppGUI::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         break;
     case WM_MOUSEWHEEL:
         wheelDelta += GET_WHEEL_DELTA_WPARAM(wParam);
+
         for (; wheelDelta > WHEEL_DELTA; wheelDelta -= WHEEL_DELTA)
         {
             yOffset += CELL_HEIGHT;
@@ -125,23 +138,19 @@ LRESULT CCppGUI::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             {
                 yOffset = 0;
             }
-            else
-            {
-                InvalidateRgn(hwnd, NULL, FALSE);
-            }
         }
+
         for (; wheelDelta < 0; wheelDelta += WHEEL_DELTA)
         {
             yOffset -= CELL_HEIGHT;
+
             if (abs(yOffset) >((int)dbData.GetCount(0) - ROWS)*CELL_HEIGHT)
             {
                 yOffset = -CELL_HEIGHT*(dbData.GetCount(0) - ROWS);
             }
-            else
-            {
-                InvalidateRgn(hwnd, NULL, FALSE);
-            }
         }
+
+        InvalidateRgn(hwnd, NULL, FALSE);
         break;
     default:
         return DefWindowProc(hwnd, msg, wParam, lParam);
@@ -158,40 +167,36 @@ STDMETHODIMP CCppGUI::ShowGUI(LONG parentHwnd, BSTR username)
     GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 
     HWND hwnd = SetupWindow(username, (HWND)parentHwnd);
-
-    if (hwnd == 0)
+    
+    int returnCode = S_FALSE;
+    if (hwnd != 0)
     {
-        ShutdownWindow(hwnd, username);
-        return S_FALSE;
-    }
+        GetDbData(username);
 
-    GetDbData(username);
+        ShowWindow(hwnd, SW_SHOWNORMAL);
 
-    ShowWindow(hwnd, SW_SHOWNORMAL);
-
-    MSG message;
-    while (GetMessage(&message, NULL, 0, 0) > 0)
-    {
-        if (message.message == WM_HOTKEY)
+        MSG message;
+        while (GetMessage(&message, NULL, 0, 0) > 0)
         {
-            AddNewTransaction(username);
-            GetDbData(username);
-            InvalidateRgn(hwnd, NULL, FALSE);
+            if (message.message == WM_HOTKEY)
+            {
+                AddNewTransaction(username);
+                GetDbData(username);
+                InvalidateRgn(hwnd, NULL, FALSE);
+            }
+
+            TranslateMessage(&message);
+            DispatchMessage(&message);
         }
 
-        TranslateMessage(&message);
-        DispatchMessage(&message);
+        GdiplusShutdown(gdiplusToken);
+
+        returnCode = S_OK;
     }
 
     ShutdownWindow(hwnd, username);
-    GdiplusShutdown(gdiplusToken);
 
-    return S_OK;
-}
-void CCppGUI::ShutdownWindow(HWND hwnd, std::wstring username)
-{
-    UnregisterClass(username.c_str(), NULL);
-    UnregisterHotKey(NULL , 1);
+    return returnCode;
 }
 
 HWND CCppGUI::SetupWindow(std::wstring username, HWND parentHwnd)
@@ -244,4 +249,10 @@ HWND CCppGUI::SetupWindow(std::wstring username, HWND parentHwnd)
     EnableWindow(parentHwnd, FALSE);
 
     return hwnd;
+}
+
+void CCppGUI::ShutdownWindow(HWND hwnd, std::wstring username)
+{
+    UnregisterClass(username.c_str(), NULL);
+    UnregisterHotKey(NULL , 1);
 }

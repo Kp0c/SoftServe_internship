@@ -8,11 +8,11 @@ import "oaidl.idl";
 import "ocidl.idl";
 
 [
-	object,
-	uuid(B95AA554-8DEF-4CC3-B2D9-CA5AC8ED5BCA),
-	dual,
-	nonextensible,
-	pointer_default(unique)
+    object,
+    uuid(B95AA554-8DEF-4CC3-B2D9-CA5AC8ED5BCA),
+    dual,
+    nonextensible,
+    pointer_default(unique)
 ]
 interface IDbCon : IDispatch{
     [id(5)] HRESULT AddUser([in] BSTR username, [in] BSTR password);
@@ -22,35 +22,35 @@ interface IDbCon : IDispatch{
     [id(10)] HRESULT GetTransactions([in] BSTR username, [out, retval] VARIANT* transactions);
 };
 [
-	object,
-	uuid(B9337F32-EF52-4EC9-9BB5-C85324B06F93),
-	dual,
-	nonextensible,
-	pointer_default(unique)
+    object,
+    uuid(B9337F32-EF52-4EC9-9BB5-C85324B06F93),
+    dual,
+    nonextensible,
+    pointer_default(unique)
 ]
 interface ICppGUI : IDispatch{
     [id(1)] HRESULT ShowGUI([in] LONG parentHwnd, [in] BSTR username);
 };
 [
-	uuid(13A7769C-089A-4871-9650-AA22859308B5),
-	version(1.0),
+    uuid(13A7769C-089A-4871-9650-AA22859308B5),
+    version(1.0),
 ]
 library DatabaseConnectionLib
 {
-	importlib("stdole2.tlb");
-	[
-		uuid(B6E08CA7-27B6-4961-B983-7841A664B88E)		
-	]
-	coclass DbCon
-	{
-		[default] interface IDbCon;
-	};
-	[
-		uuid(5F5F424B-0758-4821-B2EB-366C42CAAABE)		
-	]
-	coclass CppGUI
-	{
-		[default] interface ICppGUI;
-	};
+    importlib("stdole2.tlb");
+    [
+        uuid(B6E08CA7-27B6-4961-B983-7841A664B88E)
+    ]
+    coclass DbCon
+    {
+        [default] interface IDbCon;
+    };
+    [
+        uuid(5F5F424B-0758-4821-B2EB-366C42CAAABE)
+    ]
+    coclass CppGUI
+    {
+        [default] interface ICppGUI;
+    };
 };
 

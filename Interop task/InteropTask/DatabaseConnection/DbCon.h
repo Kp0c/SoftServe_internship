@@ -2,6 +2,7 @@
 #include "resource.h"
 #include "DatabaseConnection_i.h"
 #include <map>
+#include <atlsafe.h>
 #include <vector>
 #include <string>
 
@@ -13,15 +14,13 @@
 
 using namespace ATL;
 
+
 class ATL_NO_VTABLE CDbCon :
     public CComObjectRootEx<CComSingleThreadModel>,
     public CComCoClass<CDbCon, &CLSID_DbCon>,
     public IDispatchImpl<IDbCon, &IID_IDbCon, &LIBID_DatabaseConnectionLib, /*wMajor =*/ 1, /*wMinor =*/ 0>
 {
 public:
-    CDbCon();
-    ~CDbCon();
-
     DECLARE_REGISTRY_RESOURCEID(IDR_DBCON)
 
     BEGIN_COM_MAP(CDbCon)
@@ -41,6 +40,9 @@ public:
     }
 
 public:
+    CDbCon();
+    ~CDbCon();
+
     STDMETHOD(AddUser)(BSTR username, BSTR password);
     STDMETHOD(TryLogIn)(BSTR username, BSTR password, VARIANT_BOOL* isSuccess);
     STDMETHOD(SendMoney)(BSTR from, BSTR to, LONG count);
@@ -48,8 +50,11 @@ public:
     STDMETHOD(GetTransactions)(BSTR username, VARIANT* transactions);
 
 private:
+    const LPCWSTR settingsLocation{ L"Software\\VB and VBA Program Settings\\LastTask\\Database" };
+
     ADO::Connection15Ptr connection = NULL;
-    std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingsName);
+    std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingNames);
+    CComSafeArray<BSTR> StructurizeInfo(ADO::Recordset15Ptr record);
 };
 
 OBJECT_ENTRY_AUTO(__uuidof(DbCon), CDbCon)
