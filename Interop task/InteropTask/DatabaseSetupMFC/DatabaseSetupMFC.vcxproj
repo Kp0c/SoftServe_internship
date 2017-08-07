@@ -184,9 +184,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DatabaseSetupMFC.h" />
-    <ClInclude Include="DatabaseSetupMFCDlg.h" />
+    <ClInclude Include="Helper.h" />
     <ClInclude Include="Resource.h" />
-    <ClInclude Include="SetupDatabaseSheet.h" />
     <ClInclude Include="SetupDataSourcePage.h" />
     <ClInclude Include="SetupInitialCatalogPage.h" />
     <ClInclude Include="stdafx.h" />
@@ -195,8 +194,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DatabaseSetupMFC.cpp" />
-    <ClCompile Include="DatabaseSetupMFCDlg.cpp" />
-    <ClCompile Include="SetupDatabaseSheet.cpp" />
     <ClCompile Include="SetupDataSourcePage.cpp" />
     <ClCompile Include="SetupInitialCatalogPage.cpp" />
     <ClCompile Include="stdafx.cpp">

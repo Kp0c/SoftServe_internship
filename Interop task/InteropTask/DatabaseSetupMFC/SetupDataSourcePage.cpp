@@ -1,13 +1,6 @@
-// SetupDataSourcePage.cpp : implementation file
-//
-
 #include "stdafx.h"
 #include "DatabaseSetupMFC.h"
 #include "SetupDataSourcePage.h"
-#include "afxdialogex.h"
-
-
-// SetupDataSourcePage dialog
 
 IMPLEMENT_DYNAMIC(SetupDataSourcePage, CPropertyPage)
 
@@ -23,13 +16,9 @@ BOOL SetupDataSourcePage::OnSetActive()
     return CPropertyPage::OnSetActive();
 }
 
-SetupDataSourcePage::~SetupDataSourcePage()
-{
-}
-
 void SetupDataSourcePage::DoDataExchange(CDataExchange* pDX)
 {
-	CPropertyPage::DoDataExchange(pDX);
+    CPropertyPage::DoDataExchange(pDX);
 }
 
 BEGIN_MESSAGE_MAP(SetupDataSourcePage, CPropertyPage)

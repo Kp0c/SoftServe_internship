@@ -16,8 +16,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "DatabaseSetup", "DatabaseSe
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseSetupMFC", "DatabaseSetupMFC\DatabaseSetupMFC.vcxproj", "{72AC78A0-88D4-4FBC-AA17-526CAD786769}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DatabaseSetup2", "DatabaseSetup2\DatabaseSetup2.vcxproj", "{5E834449-FAA2-40DD-BCEC-D77BF62EF64F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,16 +82,6 @@ Global
 		{72AC78A0-88D4-4FBC-AA17-526CAD786769}.Release|x64.Build.0 = Release|x64
 		{72AC78A0-88D4-4FBC-AA17-526CAD786769}.Release|x86.ActiveCfg = Release|Win32
 		{72AC78A0-88D4-4FBC-AA17-526CAD786769}.Release|x86.Build.0 = Release|Win32
-		{5E834449-FAA2-40DD-BCEC-D77BF62EF64F}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{5E834449-FAA2-40DD-BCEC-D77BF62EF64F}.Debug|x64.ActiveCfg = Debug|x64
-		{5E834449-FAA2-40DD-BCEC-D77BF62EF64F}.Debug|x64.Build.0 = Debug|x64
-		{5E834449-FAA2-40DD-BCEC-D77BF62EF64F}.Debug|x86.ActiveCfg = Debug|Win32
-		{5E834449-FAA2-40DD-BCEC-D77BF62EF64F}.Debug|x86.Build.0 = Debug|Win32
-		{5E834449-FAA2-40DD-BCEC-D77BF62EF64F}.Release|Any CPU.ActiveCfg = Release|Win32
-		{5E834449-FAA2-40DD-BCEC-D77BF62EF64F}.Release|x64.ActiveCfg = Release|x64
-		{5E834449-FAA2-40DD-BCEC-D77BF62EF64F}.Release|x64.Build.0 = Release|x64
-		{5E834449-FAA2-40DD-BCEC-D77BF62EF64F}.Release|x86.ActiveCfg = Release|Win32
-		{5E834449-FAA2-40DD-BCEC-D77BF62EF64F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

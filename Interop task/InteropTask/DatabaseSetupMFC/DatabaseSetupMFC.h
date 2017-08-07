@@ -1,6 +1,5 @@
 #pragma once
 #include "resource.h"
-#include <string>
 #include <vector>
 #include <map>
 
@@ -8,19 +7,12 @@
     #error "include 'stdafx.h' before including this file for PCH"
 #endif
 
-// CDatabaseSetupMFCApp:
-// See DatabaseSetupMFC.cpp for the implementation of this class
-//
-
 class CDatabaseSetupMFCApp : public CWinApp
 {
 public:
     CDatabaseSetupMFCApp();
 
-// Overrides
-    virtual BOOL InitInstance();
-
-// Implementation
+    BOOL InitInstance() override;
 private:
     static std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingsName);
 

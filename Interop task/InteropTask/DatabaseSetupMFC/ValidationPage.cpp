@@ -1,32 +1,21 @@
-// ValidationPage.cpp : implementation file
-//
-
 #include "stdafx.h"
 #include "DatabaseSetupMFC.h"
 #include "ValidationPage.h"
-#include "afxdialogex.h"
 
 #import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") implementation_only
 
-
-// ValidationPage dialog
-
 IMPLEMENT_DYNAMIC(ValidationPage, CPropertyPage)
 
-ValidationPage::ValidationPage(SetupDataSourcePage* dataSourcePage, SetupInitialCatalogPage* initialCatalogPage)
-	: CPropertyPage(IDD_VALIDATIONPAGE),
+ValidationPage::ValidationPage(SetupDataSourcePage& dataSourcePage, SetupInitialCatalogPage& initialCatalogPage)
+    : CPropertyPage(IDD_VALIDATIONPAGE),
     dataSourcePage(dataSourcePage),
     initialCatalogPage(initialCatalogPage)
 {
 }
 
-ValidationPage::~ValidationPage()
-{
-}
-
 void ValidationPage::DoDataExchange(CDataExchange* pDX)
 {
-	CPropertyPage::DoDataExchange(pDX);
+    CPropertyPage::DoDataExchange(pDX);
 }
 
 BOOL ValidationPage::OnSetActive()
@@ -34,20 +23,9 @@ BOOL ValidationPage::OnSetActive()
     CPropertySheet* sheet = static_cast<CPropertySheet*>(GetParent());
     if (TryConnect(BuildConnectionString()))
     {
-        LPTSTR tempString = new TCHAR[100];
-        CWnd* dataSourceEdit = dataSourcePage->GetDlgItem(IDC_DATASOURCE);
-        dataSourceEdit->GetWindowTextW(tempString, 100);
-        std::wstring dataSource(tempString);
-
-        dataSourceEdit = initialCatalogPage->GetDlgItem(IDC_INITIALCATALOG);
-        dataSourceEdit->GetWindowTextW(tempString, 100);
-        std::wstring initialCatalog(tempString);
-
-        delete[] tempString;
-
         std::map<std::wstring, std::wstring> settings{
-            { L"Data Source", dataSource.c_str() },
-            { L"Initial Catalog", initialCatalog.c_str() },
+            { L"Data Source", GetDataSource().c_str() },
+            { L"Initial Catalog", GetInitialCatalog().c_str() },
             { L"Trusted_Connection", L"yes" }
         };
 
@@ -58,7 +36,7 @@ BOOL ValidationPage::OnSetActive()
 
         return TRUE;
     }
-    sheet->SetActivePage(dataSourcePage);
+    sheet->SetActivePage(&dataSourcePage);
     MessageBox(L"Bad connection string, try again");
     
     return FALSE;
@@ -103,18 +81,33 @@ void ValidationPage::SaveSettings(std::map<std::wstring, std::wstring> settings)
 
 std::wstring ValidationPage::BuildConnectionString() const
 {
+    return L"Provider=sqloleDb;" + GetDataSource() + GetInitialCatalog() + L"Trusted_Connection=yes;";
+}
+
+std::wstring ValidationPage::GetDataSource() const
+{
     LPTSTR tempString = new TCHAR[100];
-    CWnd* dataSourceEdit = dataSourcePage->GetDlgItem(IDC_DATASOURCE);
+
+    CWnd* dataSourceEdit = dataSourcePage.GetDlgItem(IDC_DATASOURCE);
     dataSourceEdit->GetWindowTextW(tempString, 100);
     std::wstring dataSource(L"Data Source=" + std::wstring(tempString) + L";");
 
-    dataSourceEdit = initialCatalogPage->GetDlgItem(IDC_INITIALCATALOG);
-    dataSourceEdit->GetWindowTextW(tempString, 100);
+    delete[] tempString;
+
+    return dataSource;
+}
+
+std::wstring ValidationPage::GetInitialCatalog() const
+{
+    LPTSTR tempString = new TCHAR[100];
+
+    CWnd* initialCatalogEdit = initialCatalogPage.GetDlgItem(IDC_INITIALCATALOG);
+    initialCatalogEdit->GetWindowTextW(tempString, 100);
     std::wstring initialCatalog(L"Initial Catalog=" + std::wstring(tempString) + L";");
 
     delete[] tempString;
 
-    return L"Provider=sqloleDb;" + dataSource + initialCatalog + L"Trusted_Connection=yes;";
+    return initialCatalog;
 }
 
 BEGIN_MESSAGE_MAP(ValidationPage, CPropertyPage)
