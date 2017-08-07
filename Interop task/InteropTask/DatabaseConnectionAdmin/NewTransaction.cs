@@ -20,7 +20,7 @@ namespace DatabaseConnectionAdmin
 
         private void Apply_Click(object sender, EventArgs e)
         {
-            Validator.TryValidateAndAct(From, To, Sum, sum =>
+            Validator.TryValidateAndAct(new[] {From, To}, new[] {Sum}, sum =>
             {
                 DatabaseConnection connection = new DatabaseConnection();
                 connection.SendMoney(From.Text, To.Text, sum);

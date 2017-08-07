@@ -12,7 +12,7 @@ namespace DatabaseConnectionAdmin
 
         private void OkButton_Click(object sender, EventArgs e)
         {
-            Validator.TryValidateAndAct(Username, Password, Money, money =>
+            Validator.TryValidateAndAct(new[] {Username, Password}, new[] {Money}, money =>
             {
                 DatabaseConnection connection = new DatabaseConnection();
                 connection.CreateUser(Username.Text, Password.Text, money);

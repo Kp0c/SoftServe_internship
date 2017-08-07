@@ -6,41 +6,61 @@ namespace DatabaseConnectionAdmin
 {
     static class Validator
     {
-        public delegate void Act(int money);
 
-        private static bool ValidateField(TextBox field)
+        private static bool ValidateTextFields(TextBox[] fields)
         {
-            if (String.IsNullOrEmpty(field.Text))
-            {
-                MessageBox.Show($@"""{field.Name}"" cannot be empty.");
-                return false;
-            }
+            bool isValid = true;
 
-            if (field.Text.Contains('\'') || field.Text.Contains(' '))
+            foreach (TextBox field in fields)
             {
-                MessageBox.Show($@"""{field.Name}"" cannot contain ' or space symbol");
-                return false;
-            }
-
-            return true;
-        }
-
-        //TODO: rename fields
-        public static void TryValidateAndAct(TextBox text1, TextBox text2, TextBox int1, Act act)
-        {
-            int sum;
-            if (Int32.TryParse(int1.Text, out sum))
-            {
-                if (Validator.ValidateField(text1) && Validator.ValidateField(text2))
+                if (String.IsNullOrEmpty(field.Text))
                 {
-                    act(sum);
+                    MessageBox.Show($@"""{field.Name}"" cannot be empty.");
+                    isValid = false;
+                    break;
+                }
+
+                if (field.Text.Contains('\'') || field.Text.Contains(' '))
+                {
+                    MessageBox.Show($@"""{field.Name}"" cannot contain ' or space symbol");
+                    isValid = false;
+                    break;
                 }
             }
-            else
+
+            return isValid;
+        }
+
+        private static bool ValidateIntFields(TextBox[] fields, out int sum)
+        {
+            bool isValid = true;
+
+            sum = 0;
+            foreach (TextBox field in fields)
             {
-                MessageBox.Show($@"Wrong {int1.Name} field value");
-                int1.Text = "";
-                int1.Select();
+                int singleValue;
+                if (Int32.TryParse(field.Text, out singleValue))
+                {
+                    sum += singleValue;
+                }
+                else
+                {
+                    MessageBox.Show($@"Wrong {field.Name} field value");
+                    isValid = false;
+                    break;
+                }
+            }
+
+            return isValid;
+        }
+        
+        public delegate void Act(int money);
+        public static void TryValidateAndAct(TextBox[] textFields, TextBox[] intFields, Act act)
+        {
+            int sum;
+            if (ValidateTextFields(textFields) && ValidateIntFields(intFields, out sum))
+            {
+                act(sum);
             }
         }
     }

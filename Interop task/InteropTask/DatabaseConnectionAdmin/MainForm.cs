@@ -43,6 +43,7 @@ namespace DatabaseConnectionAdmin
             transactionForm.ShowDialog();
 
             transactionsTableAdapter.Fill(lastTaskDataSet.Transactions);
+            usersTableAdapter.Fill(lastTaskDataSet.Users);
         }
 
         [DllImport("DatabaseConnectionUser", CallingConvention = CallingConvention.Cdecl)]
