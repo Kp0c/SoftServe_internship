@@ -16,27 +16,20 @@ Public Class DatabaseSetup
     End Sub
 
     Private Sub btnOk_Click(sender As Object, e As EventArgs) Handles btnOk.Click
-        Dim connectionString As String
-        connectionString = "Data Source=" + txtDataSource.Text + ";"
-        connectionString += "Initial Catalog=" + txtInitialCatalog.Text + ";"
+        Dim connectionString As String = $"Data Source={txtDataSource.Text};Initial Catalog={txtDataSource.Text};"
+
         If chkTrustedConnection.Checked Then
             connectionString += "Trusted_Connection=yes;"
         Else
-            connectionString += "username=" + txtUsername.Text + ";"
-            connectionString += "password=" + txtPassword.Text + ";"
+            connectionString += $"username={txtUsername.Text};password={txtPassword.Text};"
         End If
 
-        connectionString += "Connection Timeout=" + nudConnectionTimeout.Value.ToString()
+        connectionString += $"Connection Timeout={nudConnectionTimeout.Value.ToString()};"
 
         Dim connection As New SqlConnection(connectionString)
-
         Try
             connection.Open()
-        Catch ex As Exception
 
-        End Try
-
-        If connection.State = ConnectionState.Open Then
             SaveSetting("LastTask", "Database", "Data Source", txtDataSource.Text)
             SaveSetting("LastTask", "Database", "Initial Catalog", txtInitialCatalog.Text)
             SaveSetting("LastTask", "Database", "username", txtUsername.Text)
@@ -50,10 +43,9 @@ Public Class DatabaseSetup
             End If
 
             Close()
-        Else
-            MessageBox.Show($"Bad connection string, try again")
-        End If
-
+        Catch ex As Exception
+            MessageBox.Show($"Bad connection string. Error: {ex.Message}")
+        End Try
     End Sub
 
     Private Sub DatabaseSetup_Load(sender As Object, e As EventArgs) Handles MyBase.Load
