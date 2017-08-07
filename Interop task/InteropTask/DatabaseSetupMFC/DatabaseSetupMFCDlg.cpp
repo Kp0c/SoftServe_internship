@@ -3,7 +3,7 @@
 #include "afxdialogex.h"
 #include "resource.h"
 
-#import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") implementation_only
+/*#import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") implementation_only
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -100,8 +100,8 @@ bool CDatabaseSetupMFCDlg::TryConnect(std::wstring connectionString)
     CoUninitialize();
     return isOk;
 }
-
-std::map<std::wstring, std::wstring> CDatabaseSetupMFCDlg::GetSettings(std::vector<std::wstring> settingsName)
+*/
+std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingsName)
 {
     std::map<std::wstring, std::wstring> settings;
     HKEY hkey;
@@ -123,7 +123,7 @@ std::map<std::wstring, std::wstring> CDatabaseSetupMFCDlg::GetSettings(std::vect
 
     return settings;
 }
-
+/*
 void CDatabaseSetupMFCDlg::SaveSettings(std::map<std::wstring, std::wstring> settings)
 {
     HKEY hkey;
@@ -185,3 +185,4 @@ void CDatabaseSetupMFCDlg::OnBnClickedOk()
         MessageBox(L"Bad connection string, try again");
     }
 }
+*/

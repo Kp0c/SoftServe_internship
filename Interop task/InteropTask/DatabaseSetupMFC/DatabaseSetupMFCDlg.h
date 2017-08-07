@@ -3,7 +3,7 @@
 #include <map>
 #include <vector>
 
-#import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") no_implementation
+/*#import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") no_implementation
 
 class CDatabaseSetupMFCDlg : public CDialogEx
 {
@@ -36,3 +36,4 @@ private:
     static std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingsName);
     static void SaveSettings(std::map<std::wstring, std::wstring> settings);
 };
+*/
