@@ -81,7 +81,9 @@ void ValidationPage::SaveSettings(std::map<std::wstring, std::wstring> settings)
 
 std::wstring ValidationPage::BuildConnectionString() const
 {
-    return L"Provider=sqloleDb;" + GetDataSource() + GetInitialCatalog() + L"Trusted_Connection=yes;";
+    std::wstring dataSource = L"Data Source=" + GetDataSource() + L";";
+    std::wstring initialCatalog = L"Initial Catalog=" + GetInitialCatalog() + L";";
+    return L"Provider=sqloleDb;" + dataSource + initialCatalog + L"Trusted_Connection=yes;";
 }
 
 std::wstring ValidationPage::GetDataSource() const
@@ -90,7 +92,7 @@ std::wstring ValidationPage::GetDataSource() const
 
     CWnd* dataSourceEdit = dataSourcePage.GetDlgItem(IDC_DATASOURCE);
     dataSourceEdit->GetWindowTextW(tempString, 100);
-    std::wstring dataSource(L"Data Source=" + std::wstring(tempString) + L";");
+    std::wstring dataSource(tempString);
 
     delete[] tempString;
 
@@ -103,7 +105,7 @@ std::wstring ValidationPage::GetInitialCatalog() const
 
     CWnd* initialCatalogEdit = initialCatalogPage.GetDlgItem(IDC_INITIALCATALOG);
     initialCatalogEdit->GetWindowTextW(tempString, 100);
-    std::wstring initialCatalog(L"Initial Catalog=" + std::wstring(tempString) + L";");
+    std::wstring initialCatalog(tempString);
 
     delete[] tempString;
 

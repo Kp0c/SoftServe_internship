@@ -4,7 +4,7 @@
 
 IMPLEMENT_DYNAMIC(SetupDataSourcePage, CPropertyPage)
 
-SetupDataSourcePage::SetupDataSourcePage(std::wstring dataSource)
+SetupDataSourcePage::SetupDataSourcePage(std::wstring& dataSource)
     : CPropertyPage(IDD_SETUP_DATASOURCE_PAGE),
     dataSource(dataSource)
 {

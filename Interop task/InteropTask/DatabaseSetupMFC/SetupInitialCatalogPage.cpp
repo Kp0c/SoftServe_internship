@@ -4,7 +4,7 @@
 
 IMPLEMENT_DYNAMIC(SetupInitialCatalogPage, CPropertyPage)
 
-SetupInitialCatalogPage::SetupInitialCatalogPage(std::wstring initialCatalog)
+SetupInitialCatalogPage::SetupInitialCatalogPage(std::wstring& initialCatalog)
     : CPropertyPage(IDD_SETUPINITIALCATALOGPAGE),
     initialCatalog(initialCatalog)
 {

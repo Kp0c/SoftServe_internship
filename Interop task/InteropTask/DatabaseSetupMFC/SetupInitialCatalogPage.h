@@ -6,7 +6,7 @@ class SetupInitialCatalogPage : public CPropertyPage
     DECLARE_DYNAMIC(SetupInitialCatalogPage)
 
 public:
-    SetupInitialCatalogPage(std::wstring initialCatalog);
+    SetupInitialCatalogPage(std::wstring& initialCatalog);
     virtual ~SetupInitialCatalogPage() = default;
 
 // Dialog Data

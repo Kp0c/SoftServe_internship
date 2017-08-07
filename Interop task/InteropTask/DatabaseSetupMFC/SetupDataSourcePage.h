@@ -6,7 +6,7 @@ class SetupDataSourcePage : public CPropertyPage
     DECLARE_DYNAMIC(SetupDataSourcePage)
 
 public:
-    SetupDataSourcePage(std::wstring dataSource);
+    SetupDataSourcePage(std::wstring& dataSource);
     virtual ~SetupDataSourcePage() = default;
 
 // Dialog Data
