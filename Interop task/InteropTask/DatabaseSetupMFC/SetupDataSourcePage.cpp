@@ -12,7 +12,11 @@ SetupDataSourcePage::SetupDataSourcePage(std::wstring& dataSource)
 
 BOOL SetupDataSourcePage::OnSetActive()
 {
-    GetDlgItem(IDC_DATASOURCE)->SetWindowTextW(dataSource.c_str());
+    if (!isInitialized)
+    {
+        GetDlgItem(IDC_DATASOURCE)->SetWindowTextW(dataSource.c_str());
+        isInitialized = true;
+    }
     return CPropertyPage::OnSetActive();
 }
 

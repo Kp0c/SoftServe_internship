@@ -21,5 +21,6 @@ protected:
     DECLARE_MESSAGE_MAP()
 
 private:
+    bool isInitialized = false;
     std::wstring initialCatalog;
 };

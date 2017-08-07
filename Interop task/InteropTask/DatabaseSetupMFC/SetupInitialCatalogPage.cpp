@@ -12,7 +12,11 @@ SetupInitialCatalogPage::SetupInitialCatalogPage(std::wstring& initialCatalog)
 
 BOOL SetupInitialCatalogPage::OnSetActive()
 {
-    GetDlgItem(IDC_INITIALCATALOG)->SetWindowTextW(initialCatalog.c_str());
+    if (!isInitialized)
+    {
+        GetDlgItem(IDC_INITIALCATALOG)->SetWindowTextW(initialCatalog.c_str());
+        isInitialized = true;
+    }
     return CPropertyPage::OnSetActive();
 }
 
