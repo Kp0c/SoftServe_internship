@@ -10,12 +10,13 @@
 --  creditUser varchar(255) FOREIGN KEY REFERENCES Users(username) NOT NULL,
 --  #sum int NOT NULL
 --);
-
 --CREATE PROCEDURE make_transaction @from varchar(255), @to varchar(255), @count int
 --AS
---	INSERT INTO Transactions VALUES(@from, @to, @count)
---	UPDATE Users SET [#money]=[#money]-@count WHERE username = @from
---	UPDATE Users SET [#money]=[#money]+@count WHERE username = @to
+--	IF @count > 0 BEGIN
+--		INSERT INTO Transactions VALUES(@from, @to, @count)
+--		UPDATE Users SET [#money]=[#money]-@count WHERE username = @from
+--		UPDATE Users SET [#money]=[#money]+@count WHERE username = @to
+--	END
 --GO
 
 --CREATE PROCEDURE remove_user @username varchar(255)

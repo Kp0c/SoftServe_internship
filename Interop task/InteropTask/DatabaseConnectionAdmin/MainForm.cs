@@ -6,12 +6,12 @@ namespace DatabaseConnectionAdmin
 {
     public partial class MainForm : Form
     {
-        readonly DatabaseConnection _connection;
+        private readonly DatabaseConnection connection;
         public MainForm()
         {
-            _connection = new DatabaseConnection();
+            connection = new DatabaseConnection();
 
-            Properties.Settings.Default.LastTaskConnectionString = _connection.GetConnectionString(); 
+            Properties.Settings.Default.LastTaskConnectionString = connection.GetConnectionString(); 
             Properties.Settings.Default.Save();
 
             InitializeComponent();
@@ -33,7 +33,7 @@ namespace DatabaseConnectionAdmin
 
         private void RemoveUser_Click(object sender, EventArgs e)
         {
-            _connection.RemoveUser(UsersGrid.SelectedRows[0].Cells[0].Value.ToString());
+            connection.RemoveUser(UsersGrid.SelectedRows[0].Cells[0].Value.ToString());
             usersTableAdapter.Fill(lastTaskDataSet.Users);
         }
 
