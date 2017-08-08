@@ -4,8 +4,14 @@ using System.Windows.Forms;
 
 namespace DatabaseConnectionAdmin
 {
-    static class Validator
+    public static class Validator
     {
+        private static IDialogService _dialogService = new MessageBoxService();
+
+        public static void SetDialogService(IDialogService dialogService)
+        {
+            _dialogService = dialogService;
+        }
 
         private static bool ValidateTextFields(TextBox[] fields)
         {
@@ -15,14 +21,14 @@ namespace DatabaseConnectionAdmin
             {
                 if (String.IsNullOrEmpty(field.Text))
                 {
-                    MessageBox.Show($@"""{field.Name}"" cannot be empty.");
+                    _dialogService.ShowMessageBox($@"""{field.Name}"" cannot be empty.");
                     isValid = false;
                     break;
                 }
 
                 if (field.Text.Contains('\'') || field.Text.Contains(' '))
                 {
-                    MessageBox.Show($@"""{field.Name}"" cannot contain ' or space symbol");
+                    _dialogService.ShowMessageBox($@"""{field.Name}"" cannot contain ' or space symbol");
                     isValid = false;
                     break;
                 }
@@ -45,7 +51,7 @@ namespace DatabaseConnectionAdmin
                 }
                 else
                 {
-                    MessageBox.Show($@"Wrong {field.Name} field value");
+                    _dialogService.ShowMessageBox($@"Wrong {field.Name} field value");
                     isValid = false;
                     break;
                 }

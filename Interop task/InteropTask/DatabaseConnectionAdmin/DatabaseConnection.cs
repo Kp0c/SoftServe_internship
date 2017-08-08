@@ -1,4 +1,5 @@
-﻿using System.Data.SqlClient;
+﻿using System.Data.Common;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Microsoft.Win32;
@@ -11,14 +12,15 @@ namespace DatabaseConnectionAdmin
     [ClassInterface(ClassInterfaceType.None)]
     public class DatabaseConnection : IDatabaseConnection
     {
-        readonly SqlConnection _connection;
+        readonly SqlConnection connection;
+        private readonly DbCommand commandExecutor;
 
         public string GetConnectionString()
         {
-            return _connection.ConnectionString;
+            return connection.ConnectionString;
         }
 
-        public DatabaseConnection()
+        public DatabaseConnection(DbCommand commandExecutor = null)
         {
             RegistryKey databaseData = Registry.CurrentUser.OpenSubKey("Software")?.OpenSubKey("VB and VBA Program Settings")?.OpenSubKey("LastTask")?.OpenSubKey("Database");
 
@@ -30,20 +32,32 @@ namespace DatabaseConnectionAdmin
             connectionString += "User Id=" + databaseData.GetValue("Username") + ";";
             connectionString += "Password=" + databaseData.GetValue("Password") + ";";
 
-            _connection = new SqlConnection(connectionString);
+            connection = new SqlConnection(connectionString);
+
+            if (commandExecutor == null)
+            {
+                this.commandExecutor = new SqlCommand();
+            }
+            else
+            {
+                this.commandExecutor = commandExecutor;
+            }
+
+            this.commandExecutor.Connection = connection;
         }
 
         private void ExecuteCommand(string command)
         {
-            _connection.Open();
-            SqlCommand sqlCommand = new SqlCommand(command, _connection);
-            sqlCommand.ExecuteNonQuery();
-            _connection.Close();
+            connection.Open();
+            commandExecutor.CommandText = command;
+            commandExecutor.ExecuteNonQuery();
+
+            connection.Close();
         }
 
         public void CreateUser(string username, string password, int money)
         {
-            ExecuteCommand("INSERT INTO Users VALUES('" + username + "','" + password + "', " + money + ");");
+            ExecuteCommand("INSERT INTO Users VALUES('" + username + "', '" + password + "', " + money + ");");
          }
 
         public void RemoveUser(string username)
@@ -58,7 +72,7 @@ namespace DatabaseConnectionAdmin
 
         public void SendMoney(string from, string to, int money)
         {
-            ExecuteCommand("EXECUTE make_transaction '" + from + "', '" + to + "', " + money);
+            ExecuteCommand("EXECUTE make_transaction '" + from + "', '" + to + "', " + money + ";");
         }
     }
 }

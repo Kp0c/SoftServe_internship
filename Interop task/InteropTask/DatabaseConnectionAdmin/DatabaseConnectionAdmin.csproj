@@ -70,6 +70,7 @@
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="IDatabaseConnection.cs" />
     <Compile Include="IAdminForm.cs" />
+    <Compile Include="IDialogService.cs" />
     <Compile Include="LastTaskDataSet.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -81,6 +82,7 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="MessageBoxService.cs" />
     <Compile Include="NewTransaction.cs">
       <SubType>Form</SubType>
     </Compile>
