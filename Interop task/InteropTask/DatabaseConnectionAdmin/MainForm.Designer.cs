@@ -264,6 +264,7 @@
             this.ClientSize = new System.Drawing.Size(776, 580);
             this.Controls.Add(this.RefreshButton);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "MainForm";
             this.Text = "Admin form";
             this.Load += new System.EventHandler(this.MainForm_Load);

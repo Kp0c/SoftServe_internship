@@ -35,6 +35,7 @@ namespace DatabaseConnectionAdmin
         {
             connection.RemoveUser(UsersGrid.SelectedRows[0].Cells[0].Value.ToString());
             usersTableAdapter.Fill(lastTaskDataSet.Users);
+            transactionsTableAdapter.Fill(lastTaskDataSet.Transactions);
         }
 
         private void AddTransaction_Click(object sender, EventArgs e)
@@ -47,7 +48,7 @@ namespace DatabaseConnectionAdmin
         }
 
         [DllImport("DatabaseConnectionUser", CallingConvention = CallingConvention.Cdecl)]
-        static extern void ShowGUI(IntPtr parentHwnd, [MarshalAs(UnmanagedType.BStr)] string username);
+        private static extern void ShowGUI(IntPtr parentHwnd, [MarshalAs(UnmanagedType.BStr)] string username);
 
         private void ShowAsSelected_Click(object sender, EventArgs e)
         {

@@ -22,7 +22,8 @@ namespace DatabaseConnectionAdmin
 
         public DatabaseConnection(DbCommand commandExecutor = null)
         {
-            RegistryKey databaseData = Registry.CurrentUser.OpenSubKey("Software")?.OpenSubKey("VB and VBA Program Settings")?.OpenSubKey("LastTask")?.OpenSubKey("Database");
+            RegistryKey databaseData = Registry.CurrentUser.OpenSubKey("Software")
+                ?.OpenSubKey("VB and VBA Program Settings")?.OpenSubKey("LastTask")?.OpenSubKey("Database");
 
             Debug.Assert(databaseData != null, "databaseData cannot be null");
 
@@ -58,7 +59,7 @@ namespace DatabaseConnectionAdmin
         public void CreateUser(string username, string password, int money)
         {
             ExecuteCommand("INSERT INTO Users VALUES('" + username + "', '" + password + "', " + money + ");");
-         }
+        }
 
         public void RemoveUser(string username)
         {
