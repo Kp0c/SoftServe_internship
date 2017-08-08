@@ -1,10 +1,7 @@
 ﻿using System.Data.Common;
 using System.Data.SqlClient;
-using System.Diagnostics;
 using System.Runtime.InteropServices;
-using DatabaseSetup;
 using Microsoft.Win32;
-using DatabaseSetup = DatabaseSetup.DatabaseSetup;
 
 namespace DatabaseConnectionAdmin
 {
