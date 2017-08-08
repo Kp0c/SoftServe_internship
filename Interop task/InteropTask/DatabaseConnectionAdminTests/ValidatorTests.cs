@@ -8,60 +8,60 @@ namespace DatabaseConnectionAdminTests
     [TestClass]
     public class ValidatorTests
     {
-        private TextBox text;
-        private TextBox integer;
-        private MockDialogService dialogMock;
+        private TextBox _text;
+        private TextBox _integer;
+        private MockDialogService _dialogMock;
 
         [TestInitialize]
         public void Setup()
         {
-            text = new TextBox {Text = @"uesrname"};
-            integer = new TextBox {Text = @"123"};
+            _text = new TextBox {Text = @"uesrname"};
+            _integer = new TextBox {Text = @"123"};
 
-            dialogMock = new MockDialogService();
-            Validator.SetDialogService(dialogMock);
+            _dialogMock = new MockDialogService();
+            Validator.SetDialogService(_dialogMock);
         }
 
         [TestMethod]
         public void TryValidateAndAct_EmptyField()
         {
-            text.Text = String.Empty;
-            Validator.TryValidateAndAct(new[] {text}, null, null);
-            Assert.AreEqual($@"""{text.Name}"" cannot be empty.", dialogMock.TextInService);
+            _text.Text = String.Empty;
+            Validator.TryValidateAndAct(new[] {_text}, null, null);
+            Assert.AreEqual($@"""{_text.Name}"" cannot be empty.", _dialogMock.TextInService);
         }
 
         [TestMethod]
         public void TryValidateAndAct_SpaceCharacterField()
         {
-            text.Text = @"aa bb";
-            Validator.TryValidateAndAct(new[] {text}, null, null);
-            Assert.AreEqual($@"""{text.Name}"" cannot contain ' or space symbol", dialogMock.TextInService);
+            _text.Text = @"aa bb";
+            Validator.TryValidateAndAct(new[] {_text}, null, null);
+            Assert.AreEqual($@"""{_text.Name}"" cannot contain ' or space symbol", _dialogMock.TextInService);
         }
 
         [TestMethod]
         public void TryValidateAndAct_ApostropheCharacterField()
         {
-            text.Text = @"aa'bb";
-            Validator.TryValidateAndAct(new[] {text}, null, null);
-            Assert.AreEqual($@"""{text.Name}"" cannot contain ' or space symbol", dialogMock.TextInService);
+            _text.Text = @"aa'bb";
+            Validator.TryValidateAndAct(new[] {_text}, null, null);
+            Assert.AreEqual($@"""{_text.Name}"" cannot contain ' or space symbol", _dialogMock.TextInService);
         }
 
         [TestMethod]
         public void TryValidateAndAct_InvalidMoneyField()
         {
-            integer.Text = @"ab";
-            Validator.TryValidateAndAct(new[] {text}, new[] {integer}, null);
-            Assert.AreEqual($@"Wrong {integer.Name} field value", dialogMock.TextInService);
+            _integer.Text = @"ab";
+            Validator.TryValidateAndAct(new[] {_text}, new[] {_integer}, null);
+            Assert.AreEqual($@"Wrong {_integer.Name} field value", _dialogMock.TextInService);
         }
 
         [TestMethod]
         public void TryValidateAndAct_AllFieldsValid_ReturnSumOfIntegerFields()
         {
             TextBox integer2 = new TextBox {Text = @"10"};
-            integer.Text = @"20";
+            _integer.Text = @"20";
 
             int sum = 0;
-            Validator.TryValidateAndAct(new [] {text}, new [] {integer,integer2}, money => sum = money);
+            Validator.TryValidateAndAct(new [] {_text}, new [] {_integer,integer2}, money => sum = money);
             
             Assert.AreEqual(30, sum);
         }

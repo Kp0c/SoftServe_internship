@@ -6,43 +6,43 @@ namespace DatabaseConnectionAdminTests
     [TestClass]
     public class DatabaseConnectionTests
     {
-        private MockDbCommand mockDbCommand;
+        private MockDbCommand _mockDbCommand;
 
-        private DatabaseConnection dbConnection;
+        private DatabaseConnection _dbConnection;
         [TestInitialize]
         public void Setup()
         {
-            mockDbCommand = new MockDbCommand();
-            dbConnection = new DatabaseConnection(mockDbCommand);
+            _mockDbCommand = new MockDbCommand();
+            _dbConnection = new DatabaseConnection(_mockDbCommand);
         }
 
         [TestMethod]
         public void CreateUserTest()
         {
-            dbConnection.CreateUser("username", "password", 1000);
+            _dbConnection.CreateUser("username", "password", 1000);
 
-            Assert.AreEqual(@"INSERT INTO Users VALUES('username', 'password', 1000);", mockDbCommand.ExecutedCommandText);
+            Assert.AreEqual(@"INSERT INTO Users VALUES('username', 'password', 1000);", _mockDbCommand.ExecutedCommandText);
         }
 
         [TestMethod]
         public void RemoveUserTest()
         {
-            dbConnection.RemoveUser("username");
-            Assert.AreEqual(@"EXECUTE remove_user 'username';", mockDbCommand.ExecutedCommandText);
+            _dbConnection.RemoveUser("username");
+            Assert.AreEqual(@"EXECUTE remove_user 'username';", _mockDbCommand.ExecutedCommandText);
         }
 
         [TestMethod]
         public void ChangeMoneyOfUserTest()
         {
-            dbConnection.ChangeMoneyOfUser("username", 1000);
-            Assert.AreEqual(@"UPDATE Users SET money=1000 WHERE username='username';", mockDbCommand.ExecutedCommandText);
+            _dbConnection.ChangeMoneyOfUser("username", 1000);
+            Assert.AreEqual(@"UPDATE Users SET money=1000 WHERE username='username';", _mockDbCommand.ExecutedCommandText);
         }
 
         [TestMethod]
         public void SendMoneyTest()
         {
-            dbConnection.SendMoney("1", "2", 500);
-            Assert.AreEqual(@"EXECUTE make_transaction '1', '2', 500;", mockDbCommand.ExecutedCommandText);
+            _dbConnection.SendMoney("1", "2", 500);
+            Assert.AreEqual(@"EXECUTE make_transaction '1', '2', 500;", _mockDbCommand.ExecutedCommandText);
         }
     }
 }

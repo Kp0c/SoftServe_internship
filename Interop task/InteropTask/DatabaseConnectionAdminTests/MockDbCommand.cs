@@ -24,7 +24,7 @@ namespace DatabaseConnectionAdminTests
         protected override DbTransaction DbTransaction { get; set; }
         public override bool DesignTimeVisible { get; set; }
 
-        public string ExecutedCommandText { get; set; }
+        public string ExecutedCommandText { get; private set; }
 
         public override void Cancel()
         {

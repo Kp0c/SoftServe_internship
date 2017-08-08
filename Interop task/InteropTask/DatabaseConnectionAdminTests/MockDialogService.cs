@@ -6,10 +6,7 @@ namespace DatabaseConnectionAdminTests
     {
         string _textInService;
 
-        public string TextInService
-        {
-            get { return _textInService; }
-        }
+        public string TextInService => _textInService;
 
         public void ShowMessageBox(string text)
         {

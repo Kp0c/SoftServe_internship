@@ -25,8 +25,8 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 private:
-    SetupDataSourcePage& dataSourcePage;
-    SetupInitialCatalogPage& initialCatalogPage;
+    SetupDataSourcePage& _dataSourcePage;
+    SetupInitialCatalogPage& _initialCatalogPage;
 
     std::wstring BuildConnectionString() const;
     std::wstring GetDataSource() const;

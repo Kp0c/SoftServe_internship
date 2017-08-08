@@ -24,22 +24,22 @@ CDbCon::CDbCon()
 {
     CoInitialize(NULL);
 
-    connection.CreateInstance(__uuidof(ADO::Connection));
+    _connection.CreateInstance(__uuidof(ADO::Connection));
 
     try
     {
-        connection->Open(GetConnectionString().c_str(), L"", L"", ADO::ConnectOptionEnum::adConnectUnspecified);
+        _connection->Open(GetConnectionString().c_str(), L"", L"", ADO::ConnectOptionEnum::adConnectUnspecified);
     }
     catch(...)
     {
         SetupDatabase();
-        connection->Open(GetConnectionString().c_str(), L"", L"", ADO::ConnectOptionEnum::adConnectUnspecified);
+        _connection->Open(GetConnectionString().c_str(), L"", L"", ADO::ConnectOptionEnum::adConnectUnspecified);
     }
 }
 
 CDbCon::~CDbCon()
 {
-    connection.Release();
+    _connection.Release();
     CoUninitialize();
 }
 
@@ -68,7 +68,7 @@ std::map<std::wstring, std::wstring> CDbCon::GetSettings(std::vector<std::wstrin
 
 STDMETHODIMP CDbCon::AddUser(BSTR username, BSTR password)
 {
-    connection->Execute(L"INSERT INTO Users VALUES('" + (bstr_t)username + "', '" + (bstr_t)password + "')", nullptr, ADO::ExecuteOptionEnum::adOptionUnspecified);
+    _connection->Execute(L"INSERT INTO Users VALUES('" + (bstr_t)username + "', '" + (bstr_t)password + "')", nullptr, ADO::ExecuteOptionEnum::adOptionUnspecified);
 
     return S_OK;
 }
@@ -80,7 +80,7 @@ STDMETHODIMP CDbCon::TryLogIn(BSTR username, BSTR password, VARIANT_BOOL* isSucc
     ADO::Recordset15Ptr record;
     record.CreateInstance(__uuidof(ADO::Recordset));
 
-    record = connection->Execute(L"SELECT username FROM Users WHERE username='" + (bstr_t)username + "' AND password='" + (bstr_t)password + "'", nullptr, ADO::ExecuteOptionEnum::adOptionUnspecified);
+    record = _connection->Execute(L"SELECT username FROM Users WHERE username='" + (bstr_t)username + "' AND password='" + (bstr_t)password + "'", nullptr, ADO::ExecuteOptionEnum::adOptionUnspecified);
 
     bool isHaveAtLeastOneRecord = !record->EndOfFile;
     if (isHaveAtLeastOneRecord)
@@ -96,7 +96,7 @@ STDMETHODIMP CDbCon::SendMoney(BSTR from, BSTR to, LONG count)
 {
     std::wstring moneyCountString = std::to_wstring(count);
 
-    connection->Execute(L"EXECUTE make_transaction '" + (bstr_t)from + "', '" + (bstr_t)to + "', " +
+    _connection->Execute(L"EXECUTE make_transaction '" + (bstr_t)from + "', '" + (bstr_t)to + "', " +
         SysAllocStringLen(moneyCountString.c_str(), moneyCountString.length()) + "", nullptr, ADO::ExecuteOptionEnum::adOptionUnspecified);
 
     return S_OK;
@@ -105,7 +105,7 @@ STDMETHODIMP CDbCon::SendMoney(BSTR from, BSTR to, LONG count)
 
 STDMETHODIMP CDbCon::DeleteUser(BSTR username)
 {
-    connection->Execute(L"DELETE FROM Users WHERE username='" + (bstr_t)username + "'", nullptr, ADO::ExecuteOptionEnum::adOptionUnspecified);
+    _connection->Execute(L"DELETE FROM Users WHERE username='" + (bstr_t)username + "'", nullptr, ADO::ExecuteOptionEnum::adOptionUnspecified);
 
     return S_OK;
 }
@@ -154,7 +154,7 @@ STDMETHODIMP CDbCon::GetTransactions(BSTR username, VARIANT* transactions)
     ADO::Recordset15Ptr record = NULL;
     record.CreateInstance(__uuidof(ADO::Recordset));
 
-    record = connection->Execute(L"SELECT debitUser, creditUser, #sum FROM Transactions WHERE debitUser='" +
+    record = _connection->Execute(L"SELECT debitUser, creditUser, #sum FROM Transactions WHERE debitUser='" +
         (bstr_t)username + "' OR creditUser='" + (bstr_t)username + "'", nullptr, ADO::ExecuteOptionEnum::adOptionUnspecified);
 
     transactions->parray = StructurizeInfo(record).Detach();

@@ -6,18 +6,18 @@ IMPLEMENT_DYNAMIC(SetupInitialCatalogPage, CPropertyPage)
 
 SetupInitialCatalogPage::SetupInitialCatalogPage(std::wstring& initialCatalog)
     : CPropertyPage(IDD_SETUPINITIALCATALOGPAGE),
-    initialCatalog(initialCatalog)
+    _initialCatalog(initialCatalog)
 {
 }
 
 BOOL SetupInitialCatalogPage::OnSetActive()
 {
-    if (!isInitialized)
+    if (!_isInitialized)
     {
-        GetDlgItem(IDC_INITIALCATALOG)->SetWindowTextW(initialCatalog.c_str());
-        isInitialized = true;
+        GetDlgItem(IDC_INITIALCATALOG)->SetWindowTextW(_initialCatalog.c_str());
+        _isInitialized = true;
     }
-    CPropertySheet* sheet = (CPropertySheet*)GetParent();
+    CPropertySheet* sheet = static_cast<CPropertySheet*>(GetParent());
     sheet->SetWizardButtons(PSWIZB_NEXT | PSWIZB_BACK | PSWIZB_CANCEL);
 
     return CPropertyPage::OnSetActive();

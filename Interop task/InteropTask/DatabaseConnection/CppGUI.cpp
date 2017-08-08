@@ -46,7 +46,7 @@ void CCppGUI::DrawDbInfo(Graphics& graphics)
     int columns = dbData.GetCount(1);
     int rows = dbData.GetCount(0);
 
-    int cellsPassed = abs(yOffset) / CELL_HEIGHT + 1;
+    int cellsPassed = abs(_yOffset) / CELL_HEIGHT + 1;
     int maxRows = min(cellsPassed + TOTAL_ROWS, rows + 1);
 
     LONG indexes[2];
@@ -61,7 +61,7 @@ void CCppGUI::DrawDbInfo(Graphics& graphics)
             dbData.MultiDimGetAt(indexes, str);
 
             int x = i*CELL_WIDTH;
-            int y = j*CELL_HEIGHT + yOffset;
+            int y = j*CELL_HEIGHT + _yOffset;
 
             bool isFirstRow = y < CELL_HEIGHT;
             if (isFirstRow)
@@ -121,32 +121,32 @@ LRESULT CCppGUI::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         EndPaint(hwnd, &ps);
         break;
     case WM_CLOSE:
-        EnableWindow(parentHwnd, TRUE);
+        EnableWindow(_parentHwnd, TRUE);
         DestroyWindow(hwnd);
         break;
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
     case WM_MOUSEWHEEL:
-        wheelDelta += GET_WHEEL_DELTA_WPARAM(wParam);
+        _wheelDelta += GET_WHEEL_DELTA_WPARAM(wParam);
 
-        for (; wheelDelta > WHEEL_DELTA; wheelDelta -= WHEEL_DELTA)
+        for (; _wheelDelta > WHEEL_DELTA; _wheelDelta -= WHEEL_DELTA)
         {
-            yOffset += CELL_HEIGHT;
+            _yOffset += CELL_HEIGHT;
 
-            if (yOffset > 0)
+            if (_yOffset > 0)
             {
-                yOffset = 0;
+                _yOffset = 0;
             }
         }
 
-        for (; wheelDelta < 0; wheelDelta += WHEEL_DELTA)
+        for (; _wheelDelta < 0; _wheelDelta += WHEEL_DELTA)
         {
-            yOffset -= CELL_HEIGHT;
+            _yOffset -= CELL_HEIGHT;
 
-            if (abs(yOffset) >((int)dbData.GetCount(0) - ROWS)*CELL_HEIGHT)
+            if (abs(_yOffset) >((int)dbData.GetCount(0) - ROWS)*CELL_HEIGHT)
             {
-                yOffset = -CELL_HEIGHT*(dbData.GetCount(0) - ROWS);
+                _yOffset = -CELL_HEIGHT*(dbData.GetCount(0) - ROWS);
             }
         }
 
@@ -158,15 +158,15 @@ LRESULT CCppGUI::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-STDMETHODIMP CCppGUI::ShowGUI(LONG parentHwnd, BSTR username)
+STDMETHODIMP CCppGUI::ShowGUI(LONG _parentHwnd, BSTR username)
 {
-    this->parentHwnd = (HWND)parentHwnd;
+    this->_parentHwnd = (HWND)_parentHwnd;
 
     GdiplusStartupInput gdiplusStartupInput;
     ULONG_PTR gdiplusToken;
     GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 
-    HWND hwnd = SetupWindow(username, (HWND)parentHwnd);
+    HWND hwnd = SetupWindow(username, (HWND)_parentHwnd);
     
     int returnCode = S_FALSE;
     if (hwnd != 0)
@@ -199,7 +199,7 @@ STDMETHODIMP CCppGUI::ShowGUI(LONG parentHwnd, BSTR username)
     return returnCode;
 }
 
-HWND CCppGUI::SetupWindow(std::wstring username, HWND parentHwnd)
+HWND CCppGUI::SetupWindow(std::wstring username, HWND _parentHwnd)
 {
     WNDCLASSEX wc;
     HWND hwnd;
@@ -230,7 +230,7 @@ HWND CCppGUI::SetupWindow(std::wstring username, HWND parentHwnd)
         title.c_str(),
         WS_OVERLAPPED | WS_OVERLAPPED | WS_SYSMENU,
         CW_USEDEFAULT, CW_USEDEFAULT, WIDTH, HEIGHT,
-        parentHwnd, NULL, NULL, NULL);
+        _parentHwnd, NULL, NULL, NULL);
 
     if (hwnd == NULL)
     {
@@ -246,7 +246,7 @@ HWND CCppGUI::SetupWindow(std::wstring username, HWND parentHwnd)
         return 0;
     }
 
-    EnableWindow(parentHwnd, FALSE);
+    EnableWindow(_parentHwnd, FALSE);
 
     return hwnd;
 }

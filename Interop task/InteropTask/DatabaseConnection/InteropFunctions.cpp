@@ -15,7 +15,6 @@ void AddNewTransaction(std::wstring username)
     String^ str = gcnew String(username.c_str());
     NewTransaction^ newTransaction = gcnew NewTransaction(str);
     newTransaction->ShowDialog();
-    //NewTransaction^ form = gcnew NewTransaction(str);
 }
 
 void SetupDatabase()
@@ -24,10 +23,10 @@ void SetupDatabase()
     dbSetup->ShowDialog();
 }
 
-USER_API void ShowGUI(HWND parentHwnd, BSTR username)
+USER_API void ShowGUI(HWND _parentHwnd, BSTR username)
 {
     ICppGUI* gui = NULL;
     CoCreateInstance(CLSID_CppGUI, NULL, CLSCTX_INPROC_SERVER, IID_ICppGUI, (void**)&gui);
 
-    gui->ShowGUI((LONG)parentHwnd, username);
+    gui->ShowGUI((LONG)_parentHwnd, username);
 }

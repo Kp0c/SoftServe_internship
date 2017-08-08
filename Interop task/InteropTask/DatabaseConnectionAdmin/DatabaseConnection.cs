@@ -11,12 +11,12 @@ namespace DatabaseConnectionAdmin
     [ClassInterface(ClassInterfaceType.None)]
     public class DatabaseConnection : IDatabaseConnection
     {
-        readonly SqlConnection connection;
-        private readonly DbCommand commandExecutor;
+        readonly SqlConnection _connection;
+        private readonly DbCommand _commandExecutor;
 
         public string GetConnectionString()
         {
-            return connection.ConnectionString;
+            return _connection.ConnectionString;
         }
 
         private static RegistryKey GetDatabaseData()
@@ -41,27 +41,20 @@ namespace DatabaseConnectionAdmin
             connectionString += "User Id=" + databaseData.GetValue("Username") + ";";
             connectionString += "Password=" + databaseData.GetValue("Password") + ";";
 
-            connection = new SqlConnection(connectionString);
+            _connection = new SqlConnection(connectionString);
 
-            if (commandExecutor == null)
-            {
-                this.commandExecutor = new SqlCommand();
-            }
-            else
-            {
-                this.commandExecutor = commandExecutor;
-            }
+            _commandExecutor = commandExecutor ?? new SqlCommand();
 
-            this.commandExecutor.Connection = connection;
+            _commandExecutor.Connection = _connection;
         }
 
         private void ExecuteCommand(string command)
         {
-            connection.Open();
-            commandExecutor.CommandText = command;
-            commandExecutor.ExecuteNonQuery();
+            _connection.Open();
+            _commandExecutor.CommandText = command;
+            _commandExecutor.ExecuteNonQuery();
 
-            connection.Close();
+            _connection.Close();
         }
 
         public void CreateUser(string username, string password, int money)

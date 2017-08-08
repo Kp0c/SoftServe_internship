@@ -81,7 +81,6 @@
     <Compile Include="NewTransaction.Designer.cs">
       <DependentUpon>NewTransaction.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validator.cs" />
     <EmbeddedResource Include="AddUser.resx">

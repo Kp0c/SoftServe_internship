@@ -6,18 +6,18 @@ IMPLEMENT_DYNAMIC(SetupDataSourcePage, CPropertyPage)
 
 SetupDataSourcePage::SetupDataSourcePage(std::wstring& dataSource)
     : CPropertyPage(IDD_SETUP_DATASOURCE_PAGE),
-    dataSource(dataSource)
+    _dataSource(dataSource)
 {
 }
 
 BOOL SetupDataSourcePage::OnSetActive()
 {
-    if (!isInitialized)
+    if (!_isInitialized)
     {
-        GetDlgItem(IDC_DATASOURCE)->SetWindowTextW(dataSource.c_str());
-        isInitialized = true;
+        GetDlgItem(IDC_DATASOURCE)->SetWindowTextW(_dataSource.c_str());
+        _isInitialized = true;
     }
-    CPropertySheet* sheet = (CPropertySheet*)GetParent();
+    CPropertySheet* sheet = static_cast<CPropertySheet*>(GetParent());
 
     sheet->SetWizardButtons(PSWIZB_NEXT | PSWIZB_CANCEL);
 

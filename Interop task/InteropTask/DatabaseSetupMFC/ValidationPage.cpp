@@ -8,8 +8,8 @@ IMPLEMENT_DYNAMIC(ValidationPage, CPropertyPage)
 
 ValidationPage::ValidationPage(SetupDataSourcePage& dataSourcePage, SetupInitialCatalogPage& initialCatalogPage)
     : CPropertyPage(IDD_VALIDATIONPAGE),
-    dataSourcePage(dataSourcePage),
-    initialCatalogPage(initialCatalogPage)
+    _dataSourcePage(dataSourcePage),
+    _initialCatalogPage(initialCatalogPage)
 {
 }
 
@@ -36,7 +36,7 @@ BOOL ValidationPage::OnSetActive()
 
         return TRUE;
     }
-    sheet->SetActivePage(&dataSourcePage);
+    sheet->SetActivePage(&_dataSourcePage);
     MessageBox(L"Bad connection string, try again");
     
     return FALSE;
@@ -44,22 +44,22 @@ BOOL ValidationPage::OnSetActive()
 
 bool ValidationPage::TryConnect(std::wstring connectionString)
 {
-    ADO::Connection15Ptr connection = NULL;
+    ADO::Connection15Ptr _connection = NULL;
 
     CoInitialize(nullptr);
-    connection.CreateInstance(__uuidof(ADO::Connection));
+    _connection.CreateInstance(__uuidof(ADO::Connection));
 
     bool isOk = true;
     try
     {
-        connection->Open(connectionString.c_str(), "", "", ADO::ConnectOptionEnum::adConnectUnspecified);
+        _connection->Open(connectionString.c_str(), "", "", ADO::ConnectOptionEnum::adConnectUnspecified);
     }
     catch (...)
     {
         isOk = false;
     }
 
-    connection.Release();
+    _connection.Release();
     CoUninitialize();
     return isOk;
 }
@@ -90,7 +90,7 @@ std::wstring ValidationPage::GetDataSource() const
 {
     LPTSTR tempString = new TCHAR[100];
 
-    CWnd* dataSourceEdit = dataSourcePage.GetDlgItem(IDC_DATASOURCE);
+    CWnd* dataSourceEdit = _dataSourcePage.GetDlgItem(IDC_DATASOURCE);
     dataSourceEdit->GetWindowTextW(tempString, 100);
     std::wstring dataSource(tempString);
 
@@ -103,7 +103,7 @@ std::wstring ValidationPage::GetInitialCatalog() const
 {
     LPTSTR tempString = new TCHAR[100];
 
-    CWnd* initialCatalogEdit = initialCatalogPage.GetDlgItem(IDC_INITIALCATALOG);
+    CWnd* initialCatalogEdit = _initialCatalogPage.GetDlgItem(IDC_INITIALCATALOG);
     initialCatalogEdit->GetWindowTextW(tempString, 100);
     std::wstring initialCatalog(tempString);
 

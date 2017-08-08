@@ -10,4 +10,4 @@
 
 void AddNewTransaction(std::wstring username);
 void SetupDatabase();
-USER_API void ShowGUI(HWND parentHwnd, BSTR username);
+USER_API void ShowGUI(HWND _parentHwnd, BSTR username);

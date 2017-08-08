@@ -20,6 +20,6 @@ protected:
 
     DECLARE_MESSAGE_MAP()
 private:
-    bool isInitialized = false;
-    std::wstring dataSource;
+    bool _isInitialized = false;
+    std::wstring _dataSource;
 };
