@@ -17,6 +17,9 @@ BOOL SetupInitialCatalogPage::OnSetActive()
         GetDlgItem(IDC_INITIALCATALOG)->SetWindowTextW(initialCatalog.c_str());
         isInitialized = true;
     }
+    CPropertySheet* sheet = (CPropertySheet*)GetParent();
+    sheet->SetWizardButtons(PSWIZB_NEXT | PSWIZB_BACK | PSWIZB_CANCEL);
+
     return CPropertyPage::OnSetActive();
 }
 

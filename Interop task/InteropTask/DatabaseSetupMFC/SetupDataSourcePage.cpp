@@ -17,6 +17,10 @@ BOOL SetupDataSourcePage::OnSetActive()
         GetDlgItem(IDC_DATASOURCE)->SetWindowTextW(dataSource.c_str());
         isInitialized = true;
     }
+    CPropertySheet* sheet = (CPropertySheet*)GetParent();
+
+    sheet->SetWizardButtons(PSWIZB_NEXT | PSWIZB_CANCEL);
+
     return CPropertyPage::OnSetActive();
 }
 
