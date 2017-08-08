@@ -22,7 +22,7 @@ namespace DatabaseConnectionAdmin
             return connection.ConnectionString;
         }
 
-        private RegistryKey GetDatabaseData()
+        private static RegistryKey GetDatabaseData()
         {
             return Registry.CurrentUser.OpenSubKey("Software")?.OpenSubKey("VB and VBA Program Settings")?.OpenSubKey("LastTask")?.OpenSubKey("Database");
         }
