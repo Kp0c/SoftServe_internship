@@ -156,6 +156,7 @@ Partial Class DatabaseSetup
         Me.Controls.Add(Me.lblInitialCatalog)
         Me.Controls.Add(Me.txtDataSource)
         Me.Controls.Add(Me.lblDataSource)
+        Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Name = "DatabaseSetup"
         Me.Text = "Database setup"
         CType(Me.nudConnectionTimeout, System.ComponentModel.ISupportInitialize).EndInit()
