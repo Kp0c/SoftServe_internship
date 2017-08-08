@@ -119,9 +119,8 @@ Private Sub CmdOK_Click()
     If ValidateLogin And ValidatePassword Then
         Dim databaseConnection As New DbCon
         
+        Me.Hide
         If databaseConnection.TryLogIn(txtUserName.text, txtPassword.text) Then
-            Me.Hide
-            
             If txtUserName.text = "admin" Then
                 Dim adminGUI As New AdminForm
                 adminGUI.Show
@@ -132,6 +131,7 @@ Private Sub CmdOK_Click()
             
             Unload Me
         Else
+            Me.Show
             MsgBox "Wrong username or password"
         End If
     End If

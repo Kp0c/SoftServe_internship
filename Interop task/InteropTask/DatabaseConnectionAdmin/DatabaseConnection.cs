@@ -2,7 +2,9 @@
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using DatabaseSetup;
 using Microsoft.Win32;
+using DatabaseSetup = DatabaseSetup.DatabaseSetup;
 
 namespace DatabaseConnectionAdmin
 {
@@ -20,12 +22,21 @@ namespace DatabaseConnectionAdmin
             return connection.ConnectionString;
         }
 
+        private RegistryKey GetDatabaseData()
+        {
+            return Registry.CurrentUser.OpenSubKey("Software")?.OpenSubKey("VB and VBA Program Settings")?.OpenSubKey("LastTask")?.OpenSubKey("Database");
+        }
+
         public DatabaseConnection(DbCommand commandExecutor = null)
         {
-            RegistryKey databaseData = Registry.CurrentUser.OpenSubKey("Software")
-                ?.OpenSubKey("VB and VBA Program Settings")?.OpenSubKey("LastTask")?.OpenSubKey("Database");
+            RegistryKey databaseData = GetDatabaseData();
+            if (databaseData == null)
+            {
+                var databaseSetup = new global::DatabaseSetup.DatabaseSetup();
+                databaseSetup.ShowDialog();
 
-            Debug.Assert(databaseData != null, "databaseData cannot be null");
+                databaseData = GetDatabaseData();
+            }
 
             string connectionString = "Data Source=" + databaseData.GetValue("Data Source") + ";";
             connectionString += "Initial Catalog=" + databaseData.GetValue("Initial Catalog") + ";";

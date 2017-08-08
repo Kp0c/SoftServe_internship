@@ -1,15 +1,12 @@
 #include "stdafx.h"
 #include "DbCon.h"
+#include "InteropFunctions.h"
 #include <string>
 
 #import "msado15.dll" rename_namespace("ADO") rename("EOF", "EndOfFile") implementation_only
 
-CDbCon::CDbCon()
+std::wstring CDbCon::GetConnectionString()
 {
-    CoInitialize(NULL);
-
-    connection.CreateInstance(__uuidof(ADO::Connection));
-
     std::vector<std::wstring> settingNames{ L"Data Source", L"Initial Catalog", L"Trusted_Connection" };
 
     auto settings = GetSettings(settingNames);
@@ -20,7 +17,24 @@ CDbCon::CDbCon()
         connectionString += setting.first + L"=" + setting.second + L";";
     }
 
-    connection->Open(connectionString.c_str(), L"", L"",  ADO::ConnectOptionEnum::adConnectUnspecified);
+    return connectionString;
+}
+
+CDbCon::CDbCon()
+{
+    CoInitialize(NULL);
+
+    connection.CreateInstance(__uuidof(ADO::Connection));
+
+    try
+    {
+        connection->Open(GetConnectionString().c_str(), L"", L"", ADO::ConnectOptionEnum::adConnectUnspecified);
+    }
+    catch(...)
+    {
+        SetupDatabase();
+        connection->Open(GetConnectionString().c_str(), L"", L"", ADO::ConnectOptionEnum::adConnectUnspecified);
+    }
 }
 
 CDbCon::~CDbCon()

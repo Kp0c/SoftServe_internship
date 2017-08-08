@@ -16,7 +16,7 @@ Public Class DatabaseSetup
     End Sub
 
     Private Sub btnOk_Click(sender As Object, e As EventArgs) Handles btnOk.Click
-        Dim connectionString As String = $"Data Source={txtDataSource.Text};Initial Catalog={txtDataSource.Text};"
+        Dim connectionString As String = $"Data Source={txtDataSource.Text};Initial Catalog={txtInitialCatalog.Text};"
 
         If chkTrustedConnection.Checked Then
             connectionString += "Trusted_Connection=yes;"

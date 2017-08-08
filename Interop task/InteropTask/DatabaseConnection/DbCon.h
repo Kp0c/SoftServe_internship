@@ -53,6 +53,7 @@ private:
     const LPCWSTR settingsLocation{ L"Software\\VB and VBA Program Settings\\LastTask\\Database" };
 
     ADO::Connection15Ptr connection = NULL;
+    std::wstring GetConnectionString();
     std::map<std::wstring, std::wstring> GetSettings(std::vector<std::wstring> settingNames);
     CComSafeArray<BSTR> StructurizeInfo(ADO::Recordset15Ptr record);
 };
