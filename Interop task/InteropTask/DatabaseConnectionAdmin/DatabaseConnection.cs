@@ -29,7 +29,7 @@ namespace DatabaseConnectionAdmin
             RegistryKey databaseData = GetDatabaseData();
             if (databaseData == null)
             {
-                var databaseSetup = new global::DatabaseSetup.DatabaseSetup();
+                var databaseSetup = new DatabaseSetup.DatabaseSetup();
                 databaseSetup.ShowDialog();
 
                 databaseData = GetDatabaseData();

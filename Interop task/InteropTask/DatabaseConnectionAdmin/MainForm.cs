@@ -54,6 +54,7 @@ namespace DatabaseConnectionAdmin
         {
             ShowGUI(Handle, UsersGrid.SelectedRows[0].Cells[0].Value.ToString());
             usersTableAdapter.Fill(lastTaskDataSet.Users);
+            transactionsTableAdapter.Fill(lastTaskDataSet.Transactions);
         }
 
         private void RefreshButton_Click(object sender, EventArgs e)
