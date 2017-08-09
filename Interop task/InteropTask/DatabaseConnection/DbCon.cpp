@@ -81,7 +81,7 @@ STDMETHODIMP CDbCon::TryLogIn(BSTR username, BSTR password, VARIANT_BOOL* isSucc
     record.CreateInstance(__uuidof(ADO::Recordset));
 
     record = _connection->Execute(L"SELECT username FROM Users WHERE username='" + (bstr_t)username + "' AND password='" + (bstr_t)password + "'", nullptr, ADO::ExecuteOptionEnum::adOptionUnspecified);
-
+    
     bool isHaveAtLeastOneRecord = !record->EndOfFile;
     if (isHaveAtLeastOneRecord)
     {

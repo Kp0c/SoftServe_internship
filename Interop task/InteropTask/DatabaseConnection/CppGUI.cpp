@@ -4,8 +4,6 @@
 #include <Windows.h>
 #include "DbCon.h"
 
-#define BUTTON_ID 1001
-
 CCppGUI* CCppGUI::cppGUI = nullptr;
 
 void CCppGUI::GetDbData(BSTR username)

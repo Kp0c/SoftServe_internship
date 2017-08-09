@@ -62,5 +62,10 @@ namespace DatabaseConnectionAdmin
             usersTableAdapter.Fill(lastTaskDataSet.Users);
             transactionsTableAdapter.Fill(lastTaskDataSet.Transactions);
         }
+
+        private void UsersGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            ShowAsSelected_Click(sender, e);
+        }
     }
 }

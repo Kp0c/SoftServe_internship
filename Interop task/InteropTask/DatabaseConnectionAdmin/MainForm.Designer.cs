@@ -80,6 +80,7 @@
             this.UsersGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.UsersGrid.Size = new System.Drawing.Size(449, 498);
             this.UsersGrid.TabIndex = 0;
+            this.UsersGrid.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.UsersGrid_CellDoubleClick);
             // 
             // usernameDataGridViewTextBoxColumn
             // 

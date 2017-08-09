@@ -34,12 +34,15 @@ namespace DatabaseConnectionAdmin
 
                 databaseData = GetDatabaseData();
             }
-            DbConnectionStringBuilder connectionStringBuilder = new DbConnectionStringBuilder();
-            connectionStringBuilder.Add("Data Source", databaseData.GetValue("Data Source"));
-            connectionStringBuilder.Add("Initial Catalog", databaseData.GetValue("Initial Catalog"));
-            connectionStringBuilder.Add("Trusted_Connection", databaseData.GetValue("Trusted_Connection"));
-            connectionStringBuilder.Add("User Id", databaseData.GetValue("Username"));
-            connectionStringBuilder.Add("Password", databaseData.GetValue("Password"));
+
+            DbConnectionStringBuilder connectionStringBuilder = new DbConnectionStringBuilder
+            {
+                {"Data Source", databaseData.GetValue("Data Source")},
+                {"Initial Catalog", databaseData.GetValue("Initial Catalog")},
+                {"Trusted_Connection", databaseData.GetValue("Trusted_Connection")},
+                {"User Id", databaseData.GetValue("Username")},
+                {"Password", databaseData.GetValue("Password")}
+            };
 
             _connection = new SqlConnection(connectionStringBuilder.ConnectionString);
 
@@ -59,22 +62,22 @@ namespace DatabaseConnectionAdmin
 
         public void CreateUser(string username, string password, int money)
         {
-            ExecuteCommand("INSERT INTO Users VALUES('" + username + "', '" + password + "', " + money + ");");
+            ExecuteCommand($"INSERT INTO Users VALUES('{username}', '{password}', {money});");
         }
 
         public void RemoveUser(string username)
         {
-            ExecuteCommand("EXECUTE remove_user '" + username + "';");
+            ExecuteCommand($"EXECUTE remove_user '{username}';");
         }
 
         public void ChangeMoneyOfUser(string username, int money)
         {
-            ExecuteCommand("UPDATE Users SET money=" + money + " WHERE username='" + username + "';");
+            ExecuteCommand($"UPDATE Users SET money={money} WHERE username='{username}';");
         }
 
         public void SendMoney(string from, string to, int money)
         {
-            ExecuteCommand("EXECUTE make_transaction '" + from + "', '" + to + "', " + money + ";");
+            ExecuteCommand($"EXECUTE make_transaction '{from}', '{to}', {money};");
         }
     }
 }
