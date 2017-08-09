@@ -110,12 +110,12 @@ LRESULT CALLBACK CCppGUI::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 
 LRESULT CCppGUI::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
-    HDC hdc;
-    PAINTSTRUCT ps;
-
     switch (msg)
     {
     case WM_PAINT:
+        HDC hdc;
+        PAINTSTRUCT ps;
+
         hdc = BeginPaint(hwnd, &ps);
         OnPaint(hdc);
         EndPaint(hwnd, &ps);
@@ -130,24 +130,37 @@ LRESULT CCppGUI::MyWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
     case WM_MOUSEWHEEL:
         _wheelDelta += GET_WHEEL_DELTA_WPARAM(wParam);
 
-        for (; _wheelDelta > WHEEL_DELTA; _wheelDelta -= WHEEL_DELTA)
+        int dataRows;
+        if (dbData != nullptr)
         {
-            _yOffset += CELL_HEIGHT;
-
-            if (_yOffset > 0)
-            {
-                _yOffset = 0;
-            }
+            dataRows = dbData.GetCount(0);
         }
 
-        for (; _wheelDelta < 0; _wheelDelta += WHEEL_DELTA)
+        if (dataRows > ROWS)
         {
-            _yOffset -= CELL_HEIGHT;
-
-            if (abs(_yOffset) >((int)dbData.GetCount(0) - ROWS)*CELL_HEIGHT)
+            for (; _wheelDelta < 0; _wheelDelta += WHEEL_DELTA)
             {
-                _yOffset = -CELL_HEIGHT*(dbData.GetCount(0) - ROWS);
+                _yOffset -= CELL_HEIGHT;
+
+                if (abs(_yOffset) > (dataRows - ROWS)*CELL_HEIGHT)
+                {
+                    _yOffset = -CELL_HEIGHT*(dataRows - ROWS);
+                }
             }
+
+            for (; _wheelDelta > WHEEL_DELTA; _wheelDelta -= WHEEL_DELTA)
+            {
+                _yOffset += CELL_HEIGHT;
+
+                if (_yOffset > 0)
+                {
+                    _yOffset = 0;
+                }
+            }
+        }
+        else
+        {
+            _wheelDelta = 0;
         }
 
         InvalidateRgn(hwnd, NULL, FALSE);
