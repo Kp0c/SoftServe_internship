@@ -18,9 +18,10 @@ void CCppGUI::GetDbData(BSTR username)
     VARIANT transactions;
     dbCon->GetTransactions(username, &transactions);
 
-    dbData = transactions.parray;
-
+    dbCon->Release();
     CoUninitialize();
+
+    dbData = transactions.parray;
 }
 
 void CCppGUI::DrawString(Graphics& graphics, std::wstring string, int x1, int y1, int width, int height)

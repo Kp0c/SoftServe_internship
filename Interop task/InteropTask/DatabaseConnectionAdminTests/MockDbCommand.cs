@@ -11,7 +11,6 @@ namespace DatabaseConnectionAdminTests
             throw new NotImplementedException();
         }
 
-        public override string CommandText { get; set; }
         public override int CommandTimeout { get; set; }
         public override CommandType CommandType { get; set; }
         public override UpdateRowSource UpdatedRowSource { get; set; }
@@ -23,8 +22,6 @@ namespace DatabaseConnectionAdminTests
 
         protected override DbTransaction DbTransaction { get; set; }
         public override bool DesignTimeVisible { get; set; }
-
-        public string ExecutedCommandText { get; private set; }
 
         public override void Cancel()
         {
@@ -41,16 +38,19 @@ namespace DatabaseConnectionAdminTests
             throw new NotImplementedException();
         }
 
+        public override object ExecuteScalar()
+        {
+            throw new NotImplementedException();
+        }
+        public override string CommandText { get; set; }
+
+        public string ExecutedCommandText { get; private set; }
+
         public override int ExecuteNonQuery()
         {
             ExecutedCommandText = CommandText;
 
             return 0;
-        }
-
-        public override object ExecuteScalar()
-        {
-            throw new NotImplementedException();
         }
     }
 }

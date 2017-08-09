@@ -7,8 +7,8 @@ namespace DatabaseConnectionAdminTests
     public class DatabaseConnectionTests
     {
         private MockDbCommand _mockDbCommand;
-
         private DatabaseConnection _dbConnection;
+
         [TestInitialize]
         public void Setup()
         {
