@@ -116,14 +116,14 @@ Private Function ValidatePassword() As Boolean
 End Function
     
 Private Sub CmdOK_Click()
-    If ValidateLogin And ValidatePassword Then
-        Dim databaseConnection As New DbCon
-        
+    If ValidateLogin() And ValidatePassword() Then
         Me.Hide
+        
+        Dim databaseConnection As New DbCon
         If databaseConnection.TryLogIn(txtUserName.text, txtPassword.text) Then
             If txtUserName.text = "admin" Then
-                Dim adminGUI As New AdminForm
-                adminGUI.Show
+                Dim a As New MainForm
+                a.ShowDialog
             Else
                 Dim userGUI As New CppGUI
                 userGUI.ShowGUI Me.hWnd, txtUserName.text

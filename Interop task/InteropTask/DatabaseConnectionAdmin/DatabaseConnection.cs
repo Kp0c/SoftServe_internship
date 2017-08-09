@@ -34,14 +34,14 @@ namespace DatabaseConnectionAdmin
 
                 databaseData = GetDatabaseData();
             }
+            DbConnectionStringBuilder connectionStringBuilder = new DbConnectionStringBuilder();
+            connectionStringBuilder.Add("Data Source", databaseData.GetValue("Data Source"));
+            connectionStringBuilder.Add("Initial Catalog", databaseData.GetValue("Initial Catalog"));
+            connectionStringBuilder.Add("Trusted_Connection", databaseData.GetValue("Trusted_Connection"));
+            connectionStringBuilder.Add("User Id", databaseData.GetValue("Username"));
+            connectionStringBuilder.Add("Password", databaseData.GetValue("Password"));
 
-            string connectionString = "Data Source=" + databaseData.GetValue("Data Source") + ";";
-            connectionString += "Initial Catalog=" + databaseData.GetValue("Initial Catalog") + ";";
-            connectionString += "Trusted_Connection=" + databaseData.GetValue("Trusted_Connection") + ";";
-            connectionString += "User Id=" + databaseData.GetValue("Username") + ";";
-            connectionString += "Password=" + databaseData.GetValue("Password") + ";";
-
-            _connection = new SqlConnection(connectionString);
+            _connection = new SqlConnection(connectionStringBuilder.ConnectionString);
 
             _commandExecutor = commandExecutor ?? new SqlCommand();
 

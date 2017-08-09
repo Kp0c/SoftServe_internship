@@ -58,10 +58,8 @@
     <Compile Include="AddUser.Designer.cs">
       <DependentUpon>AddUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="AdminForm.cs" />
     <Compile Include="DatabaseConnection.cs" />
     <Compile Include="IDatabaseConnection.cs" />
-    <Compile Include="IAdminForm.cs" />
     <Compile Include="IDialogService.cs" />
     <Compile Include="LastTaskDataSet.Designer.cs">
       <AutoGen>True</AutoGen>

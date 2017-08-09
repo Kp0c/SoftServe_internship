@@ -61,13 +61,16 @@ namespace DatabaseConnectionAdmin
         }
         
         public delegate void Act(int money);
-        public static void TryValidateAndAct(TextBox[] textFields, TextBox[] intFields, Act act)
+        public static bool TryValidateAndAct(TextBox[] textFields, TextBox[] intFields, Act act)
         {
             int sum;
             if (ValidateTextFields(textFields) && ValidateIntFields(intFields, out sum))
             {
                 act(sum);
+                return true;
             }
+
+            return false;
         }
     }
 }
